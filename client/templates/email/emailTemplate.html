@@ -1,0 +1,64 @@
+<template name="emailTemplate">
+  <div class="mail-content" id="contenidoEmail">
+    <div class="container">
+    <div class="row">
+      Para {{emailCliente}}
+      <p>Cliente: {{nombre}}</p>
+    </div>
+    <div class="row">
+      <img src="../img/carflethoriz.png" width="200">
+    </div>
+    <div class="row">
+      <h5>¡Gracias por su Reserva!</h5>
+      <p>Gracias por haber realizado su reserva con Carflet Rent a Car. A continuación encontrará toda la información necesaria para recoger su vehículo</p>
+      <div class="col-sm-12">
+        <h3>Mostrador</h3>
+        <h4 id="empresafin"></h4>
+      </div>
+      <div class="col-xs-6">
+        <h3>Oficina de Recogida</h3>
+        <h4>{{recogida}}</h4>
+        <p id="inforecofin"></p>
+        <h4>Horario de Apertura</h4>
+        <p id="infohorariorecofin"></p>
+      </div>
+      <div class="col-xs-6">
+        <h3>Oficina de Devolución</h3>
+        <h4>{{devolucion}}</h4>
+        <p id="infodevofin"></p>
+      </div>
+      <div class="col-sm-12" style="text-align: center;">
+        <h3>Fecha y Hora de Recogida</h3>
+        <h4>{{formatDateMail fechareco}}</h4>
+      </div>
+      <div class="col-sm-12">
+        <h3>Codigo de Reserva</h3>
+        <h4 id="codresfin"></h4>
+        <br>
+      </div>
+      <div class="col-sm-12" id="cuponcol">
+        <p>En Carflet nuestros clientes son lo más importante, por ese motivo nos gustaría premiar su fidelidad con un cheque regalo de 25 € para la próxima vez que vuelva a alquilar con nosotros.</p>
+        <h4>Su código: <span id="cuponfin"></span></h4>
+        <br>
+      </div>
+      <div class="col-sm-12" id="orbytcol">
+        <p>Disfrute además de una suscripción a Orbyt por 30 días</p>
+        <h4>Su código: <span id="cuponorfin"></span></h4>
+        <br>
+      </div>
+      <div class="col-sm-12">
+        Si tienen alguna cuestión, estaremos encantados de atenderle. Puede ponerse en contacto con nosotros en el email info@carflet.es<br>
+        Atentamente,<br>
+        <br>
+        Servicio de Atención al Cliente <br>
+        Carflet Rent a Car <br>
+        Tel. 609 36 52 34 <br>
+        www.carflet.es <br>
+      </div>
+
+
+
+    </div>
+  </div>
+  </div>
+</template>

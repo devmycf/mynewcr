@@ -1,0 +1,26 @@
+<body>
+    {{renderPage}}
+</body>
+
+<template name="outLayout">
+    <div id="full-login">
+<div class="over-login"></div>
+        <div class="login-card">
+            <img src="/img/carflethoriz.png">
+            {{> mylogin}}
+        </div>
+
+    </div>
+</template>
+
+<template name="mylogin">
+    <form>
+        <div class="log-cont">
+            <label>Email</label>
+            <input type="email" name="loginEmail">
+            <label>password</label>
+            <input type="password" name="loginPassword">
+            <button type="submit" value="Login" class="btn btn-primary" style="margin-top: 15px;width: 100%;border-radius: 0;">Login</button>
+        </div>
+    </form>
+</template>

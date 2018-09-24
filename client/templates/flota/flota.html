@@ -1,0 +1,320 @@
+<template name="flota">
+  <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addCocheModal">
+    Alta de Coche
+  </button>
+  <!-- Modal Flota-->
+  <div class="modal fade" id="addCocheModal" tabindex="-1" role="dialog" aria-labelledby="myaddCocheModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myaddCocheModalLabel">Alta de Coche</h4>
+        </div>
+        <div class="modal-body">
+          {{#autoForm collection="Flota" id="addCoche"}}
+              <div class="row">
+                  <div class="col-md-6">
+                      {{> afQuickField name="nombreCoche"}}
+                  </div>
+                  <div class="col-md-6">
+                      {{> afFormGroup name="color" type="color" }}
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="col-md-6">
+                      {{> afFormGroup name="categoria" options=tipocoche}}
+                  </div>
+                  <div class="col-md-6">
+                      {{> afQuickField name="imagen"}}
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="col-md-3">
+                      {{> afQuickField name="año"}}
+                  </div>
+                  <div class="col-md-3">
+                      {{> afQuickField name="pasajeros"}}
+                  </div>
+                  <div class="col-md-3">
+                      {{> afQuickField name="maletas"}}
+                  </div>
+                  <div class="col-md-3">
+                      {{> afQuickField name="ubicacion"}}
+                  </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary" id="newCar">Crear</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Descartar</button>
+          {{/autoForm}}
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <hr>
+  <hr>
+  <div class="row is-flex flex-element flex-row flex-just-start">
+    <!-- <div class="col-sm-4 col-md-3 col-lg-2">
+      <div class="card">
+        <div class="card-img">
+          <img class="img-responsive" src="img/flota/todos.jpg">
+        </div>
+        <div class="new-cont" style="visibility:hidden">
+                  <button href="">+</button>
+        </div>
+                <h2>Todos</h2>
+        <h3>Todas las categorías</h3>
+        <div class="location-cont" style="visibility:hidden;">
+                  <img src="img/location.svg" style="width: 16px;">
+                  <span>{{ubicacion}}</span>
+        </div>
+        <div class="row">
+          <div class="col-xs-4 icon-cont">
+            <a href="">
+              <img class="img-responsive icon" src="img/restart.svg">
+              <p>Traer a Madrid</p>
+            </a>
+          </div>
+          <div class="col-xs-4 icon-cont">
+            <a href="">
+              <img class="img-responsive icon" src="img/calendar.svg">
+              <p>Calendario</p>
+            </a>
+          </div>
+          <div class="col-xs-4 icon-cont">
+            <a href="">
+              <img class="img-responsive icon" src="img/drop.svg">
+              <p>Lavabos</p>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div> -->
+    {{#each flota}}
+      <div class="card" data-coche="{{_id}}" name-coche="{{nombreCoche}}">
+        <div class="light" style="background-color:{{getAvailColor nombreCoche}}">
+            <div id="light-cont">
+                <div class="flex-element flex-row flex-sp-between">
+                    <img src="/img/carflethoriz.png" height="20px">
+                    <div class="flex-element flex-column availornot">
+                        {{#if isAvailable}}
+                            <p>LIBRE</p>
+                            <span>hasta {{nextBookingPickupDate nombreCoche}}</span>
+                        {{else}}
+                            <p>OCUPADO</p>
+                            <span>hasta {{currentBookingReleaseDate nombreCoche}}</span>
+                        {{/if}}
+                    </div>
+                </div>
+                <div class="flex-element flex-row">
+                    <span class="my-separator"></span>
+                </div>
+                <div class="flex-element flex-row places">
+                    <div class="flex-element flex-column flex-align-start">
+                        <p class="text-left">ALI</p>
+                        <span class="text-left">Alicante Aeropuerto</span>
+                    </div>
+                    <div>
+                         <img height="40" src="{{getImagenPath imagen}}">
+                    </div>
+                    <div class="flex-element flex-column flex-align-end">
+                        <p class="text-right">BEN</p>
+                        <span class="text-right">Benidorm Hotel</span>
+                    </div>
+                </div>
+                <div class="flex-element flex-row">
+                    <span class="my-separator"></span>
+                </div>
+                <div class="flex-element flex-row flex-sp-between dates">
+                    <div class="flex-element flex-column flex-align-start">
+                        <p class="text-left">fecha/hora recogida</p>
+                        <span class="text-left">24 Ago 12:00</span>
+                    </div>
+                    <div class="flex-element flex-column flex-align-end">
+                        <p class="text-right">fecha/hora devolucion</p>
+                        <span class="text-right">25 Ago 12:00</span>
+                    </div>
+                </div>
+                <div class="flex-element flex-row">
+                    <span class="my-separator"></span>
+                </div>
+                <div class="flex-element flex-row flex-sp-between dates">
+                    <div class="flex-element flex-column flex-align-start">
+                        <p>cliente</p>
+                        <span class="text-left">Paco Perez</span>
+                    </div>
+                    <div class="flex-element flex-column flex-align-end">
+                        <p>procedencia</p>
+                        <span class="text-right">Web</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-img">
+          <img class="img-responsive" src="{{getImagenPath imagen}}">
+        </div>
+        <div class="new-cont hide">
+          <button data-toggle="modal" data-target="#newCarfletBooking">+</button>
+        </div>
+                <h2>{{nombreCoche}}</h2>
+        <h3>{{categoria}} - {{matricula}}</h3>
+        <div class="flex-element flex-column">
+            <p style="margin-bottom: 0px; color:#fff ">Ultima ITV</p>
+            <div class="itvcont">
+              <input type="text" class="datepicker hook-lastitv" id="lastitv" placeholder="Ultima Liquidacion" value="{{formatDateOnly lastITV}}">
+              <svg enable-background="new 0 0 32 32" height="16px" id="Layer_1" version="1.1" viewBox="0 0 32 32" width="16px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="calendar_1_"><path d="M29.334,3H25V1c0-0.553-0.447-1-1-1s-1,0.447-1,1v2h-6V1c0-0.553-0.448-1-1-1s-1,0.447-1,1v2H9V1   c0-0.553-0.448-1-1-1S7,0.447,7,1v2H2.667C1.194,3,0,4.193,0,5.666v23.667C0,30.806,1.194,32,2.667,32h26.667   C30.807,32,32,30.806,32,29.333V5.666C32,4.193,30.807,3,29.334,3z M30,29.333C30,29.701,29.701,30,29.334,30H2.667   C2.299,30,2,29.701,2,29.333V5.666C2,5.299,2.299,5,2.667,5H7v2c0,0.553,0.448,1,1,1s1-0.447,1-1V5h6v2c0,0.553,0.448,1,1,1   s1-0.447,1-1V5h6v2c0,0.553,0.447,1,1,1s1-0.447,1-1V5h4.334C29.701,5,30,5.299,30,5.666V29.333z" fill="#ffffff"/><rect fill="#ffffff" height="3" width="4" x="7" y="12"/><rect fill="#ffffff" height="3" width="4" x="7" y="17"/><rect fill="#ffffff" height="3" width="4" x="7" y="22"/><rect fill="#ffffff" height="3" width="4" x="14" y="22"/><rect fill="#ffffff" height="3" width="4" x="14" y="17"/><rect fill="#ffffff" height="3" width="4" x="14" y="12"/><rect fill="#ffffff" height="3" width="4" x="21" y="22"/><rect fill="#ffffff" height="3" width="4" x="21" y="17"/><rect fill="#ffffff" height="3" width="4" x="21" y="12"/></g></svg>
+            </div>
+        </div>
+
+
+        
+        <!-- <div class="location-cont">
+                  <img src="img/location.svg" style="width: 16px;">
+                  <span>{{ubicacion}}</span>
+        </div> -->
+
+        <div class="row hide">
+          <div class="col-xs-4 icon-cont">
+            <a href="">
+              <img class="img-responsive icon" src="img/restart.svg">
+              <p>Traer a Madrid</p>
+            </a>
+          </div>
+          <div class="col-xs-4 icon-cont">
+            <a href="">
+              <img class="img-responsive icon" src="img/calendar.svg">
+              <p>Calendario</p>
+            </a>
+          </div>
+          <div class="col-xs-4 icon-cont">
+            <a href="">
+              <img class="img-responsive icon" src="img/drop.svg">
+              <p>Lavabos</p>
+            </a>
+          </div>
+        </div>
+    </div>
+    {{/each}}
+    <!-- Modal -->
+    <div class="modal fade" id="newCarfletBooking" tabindex="-1" role="dialog" aria-labelledby="newCarfletBookingLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="newCarfletBookingLabel">Reserva de {{getNombreCoche}}</h4>
+          </div>
+          <div class="modal-body">
+            {{#autoForm schema=bookingFlotaSchema id="bookingFromFlota"}}
+            <fieldset>
+
+              <div class="col-md-12">
+                <h5>Cliente</h5>
+                <div class="form-group">
+                  <div class="col-md-12">
+                    {{> afQuickField name="nombreCliente"}}
+
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <h5>Recogida</h5>
+                <div class="form-group">
+                  <div class="col-md-6">
+                  {{> afQuickField name="lugarRecogida"}}
+
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="col-md-6">
+                    <label>Momento</label>
+                  {{> afFieldInput name="momentoRecogida" type="bootstrap-datetimepicker" }}
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <h5>Devolucion</h5>
+                <div class="form-group">
+                  <div class="col-md-6">
+                  {{> afQuickField name="lugarDevolucion"}}
+
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="col-md-6">
+                    <label>Momento</label>
+                  {{> afFieldInput name="momentoDevolucion" type="bootstrap-datetimepicker" }}
+
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+              <button type="submit" class="btn btn-primary">Crear Reserva</button>
+            </div>
+            {{/autoForm}}
+            <!-- <form class="form-horizontal">
+            <fieldset>
+
+            <h5>Cliente</h5>
+            <div class="form-group">
+              <label class="col-md-4 control-label" for="nombreCliente">Nombre</label>
+              <div class="col-md-4">
+              <input id="nombreCliente" name="nombreCliente" type="text" placeholder="Nombre Cliente" class="form-control input-md">
+
+              </div>
+            </div>
+
+
+            <h5>Recogida</h5>
+            <div class="form-group">
+              <label class="col-md-4 control-label" for="recogidalugar">Lugar</label>
+              <div class="col-md-4">
+              <input id="recogidalugar" name="recogidalugar" type="text" placeholder="Lugar de Recogida" class="form-control input-md">
+
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-md-4 control-label" for="textinput">Fecha</label>
+              <div class="col-md-4">
+              <input id="recogidafecha" name="recogidafecha" type="date" placeholder="Fecha Recogida" class="form-control input-md">
+
+              </div>
+            </div>
+
+            <h5>Devolución</h5>
+            <div class="form-group">
+              <label class="col-md-4 control-label" for="devolucion">Lugar</label>
+              <div class="col-md-4">
+              <input id="devolucionlugar" name="devolucionlugar" type="text" placeholder="Lugar de Devolucion" class="form-control input-md">
+
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-md-4 control-label" for="devolucion">Fecha</label>
+              <div class="col-md-4">
+              <input id="devolucionfecha" name="devolucionfecha" type="date" placeholder="Fecha de Devolucion" class="form-control input-md">
+
+              </div>
+            </div>
+            </fieldset>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+              <button type="submit" class="btn btn-primary">Crear Reserva</button>
+            </div>
+            </form> -->
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+    <div class="row" id="reservasCalendar">
+    </div>
+</template>

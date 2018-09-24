@@ -1,0 +1,126 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="viewport" content="width=device-width" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>HTML email test</title>
+
+</head>
+<style type="text/css">
+  body {
+    font-family: Helvetica;
+    color: #333;
+    font-size: 14px;
+  }
+
+  h5, h3, h4, p{color: #333;}
+</style>
+<body itemscope itemtype="http://schema.org/EmailMessage">
+  <img src="http://carflet.es/images/carflet/carfletlogo.png" width="150">
+  <h5 style="font-size: 16px;">¡Gracias por su Reserva!</h5>
+  <h5 style="font-size: 16px; font-style: italic">Thank you for your reservation</h5>
+  <p style="font-size: 12px;">Gracias por haber realizado su reserva con Carflet Rent a Car. A continuación encontrará toda la información necesaria para recoger su vehículo</p>
+  <p style="font-size: 12px; font-style: italic">Thank you for choosing Carflet Rent a Car for your car rental needs. Here you will find all the information for picking up your car</p>
+  <table width="300" style="border: none; text-align: left;">
+    <thead>
+      <tr>
+        <th style="font-size: 24px; text-align: left;">
+          Mostrador /<span style="font-style: italic"> Desk</span>
+        </th>
+        <th style="font-size: 18px; text-align: left; padding: 10px; background:#cddaec; font-style: italic">
+          {{empresa}}
+        </th>
+      </tr>
+    </thead>
+  </table>
+
+  <table width="100%" style="border: none; margin-top: 40px; text-align: left;">
+    <thead>
+      <tr>
+        <th style="font-size: 24px; text-align: left;">
+          Oficina de Recogida / <span style="font-style: italic">Pick Up Place</span>
+        </th>
+        <th style="font-size: 24px; text-align: left;">
+          Oficina de Devolución / <span style="font-style: italic">Delivery Place</span>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="font-size: 18px; text-align: left;">
+          {{ofiReco}}
+        </td>
+        <td style="font-size: 18px; text-align: left;">
+          {{ofiDevo}}
+        </td>
+      </tr>
+      <tr>
+        <td style="font-size: 16px; text-align: left;">
+          {{#each infoReco}}
+            {{this}}<br>
+          {{/each}}
+        </td>
+        <td style="font-size: 16px; text-align: left;">
+          {{#each infoDevo}}
+            {{this}}<br>
+          {{/each}}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table width="600" style="border: none; margin-top: 40px; text-align: left;">
+    <thead>
+      <tr>
+        <th style="font-size: 24px; text-align: left;">
+          Horario Oficina de Recogida / <span style="font-style: italic">Opening Hours Pick Up Office</span>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="font-size: 18px;">
+          {{#each horarioReco}}
+            {{this}}<br>
+          {{/each}}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table width="100%" style="border: none; margin-top: 40px; padding: 20px; background: #cddaec;">
+    <thead>
+      <tr>
+        <th style="font-size: 24px;">
+          Fecha y Hora de Recogida / <span style="font-style: italic">Pick Up Date and Hour</span>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="text-align: center; font-size: 18px;">
+          {{horaReco}}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 style="font-size: 24px;">Código de Reserva / <span style="font-style: italic">Reservation Code: </span><span style="font-size: 18px; background: #cddaec; padding: 10px; font-style: italic">{{codigoReserva}}</span></h3>
+
+  <p style="font-size: 16px;">En Carflet nuestros clientes son lo más importante, por ese motivo nos gustaría premiar su fidelidad con un cheque regalo de {{importedelcupon}}€ para la próxima vez que vuelva a alquilar con nosotros.</p>
+  <h4 style="font-size: 14px;">Cupón Descuento / <span style="font-style: italic">Discount Coupon: </span> <span style="font-size: 12px; background: #cddaec; padding: 10px; font-style: italic">{{cupon}}</span></h4>
+
+
+  <p>Si tienen alguna cuestión, estaremos encantados de atenderle. Puede ponerse en contacto con nosotros en el email <a href="mailto:info@carflet.es">info@carflet.es</a><br>
+    Atentamente,
+  </p>
+  <p style="font-style: italic">If you have any further questions, we will be happy to help you. You can reach us by email <a href="mailto:info@carflet.es">info@carflet.es</a><br>
+    Best Regards
+  </p>
+  <p>
+    Servicio de Atención al Cliente <br>
+    Carflet Rent a Car <br>
+    Tel. 609365324 <br>
+    <a href="www.carflet.es">www.carflet.es</a>
+  </p>
+</body>
+</html>

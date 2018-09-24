@@ -1,0 +1,290 @@
+<template name="bookings">
+    <h3 class="text-muted main-title">Reservas en Carflet</h3>
+    {{#if currentUser}}
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#bookingModal">
+          Nueva Reserva
+        </button>
+            <button type="button" class="btn btn-default btn-lg actualizarfactura">
+          Actualizar Facturas
+        </button>
+        <a href="{{pathFor 'excelfactory'}}" class="btn btn-default"><img src="img/excel-icon.png" width="48px;"></a>
+        <!-- <button class="btn btn-default downloadExcel"><img src="img/excel-icon.png"></button> -->
+        <button class="btn btn-default downloadExcelEmailsClientes"><img src="img/excel-email-icon.png"></button>
+<!--        <button type="button" class="btn btn-primary btn-lg cargaReservas">Actualizar Reservas<br><span>Ultima Actualización: {{ultimaReservaTime}}</span></button>-->
+
+    {{/if}}
+    <!-- Modal -->
+    <div class="modal fade" id="bookingModal" tabindex="-1" role="dialog" aria-labelledby="myBookingModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myBookingModalLabel">Crear una Reserva</h4>
+          </div>
+          <div class="modal-body modal-insert">
+            {{#autoForm collection="Bookings" id="insertBookingForm" type="insert"}}
+                <div class="row">
+                    <div class="col-md-6">
+                        {{> afFormGroup name="factura" type="select-radio-inline"}}
+                    </div>
+                    <div class="col-md-6">
+                        {{> afQuickField name="procedencia"}}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        {{> afQuickField name="nombre"}}
+                    </div>
+                    <div class="col-md-6">
+                        {{> afFormGroup name="company" options=companyname}}
+                    </div>
+                    <div class="col-md-6">
+                        {{> afQuickField name="emailCliente"}}
+                    </div>
+                    <div class="col-md-6">
+                        {{> afQuickField name="telefonoCliente"}}
+                    </div>
+              </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        {{> afFormGroup name="tipo" options=tipocoche}}
+                    </div>
+                    <div class="col-md-6">
+                        {{> afFormGroup name="tarifa" type="select-radio-inline" }}
+                    </div>
+                </div>
+
+
+
+                <div class="row">
+                    <div class="col-md-6">
+                        {{> afQuickField name="recogida"}}
+                    </div>
+                    <div class="col-md-6">
+                        {{> afFormGroup name="fechareco" type="date" }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        {{> afQuickField name="devolucion"}}
+                    </div>
+                    <div class="col-md-6">
+                        {{> afFormGroup name="fechadevo" type="date" }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        {{> afFormGroup name="supdevolucion" type="select-radio-inline"}}
+                    </div>
+                    <div class="col-md-4">
+                        {{> afFormGroup name="supgps" type="select-radio-inline"}}
+                    </div>
+                    <div class="col-md-4">
+                        {{> afFormGroup name="suptransfer" type="select-radio-inline"}}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        {{> afQuickField name="eurosproveedor"}}
+                    </div>
+                    <div class="col-md-4">
+                        {{> afQuickField name="euroscarflet"}}
+                    </div>
+
+              </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        {{> afQuickField name="notas" rows=4}}
+                    </div>
+              </div>
+
+
+
+
+
+
+
+            <button type="submit" class="btn btn-primary">Enviar Reserva</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Descartar</button>
+            {{/autoForm}}
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Update Modal -->
+    <div class="modal fade" id="updatebookingModal" tabindex="-1" role="dialog" aria-labelledby="myupdateBookingModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myupdateBookingModalLabel">Crear una Reserva</h4>
+          </div>
+          <div class="modal-body modal-up">
+            {{#autoForm collection="Bookings" id="updateBookingForm" type="update" doc=selectedBookingDoc}}
+                <div class="row">
+                    <div class="col-md-6">
+                        {{> afFormGroup name="factura" type="select-radio-inline"}}
+                    </div>
+                    <div class="col-md-6">
+                        {{> afQuickField name="procedencia"}}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        {{> afQuickField name="nombre"}}
+                    </div>
+                    <div class="col-md-6">
+                        {{> afFormGroup name="company" options=companyname}}
+                    </div>
+                    <div class="col-md-6">
+                        {{> afQuickField name="emailCliente"}}
+                    </div>
+                    <div class="col-md-6">
+                        {{> afQuickField name="telefonoCliente"}}
+                    </div>
+              </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        {{> afFormGroup name="tipo" options=tipocoche}}
+                    </div>
+                    <div class="col-md-6">
+                        {{> afFormGroup name="tarifa" type="select-radio-inline" }}
+                    </div>
+                </div>
+
+
+
+                <div class="row">
+                    <div class="col-md-6">
+                        {{> afQuickField name="recogida"}}
+                    </div>
+                    <div class="col-md-6">
+                        {{> afFormGroup name="fechareco" type="bootstrap-datetimepicker" }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        {{> afQuickField name="devolucion"}}
+                    </div>
+                    <div class="col-md-6">
+                        {{> afFormGroup name="fechadevo" type="bootstrap-datetimepicker" }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        {{> afFormGroup name="supdevolucion" type="select-radio-inline"}}
+                    </div>
+                    <div class="col-md-4">
+                        {{> afFormGroup name="supgps" type="select-radio-inline"}}
+                    </div>
+                    <div class="col-md-4">
+                        {{> afFormGroup name="suptransfer" type="select-radio-inline"}}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        {{> afQuickField name="eurosproveedor"}}
+                    </div>
+                    <div class="col-md-6">
+                        {{> afQuickField name="euroscarflet"}}
+                    </div>
+
+              </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        {{> afQuickField name="notas" rows=4}}
+                    </div>
+              </div>
+
+
+
+
+
+
+
+            <button type="submit" class="btn btn-primary">Enviar Reserva</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Descartar</button>
+            {{/autoForm}}
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <hr>
+
+
+    <div>
+
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation"><a href="#proximas" aria-controls="home" role="tab" data-toggle="tab">Próximas</a></li>
+        <li role="presentation"><a href="#all" aria-controls="profile" role="tab" data-toggle="tab">Todas</a></li>
+        <li role="presentation" class="active"><a href="#pending" aria-controls="profile" role="tab" data-toggle="tab">Pendientes <span class="cr-badge">{{numPending}}</span></a></li>
+      </ul>
+
+      <!-- Tab panes -->
+      <div class="tab-content">
+        <div role="tabpanel" class="tab-pane" id="proximas">{{> upcomingBookings}}</div>
+        <div role="tabpanel" class="tab-pane" id="all">
+          <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#ene" aria-controls="profile" role="tab" data-toggle="tab">Ene</a></li>
+            <li role="presentation"><a href="#feb" aria-controls="profile" role="tab" data-toggle="tab">Feb</a></li>
+            <li role="presentation"><a href="#mar" aria-controls="profile" role="tab" data-toggle="tab">Mar</a></li>
+            <li role="presentation"><a href="#abr" aria-controls="profile" role="tab" data-toggle="tab">Abr</a></li>
+            <li role="presentation"><a href="#may" aria-controls="profile" role="tab" data-toggle="tab">May</a></li>
+            <li role="presentation"><a href="#jun" aria-controls="profile" role="tab" data-toggle="tab">Jun</a></li>
+            <li role="presentation"><a href="#jul" aria-controls="profile" role="tab" data-toggle="tab">Jul</a></li>
+            <li role="presentation"><a href="#ago" aria-controls="profile" role="tab" data-toggle="tab">Ago</a></li>
+            <li role="presentation"><a href="#sep" aria-controls="profile" role="tab" data-toggle="tab">Sep</a></li>
+            <li role="presentation"><a href="#oct" aria-controls="profile" role="tab" data-toggle="tab">Oct</a></li>
+            <li role="presentation"><a href="#nov" aria-controls="profile" role="tab" data-toggle="tab">Nov</a></li>
+            <li role="presentation"><a href="#dic" aria-controls="profile" role="tab" data-toggle="tab">Dic</a></li>
+            <li role="presentation" class="trimestre"><a href="#1T" aria-controls="profile" role="tab" data-toggle="tab">1T</a></li>
+            <li role="presentation" class="trimestre"><a href="#2T" aria-controls="profile" role="tab" data-toggle="tab">2T</a></li>
+            <li role="presentation" class="trimestre"><a href="#3T" aria-controls="profile" role="tab" data-toggle="tab">3T</a></li>
+            <li role="presentation" class="trimestre"><a href="#4T" aria-controls="profile" role="tab" data-toggle="tab">4T</a></li>
+            <li role="presentation" class="todo"><a href="#todasya" aria-controls="home" role="tab" data-toggle="tab">Todas</a></li>
+          </ul>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="ene">{{> monthlyBookings mes=1 nombMes="Enero"}}</div>
+            <div role="tabpanel" class="tab-pane" id="feb">{{> monthlyBookings mes=2 nombMes="Febrero"}}</div>
+            <div role="tabpanel" class="tab-pane" id="mar">{{> monthlyBookings mes=3 nombMes="Marzo"}}</div>
+            <div role="tabpanel" class="tab-pane" id="abr">{{> monthlyBookings mes=4 nombMes="Abril"}}</div>
+            <div role="tabpanel" class="tab-pane" id="may">{{> monthlyBookings mes=5 nombMes="Mayo"}}</div>
+            <div role="tabpanel" class="tab-pane" id="jun">{{> monthlyBookings mes=6 nombMes="Junio"}}</div>
+            <div role="tabpanel" class="tab-pane" id="jul">{{> monthlyBookings mes=7 nombMes="Julio"}}</div>
+            <div role="tabpanel" class="tab-pane" id="ago">{{> monthlyBookings mes=8 nombMes="Agosto"}}</div>
+            <div role="tabpanel" class="tab-pane" id="sep">{{> monthlyBookings mes=9 nombMes="Septiembre"}}</div>
+            <div role="tabpanel" class="tab-pane" id="oct">{{> monthlyBookings mes=10 nombMes="Octubre"}}</div>
+            <div role="tabpanel" class="tab-pane" id="nov">{{> monthlyBookings mes=11 nombMes="Noviembre"}}</div>
+            <div role="tabpanel" class="tab-pane" id="dic">{{> monthlyBookings mes=12 nombMes="Diciembre"}}</div>
+            <div role="tabpanel" class="tab-pane" id="1T">{{> trimBookings trim=1}}</div>
+            <div role="tabpanel" class="tab-pane" id="2T">{{> trimBookings trim=2}}</div>
+            <div role="tabpanel" class="tab-pane" id="3T">{{> trimBookings trim=3}}</div>
+            <div role="tabpanel" class="tab-pane" id="4T">{{> trimBookings trim=4}}</div>
+            <div role="tabpanel" class="tab-pane" id="todasya">{{> allBookings }}</div>
+          </div>
+        </div>
+        <div role="tabpanel" class="tab-pane active" id="pending">{{> pendingBookings}}</div>
+      </div>
+
+    </div>
+
+
+</template>

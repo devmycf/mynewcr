@@ -1,0 +1,172 @@
+<template name="email">
+  <div id="rootwizard">
+      <div class="navbar">
+              <div class="navbar-inner">
+                <div class="container">
+                  <ul>
+                    <li><a href="#tab1" data-toggle="tab">Empresa</a></li>
+                    <li><a href="#tab2" data-toggle="tab">Oficina Recogida</a></li>
+                    <li><a href="#tab3" data-toggle="tab">Oficina Devolución</a></li>
+                    <li><a href="#tab4" data-toggle="tab">Codigo Reserva</a></li>
+                    <li><a href="#tab5" data-toggle="tab">Extras</a></li>
+                    <li><a href="#tab6" data-toggle="tab">Enviar!</a></li>
+                  </ul>
+                 </div>
+              </div>
+      </div>
+      <div id="bar" class="progress progress-striped active">
+        <div class="bar"></div>
+      </div>
+      <ul class="pager wizard">
+        <li class="previous first" style="display:none;"><a href="#">Primero</a></li>
+        <li class="previous"><a href="#">Anterior</a></li>
+        <li class="next last" style="display:none;"><a href="#">Ultimo</a></li>
+          <li class="next"><a href="#">Siguiente</a></li>
+      </ul>
+      <div class="tab-content">
+          <div class="tab-pane" id="tab1">
+            Seleccionar la empresa colaboradora
+            {{#each empresaReserva recogida}}
+            <div class="radio">
+                <label><input type="radio" name="empresas"  value="{{nombre}}" checked="{{defecto}}">{{nombre}}</label>
+
+            </div>
+            {{/each}}
+            <div class="radio">
+                <label><input type="radio" name="empresas" class="otraempresa" value="otro" checked="false">Otro</label>
+                <input type="text" class="form-control hidden" id="otraempresa" name="otraempresa" style="width:200px;">
+            </div>
+          </div>
+          <div class="tab-pane" id="tab2">
+            Información Recogida
+            <br>
+            <label>Tipo: {{getTipoOfiReco recogida}}</label><br>
+            <div class="form-group">
+              <label for="recogidainfo">Info Recogida:</label>
+              <textarea class="form-control" rows="5" id="recogidainfo">
+                {{recogida}}
+                {{getAddress recogida}}
+              </textarea>
+            </div>
+            <div class="form-group">
+              <label for="recogidahoras">Horario Oficina Recogida:</label>
+              <textarea class="form-control" rows="5" id="recogidahoras">
+                {{getHorario recogida}}
+              </textarea>
+            </div>
+            <div class="form-group">
+              <label for="fechahora">Fecha y Hora de Recogida</label>
+              <input type="text" class="form-control" id="fechahora" value="{{formatDate fechareco}}" disabled>
+            </div>
+          </div>
+        <div class="tab-pane" id="tab3">
+          Información Devolución
+          <br>
+          <label>Tipo: {{getTipoOfiReco devolucion}}</label><br>
+          <div class="form-group">
+            <label for="devoinfo">Info Devolucion:</label>
+            <textarea class="form-control" rows="5" id="devoinfo">
+              {{devolucion}}
+              {{getAddress devolucion}}
+            </textarea>
+          </div>
+          <div class="form-group">
+            <label for="devohoras">Horario Oficina Devolucion:</label>
+            <textarea class="form-control" rows="5" id="devohoras">
+              {{getHorario devolucion}}
+            </textarea>
+          </div>
+          <div class="form-group">
+            <label for="fechahora">Fecha y Hora de Devolución</label>
+            <input type="text" class="form-control" id="fechahora" value="{{formatDate fechadevo}}" disabled>
+          </div>
+
+          </div>
+        <div class="tab-pane" id="tab4">
+          <label for="codigores">Su código de reserva</label>
+          <input type="text" class="form-control" name="codigores" id="codigores" value="{{localizador}}">
+        </div>
+        <div class="tab-pane" id="tab5">
+          <div class="checkbox">
+            <label><input type="checkbox" value="" checked="true" class="checkregalo">¿Regalo? ¿De cuánto? <input type="text" id="importecupon" placeholder="25" value="25"></label>
+          </div>
+          <label for="cuponreg">Cupón Regalo</label>
+          <input type="text" class="form-control" name="cuponreg" id="cuponreg">
+          <div class="checkbox">
+            <label><input type="checkbox" value="" checked="true" class="checkorbyt">¿Orbyt?</label>
+          </div>
+          <label for="cuponorbit">Cupón Orbyt</label>
+          <input type="text" class="form-control" name="cuponorbit" id="cuponorbit">
+
+        </div>
+        <div class="tab-pane" id="tab6">
+          <div class="mail-content" id="contenidoEmail">
+            <div class="container">
+            <div class="row">
+              Para <span id="mailCli">{{emailCliente}}</span>
+              <p>Cliente: {{nombre}}</p>
+            </div>
+            <div class="row">
+              <img src="../img/carflethoriz.png" width="200">
+            </div>
+            <div class="row">
+              <h5>¡Gracias por su Reserva!</h5>
+              <p>Gracias por haber realizado su reserva con Carflet Rent a Car. A continuación encontrará toda la información necesaria para recoger su vehículo</p>
+              <div class="col-sm-12">
+                <h3>Mostrador</h3>
+                <h4 id="empresafin"></h4>
+              </div>
+              <div class="col-sm-6">
+                <h3>Oficina de Recogida</h3>
+                <h4 id="recoofi">{{recogida}}</h4>
+                <p id="inforecofin"></p>
+                <h4>Horario de Apertura</h4>
+                <p id="infohorariorecofin"></p>
+              </div>
+              <div class="col-sm-6">
+                <h3>Oficina de Devolución</h3>
+                <h4 id="devoofi">{{devolucion}}</h4>
+                <p id="infodevofin"></p>
+              </div>
+              <div class="col-sm-12" style="text-align: center;">
+                <h3>Fecha y Hora de Recogida</h3>
+                <h4 id="horaReco">{{formatDateMail fechareco}}</h4>
+              </div>
+              <div class="col-sm-12">
+                <h3>Codigo de Reserva</h3>
+                <h4 id="codresfin"></h4>
+                <br>
+              </div>
+              <div class="col-sm-12" id="cuponcol">
+                <p>En Carflet nuestros clientes son lo más importante, por ese motivo nos gustaría premiar su fidelidad con un cheque regalo de <span id="importecuponfin"></span> € para la próxima vez que vuelva a alquilar con nosotros.</p>
+                <h4>Su código: <span id="cuponfin"></span></h4>
+                <br>
+              </div>
+              <div class="col-sm-12" id="orbytcol">
+                <p>Disfrute además de una suscripción a Orbyt por 30 días</p>
+                <h4>Su código: <span id="cuponorfin"></span></h4>
+                <br>
+              </div>
+              <div class="col-sm-12">
+                Si tienen alguna cuestión, estaremos encantados de atenderle. Puede ponerse en contacto con nosotros en el email info@carflet.es<br>
+                Atentamente,<br>
+                <br>
+                Servicio de Atención al Cliente <br>
+                Carflet Rent a Car <br>
+                Tel. 609365324 <br>
+                www.carflet.es <br>
+              </div>
+
+
+
+            </div>
+          </div>
+          </div>
+          <div class="col-sm-12" style="padding-bottom: 100px; margin-top: 20px; text-align: right;">
+            <button type="button" class="btn btn-lg btn-primary sendEmail">Enviar Confirmación</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+</template>

@@ -1,0 +1,9 @@
+.deploy/
+.meteor/
+.vscode/
+server/
+mup.js
+mup.json
+package-lock.json
+settings.json
+node_modules/

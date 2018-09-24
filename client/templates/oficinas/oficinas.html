@@ -1,0 +1,307 @@
+
+<template name="oficinas">
+  <style>
+    .ispend {
+      width: 6px;
+      height: 6px;
+      background: #337ab7;
+      border-radius: 50%;
+      display: none;
+    }
+
+    .rowpend .ispend {
+      display: flex;
+    }
+
+    .rowpend {
+      background: #f1f1f1;
+    }
+  </style>
+  <div class="modal fade" id="confirmLiquidacion" tabindex="-1" role="dialog" aria-labelledby="confirmLiquidacionLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body modal-up">
+          <h2 class="text-center">Confirmacion de Liquidacion</h2>
+          <p class="text-center"> Se procederá a liquidar las comisiones pendientes de {{comisionableToLiquidar}}</p>
+          <div class="flex-element flex-row flex-hcenter">
+              <a class="confirmLiquidacionBtn btn btn-primary">Confirmar Liquidacion</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <h1>Comisionables</h1>
+    </div>
+    <div class="col-md-8">
+      <h3>Pendientes de Liquidar</h3>
+      <div class="hide">
+          <div class="flex-element flex-row selected_cities">
+              <a class="citytag all-hook">
+                All
+              </a>
+              <a class="citytag citytemp hide">
+                  <p>dsf</p>
+                  <span>-</span>
+                </a>              
+          </div>
+          <div class="flex-element flex-row available_cities">
+              {{#each ciudades}}
+                <a class="citytag" city-id={{_id}} city-name={{nombre}}>
+                  <p>{{nombre}}</p>
+                  <span>+</span>
+                </a>
+              {{/each}}
+          </div>
+      </div>
+      {{#each comipendientes}}
+      <div class="panel panel-default comipendpanel {{isRawLiquidacion}}">
+        <div class="panel-heading">
+          <div class="flex-element flex-row flex-sp-between flex-vcenter">
+            <div class="flex-element flex-row flex-just-start">
+              <p style="margin-right: 30px;"><b>Nombre</b><br>{{name}}</p>
+              <p><b>Ultima liquidacion</b><br>{{formatDate lastLiquidacion}}</p>
+            </div>
+            <a class="triggerLiquidacion status-pago" style="display: inline-table; cursor:pointer" data-toggle="modal" data-target="#confirmLiquidacion">Liquidar</a>
+          </div>
+        </div>
+        <div class="panel-body">
+          {{#if hasPendingBookings _id name lastLiquidacion}}
+            <table class="table">
+              <thead>
+                <tr>
+                      <th>Cliente</th>
+                      <th>Reco</th>
+                      <th>Devo</th>
+                      <th>Coche</th>
+                      <th>Comision</th>
+                </tr>
+              </thead>
+              <tbody>
+              {{#each bookingsPorLiquidar _id name lastLiquidacion}}
+                <tr>
+                  <td>{{nombre}}<br><i>{{formatDate createdAt}}</i></td>
+                  <td>{{recogida}}<br>{{formatDate fechareco}}</td>
+                  <td>{{devolucion}}<br>{{formatDate fechadevo}}</td>
+                  <td>{{tipo}}<br>{{company}}</td>
+                  <td>{{comisionEuros}}€</td>
+
+                </tr>
+              {{/each}}
+              </tbody>
+            </table>
+          {{else}}
+              {{#if hasUpcomingPending _id name lastLiquidacion}}
+                <p>Hay reservas con fecha de recogida futura comisionadas a este comisionable. Cuando llegue esa fecha aparecerán aqui y se podrá liquidar este comisionable y desaparecer de esta lista. Si ahora haces click en liquidar no sucederá nada.</p>
+              {{else}}
+                <p>No hay ninguna reserva ni presente ni futura comisionada a este comisionable. Puedes clickar en liquidar y desaparecerá de esta lista manteniendo la fecha de su última liquidación.</p>
+              {{/if}}
+          {{/if}}
+        </div>
+      </div>
+      {{else}}
+      <p>Ningun comisionable pendiente de liquidar</p>
+      {{/each}}
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-default">
+          <div class="panel-heading">Creacion Comisionable</div>
+          <div class="panel-body flex-element flex-column" style="max-height: 250px; overflow-y: auto;">
+              <form id="new-comisionable">
+                <div class="row">
+                  <div class="col-md-12 std-margin-bottom">
+                      <input type="text" id="com_name" placeholder="Nombre">
+                  </div>
+                  <div class="col-md-12">
+                      <input type="text" class="datepicker" id="last-liquidacion" placeholder="Ultima Liquidacion">
+                  </div>
+                  <div class="col-md-12 pull-right">
+                      <button type="submit" class="btn btn-primary createComisionable">Alta comisionable</button>
+                  </div>
+                </div>
+              </form>
+              <table class="table" style="margin-top: 20px;">
+                <thead>
+                  <tr>
+                    <td></td>
+                    <td style="text-align: left;">
+                      Nombre
+                    </td>
+                    <td style="text-align: left;">
+                      Ultima Liquidacion
+                    </td>
+                </tr>
+                </thead>
+                <tbody>
+                  {{#each comisionables}}
+                    <tr class="{{isPending}}" comi-id="{{_id}}" comi-name="{{name}}">
+                      <td>
+                        <span class="ispend"></span>
+                      </td>
+                      <td style="text-align: left;">
+                        {{name}}
+                      </td>
+                      <td style="text-align: left;">
+                        <input type="text" class="datepicker hook-comi" placeholder="Ultima Liquidacion" value="{{formatDateOnly lastLiquidacion}}">
+                      </td>
+                    </tr>
+                  {{/each}}
+                  {{initializeCalendars}}
+                </tbody>
+              </table>
+          </div>
+      </div>
+    </div>
+
+  </div>
+  <hr>
+  <hr>
+  <div class="row">
+    <div class="col-md-12">
+      <h1>Oficinas</h1>
+    </div>
+    <div class="col-md-12">
+      <h3 class="text-muted main-title">Puntos de Alquiler en Carflet</h3>
+      {{#if currentUser}}
+          <!-- Button trigger modal -->
+          <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#ofiModal">
+            Nueva Oficina
+          </button>
+      {{/if}}
+    </div>
+  </div>
+  <hr>
+  <!-- Modal -->
+  <div class="modal fade" id="ofiModal" tabindex="-1" role="dialog" aria-labelledby="myOfiModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myOfiModalLabel">Alta de Oficina</h4>
+        </div>
+        <div class="modal-body modal-insert">
+            <form id="newofi">
+              <div class="row">
+                  <div class="col-md-6">
+                      <div class="form-group" data-required="true">
+                            <label for="nombre" class="control-label">Nombre</label>
+                            <input type="text" name="nombre" id="nombre" required="" data-schema-key="nombre" class="form-control">
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="form-group" data-required="true">
+                            <label for="lugar" class="control-label">lugar</label>
+                            <input type="text" name="lugar" id="lugar" required="" data-schema-key="lugar" class="form-control">
+                      </div>
+                      <div class="form-group" data-required="true">
+                            <label for="calle" class="control-label">calle</label>
+                            <input type="text" name="calle" id="calle" required="" data-schema-key="calle" class="form-control">
+                      </div>
+                      <div class="form-group" data-required="true">
+                            <label for="cp" class="control-label">cp</label>
+                            <input type="text" name="nombre" id="cp" required="" data-schema-key="cp" class="form-control">
+                      </div>
+                      <div class="form-group" data-required="true">
+                            <label for="cp" class="control-label">ciudad</label>
+                            <input type="text" name="ciudad" id="ciudad" required="" data-schema-key="ciudad" class="form-control">
+                      </div>
+                  </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                    <p>Horario</p>
+                    <div class="form-group" data-required="true">
+                          <label for="h-lj" class="control-label">LJ</label>
+                          <input type="text" name="h-lj" id="h-lj" required="" data-schema-key="h-lj" class="form-control">
+                    </div>
+                    <div class="form-group" data-required="true">
+                          <label for="h-v" class="control-label">v</label>
+                          <input type="text" name="v" id="h-v" required="" data-schema-key="h-v" class="form-control">
+                    </div>
+                    <div class="form-group" data-required="true">
+                          <label for="h-s" class="control-label">s</label>
+                          <input type="text" name="s" id="h-s" required="" data-schema-key="h-s" class="form-control">
+                    </div>
+                    <div class="form-group" data-required="true">
+                          <label for="h-d" class="control-label">d</label>
+                          <input type="text" name="h-d" id="h-d" required="" data-schema-key="h-d" class="form-control">
+                    </div>
+                </div>
+              </div>
+
+              <div class="row">
+                  <div class="col-md-12">
+                        <p>Tipo</p>
+                        <div class="radio">
+                          <label><input type="radio" name="optradio" value="Hotel">Hotel</label>
+                        </div>
+                        <div class="radio">
+                          <label><input type="radio" name="optradio" value="Aeropuerto">Aeropuerto</label>
+                        </div>
+                        <div class="radio">
+                          <label><input type="radio" name="optradio" value="Estacion">Estacion</label>
+                        </div>
+                        <div class="radio">
+                          <label><input type="radio" name="optradio" value="Oficina">Oficina</label>
+                        </div>
+                  </div>
+              </div>
+
+              <div class="row">
+                  <div class="col-md-12">
+                      <p>Empresas presentes</p>
+                      {{#each enterprises}}
+                      <div class="checkbox">
+                          <label>
+                              <input type="checkbox" value="{{name}}" name="entcheck">{{name}}
+                          </label>
+                      </div>
+                      {{/each}}
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="col-md-12">
+                      <p>Principal Empresa</p>
+                      {{#each enterprises}}
+                          <div class="radio">
+                            <label><input type="radio" name="entradio" value="{{name}}">{{name}}</label>
+                          </div>
+                      {{/each}}
+                      <p>Su telf</p>
+                      <div class="form-group" data-required="true">
+                            <label for="telf" class="control-label">telf</label>
+                            <input type="text" name="telf" id="telf" required="" data-schema-key="telf" class="form-control">
+                      </div>
+                  </div>
+              </div>
+
+
+            <button type="submit" class="btn btn-primary">Crear</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Descartar</button>
+        </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+      <li role="presentation" class="active"><a href="#oficinas" aria-controls="home" role="tab" data-toggle="tab">Oficinas</a></li>
+      <li role="presentation"><a href="#hotel" aria-controls="home" role="tab" data-toggle="tab">Hoteles</a></li>
+      <li role="presentation"><a href="#estacion" aria-controls="home" role="tab" data-toggle="tab">Estaciones</a></li>
+      <li role="presentation"><a href="#aeropuertos" aria-controls="home" role="tab" data-toggle="tab">Aeropuertos</a></li>
+      <li role="presentation"><a href="#allOffices" aria-controls="profile" role="tab" data-toggle="tab">Todas</a></li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content" style="padding-bottom: 60px;">
+      <div role="tabpanel" class="tab-pane active" id="oficinas">{{> pureOficinas}}</div>
+      <div role="tabpanel" class="tab-pane" id="hotel">{{> hoteles}}</div>
+      <div role="tabpanel" class="tab-pane" id="estacion">{{> estaciones}}</div>
+      <div role="tabpanel" class="tab-pane" id="aeropuertos">{{> aeropuertos}}</div>
+      <div role="tabpanel" class="tab-pane" id="allOffices">{{> allOficinas}}</div>
+    </div>
+  </div>
+</template>

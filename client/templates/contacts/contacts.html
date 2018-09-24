@@ -1,0 +1,120 @@
+<template name="contacts">
+    <h3 class="text-muted">Contactos de Carflet</h3>
+    {{#if currentUser}}
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#contactModal">
+          Nuevo Contacto
+        </button>
+        <button class="btn btn-default downloadExcelContacts"><img src="img/excel-email-icon.png"></button>
+    {{/if}}
+    <!-- Modal -->
+    <div class="modal fade" id="contactModal" tabindex="-1" role="dialog" aria-labelledby="myContactModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myContactModalLabel">Alta de Contacto</h4>
+          </div>
+          <div class="modal-body">
+            {{#autoForm collection="Contacts" id="insertContactForm" type="insert"}}
+                <div class="row">
+                    <div class="col-md-6">
+                        {{> afQuickField name="nombre"}}
+                    </div>
+                    <div class="col-md-6">
+                        {{> afQuickField name="email"}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        {{> afQuickField name="telefono"}}
+                    </div>
+                    <div class="col-md-6">
+                        {{> afQuickField name="procedencia"}}
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Crear</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Descartar</button>
+            {{/autoForm}}
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!-- Update Modal -->
+    <div class="modal fade" id="updateContactModal" tabindex="-1" role="dialog" aria-labelledby="myupdateContactModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myupdateContactModalLabel">Editar Contacto</h4>
+          </div>
+          <div class="modal-body modal-up">
+            {{#autoForm collection="Contacts" id="updateContactForm" type="update" doc=selectedContactDoc}}
+                <div class="row">
+                    <div class="col-md-6">
+                        {{> afQuickField name="nombre"}}
+                    </div>
+                    <div class="col-md-6">
+                        {{> afQuickField name="email"}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        {{> afQuickField name="telefono"}}
+                    </div>
+                    <div class="col-md-6">
+                        {{> afQuickField name="procedencia"}}
+                    </div>
+                </div>
+
+            <button type="submit" class="btn btn-primary">Enviar Contacto</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Descartar</button>
+            {{/autoForm}}
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <hr>
+    <hr>
+    <div class="bs-example" data-example-id="contacts-table">
+        <table class="table">
+          <caption></caption>
+          <thead>
+            <tr>
+                  <th>Nombre</th>
+                  <th>eMail</th>
+                  <th>NºTelf</th>
+                  <th>Procedencia</th>
+                {{#if currentUser}}
+                  <th>Acciones</th>
+                {{/if}}
+            </tr>
+          </thead>
+          <tbody>
+            {{#each contacts}}
+                <tr class="contactrow">
+                  <td>{{nombre}}</td>
+                  <td>{{email}}</td>
+                  <td>{{telefono}}</td>
+
+                  <td>{{procedencia}}</td>
+                  <td>{{#if currentUser}}
+                      <button class="btn btn-default editbooking" data-toggle="modal" data-target="#updateContactModal"><img src="img/edit.png"></button>
+                        <button class="delete-booking">&times;</button>
+<!--                      <a href="{{pathFor 'getPDF' this._id}}">Ver</a>-->
+                      {{/if}}
+                  </td>
+                </tr>
+<!--                Creada por {{userName}} el {{formatDate createdAt}} -->
+
+            {{else}}
+              <p>No Contactos</p>
+            {{/each}}
+          </tbody>
+        </table>
+  </div><!-- /example -->
+
+</template>

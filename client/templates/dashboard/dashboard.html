@@ -1,0 +1,304 @@
+<template name="dashboard">
+    <!-- Update Modal -->
+    <div class="modal fade" id="updatebookingModal" tabindex="-1" role="dialog" aria-labelledby="myupdateBookingModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myupdateBookingModalLabel">Crear una Reserva</h4>
+          </div>
+          <div class="modal-body modal-up">
+            {{#autoForm collection="Bookings" id="updateBookingForm" type="update" doc=selectedBookingDoc}}
+                <div class="row">
+                    <div class="col-md-6">
+                        {{> afFormGroup name="factura" type="select-radio-inline"}}
+                    </div>
+                    <div class="col-md-6">
+                        {{> afQuickField name="procedencia"}}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        {{> afQuickField name="nombre"}}
+                    </div>
+                    <div class="col-md-6">
+                        {{> afFormGroup name="company" options=companyname}}
+                    </div>
+                    <div class="col-md-6">
+                        {{> afQuickField name="emailCliente"}}
+                    </div>
+                    <div class="col-md-6">
+                        {{> afQuickField name="telefonoCliente"}}
+                    </div>
+              </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        {{> afFormGroup name="tipo" options=tipocoche}}
+                    </div>
+                    <div class="col-md-6">
+                        {{> afFormGroup name="tarifa" type="select-radio-inline" }}
+                    </div>
+                </div>
+
+
+
+                <div class="row">
+                    <div class="col-md-6">
+                        {{> afQuickField name="recogida"}}
+                    </div>
+                    <div class="col-md-6 updateRecoTime">
+
+                        {{> afFormGroup name="fechareco" type="bootstrap-datetimepicker" }}
+                        <span style="font-size:10px"><i>Cuidado! La fecha se muestra en formato MM/DD/AAAA</i></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        {{> afQuickField name="devolucion"}}
+                    </div>
+                    <div class="col-md-6 updateDevoTime">
+
+                        {{> afFormGroup name="fechadevo" type="bootstrap-datetimepicker" }}
+                        <span style="font-size:10px"><i>Cuidado! La fecha se muestra en formato MM/DD/AAAA</i></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        {{> afFormGroup name="supdevolucion" type="select-radio-inline"}}
+                    </div>
+                    <div class="col-md-4">
+                        {{> afFormGroup name="supgps" type="select-radio-inline"}}
+                    </div>
+                    <div class="col-md-4">
+                        {{> afFormGroup name="suptransfer" type="select-radio-inline"}}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        {{> afQuickField name="eurosproveedor"}}
+                    </div>
+                    <div class="col-md-6">
+                        {{> afQuickField name="euroscarflet"}}
+                    </div>
+
+              </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        {{> afQuickField name="notas" rows=4}}
+                    </div>
+              </div>
+
+
+
+
+
+
+
+            <button type="submit" class="btn btn-primary">Enviar Reserva</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Descartar</button>
+            {{/autoForm}}
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <h3>Dashboard | Próximas Reservas </h3>
+    <a href="{{pathFor 'returnbookings'}}">Ver próximas Devoluciones ||</a>
+    <a href="{{pathFor 'bookingspending' _year='' _month='' _type='P' _quarter=''}}"><span class="cr-badge">{{getMyPendings}}</span> pendientes ||</a>
+    <a href="{{pathFor 'excelfactory'}}" class="btn btn-default"><img src="img/excel-icon.png" width="48px;"></a>
+    <div class="row">
+        <div class="col-md-3">
+                {{#if currentUser}}
+                <button type="button" class="btn btn-primary btn-lg cargaReservas">Actualizar Reservas<br><span>Ultima Actualización: {{ultimaReservaTime}}</span></button>
+                {{/if}}
+        </div>
+        <div class="col-md-3 db-panel">
+            <p class="title">Reservas futuras</p>
+            <p class="num">{{numFuturas}}</p>
+        </div>
+        <div class="col-md-3 db-panel">
+            <p class="title">Ultima Reserva</p>
+            <p class="num">{{lastBooking}}<br><small></small></p>
+        </div>
+        {{#if isAdminOrFounder}}
+            <div class="col-md-3">
+                {{>tideViz}}
+            </div>
+        {{/if}}
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+              <div class="bs-example" data-example-id="simple-table">
+      <table class="table table-responsive">
+        <caption></caption>
+        <thead>
+          <tr>
+                <th>Fecha</th>
+                <th></th>
+                <th>#Factura</th>
+                <th>Recogida</th>
+                <th>Devolución</th>
+                <th>FechaCreación</th>
+                <th>Nombre</th>
+                <th>Contacto</th>
+                <th>Compañía</th>
+                <th>Tipo</th>
+                <th>Procedencia</th>
+                <th>Días</th>
+                <!-- <th>Suplemento</th>
+                <th>€ Proveedor</th>
+                <th>€ Carflet</th> -->
+                <th>Total €</th>
+                <th>Coste Coche</th>
+                <th>Comision</th>
+                <th>Notas</th>
+              {{#if currentUser}}
+                <th>Acciones</th>
+              {{/if}}
+          </tr>
+        </thead>
+        <tbody>
+          {{#each bookingsFromNow}}
+              <tr class="bookingrow">
+                <td><p class="year">{{getYear fechareco}}</p><p class="day">{{getDay fechareco}}</p><p class="month {{#if isCompleted _id}}{{else}}nf{{/if}}">{{getMonth fechareco}}</p><p class="author">{{userName}}</p></td>
+                                    <td>
+                      {{#if currentUser}}
+                        <button type="button" class="btn btn-default sendConfirmationMail" onclick="location.href = '{{pathFor 'email'}}'" href=""><img src="img/send.svg"></button>
+                        {{#if (isWithOurCars _id)}}
+                            <button type="button" class="btn btn-default createContract"  href=""><img src="img/contract.svg" title="Crear Contrato" alt="Crear Contrato"></button>
+                        {{/if}}
+                    {{/if}}
+                      </td>
+                      <td>
+                          {{numFactura}}
+                          <br>
+                          {{#if pagada}}
+                          <a href="#" class="status-pago pagada">Pagada</a>
+                          {{else}}
+                          <a href="#" class="status-pago no-pagada">Pendiente</a>
+                          <div class="form-group" style="display: flex; flex-direction:row;">
+                              <input type="text" class="form-control qtypending"  placeholder="{{qtyPendiente}}">
+                              <label style="margin-top: 10px;">€</label>
+                          </div>
+
+                          {{/if}}
+                      </td>
+                      <td>{{recogida}}
+                          <br>
+                          {{formatDate fechareco}}
+                          {{#if transfer}}
+                            <br>
+                            <span class="transfer">Transfer</span>
+                          {{/if}}
+                      </td>
+                      <td>{{devolucion}} <br> {{formatDate fechadevo}}</td>
+
+                <td>{{formatDate createdAt}}</td>
+                <td>{{nombre}}</td>
+                <td>{{emailCliente}}<br>{{telefonoCliente}}</td>
+                <td>
+                    <select class="form-control bookingCar" style="padding: 0;border: none;min-width: 150px;">
+                        <option selected>Pendiente</option>
+                        {{#each enterprises}}
+                            <option {{isThisSelected name ../company}}>{{name}}</option>
+                        {{/each}}
+                        {{#each flota}}
+                            <option {{isThisSelected nombreCoche ../company}}>{{nombreCoche}}</option>
+                        {{/each}}
+                    </select>
+                    {{#if isWithOurCars _id}}
+                      <div class="flex-element flex-column">
+                        <div class="workercont flex-element flex-row {{#if hasAWorker recoworkerId}} activo {{else}} {{/if}}">
+                          <a class="trigger-reco">
+                              <img src="/img/reco.svg" width="20px" height="20px" class="has" />
+                              <img src="/img/reco_dis.svg" width="20px" height="20px" class="hasnot"/>
+                          </a>
+                          <select class="recoWorker">
+                              <option value="0">Sin Asignar</option>
+                              {{#each activeWorkers}}
+                                <option value={{_id}} name="{{nombre}}" {{isThisSelected nombre ../recoworker}}>{{nombre}} ({{formatCity ciudad}})</option>
+                              {{/each}}
+                          </select>
+                        </div>
+                        <div class="workercont flex-element flex-row {{#if hasAWorker devoworkerId}} activo {{else}} {{/if}}">
+                          <a class="trigger-devo">
+                            <img src="/img/devo.svg" width="20px" height="20px" class="has"/>
+                            <img src="/img/devo_dis.svg" width="20px" height="20px" class="hasnot" />
+                          </a>
+                          <select class="devoWorker">
+                              <option value="0">Sin Asignar</option>
+                              {{#each activeWorkers}}
+                                <option value={{_id}} name="{{nombre}}" {{isThisSelected nombre ../devoworker}}>{{nombre}} ({{formatCity ciudad}})</option>
+                              {{/each}}
+                          </select>
+                        </div>
+                      </div>
+                    {{/if}}
+                </td>
+                <td>{{tipo}} <br> {{tarifa}}</td>
+                <td>{{procedencia}}</td>
+                <td>{{getNumberDays fechadevo fechareco}}</td>
+                  <!-- <td class="suplementos">
+                      {{getSuplementoDev supdevolucion}}<br>
+                      {{getSuplementoGPS supgps}}<br>
+                      {{getSuplementoTransfer suptransfer}}
+                  </td> -->
+                <!-- <td>{{formatEuros eurosproveedor}}</td> -->
+                <!-- <td>{{euroscarflet}}€</td> -->
+                <td>
+                    {{getTotalAmount eurosprocedencia eurosproveedor euroscarflet}}€
+                    {{#if isPartialPrepaid qtyPrepago}}
+                    <br>
+                    <p>Prepago: {{qtyPrepago}} €</p>
+                    {{/if}}
+                </td>
+                <td>
+                    <div class="form-group" style="display: flex; flex-direction:row;">
+                        <input type="text" class="form-control cteCoche"  placeholder="{{costeCoche}}">
+                        <label style="margin-top: 10px;">€</label>
+                    </div>
+                </td>
+                <td class="col-comision">
+                    <div class="flex-element flex-column">
+                      <select class="ente-comisionado">
+                        <option value="0">Sin asignar</option>
+                        {{#each comisionables}}
+                          <option value={{_id}} name="{{name}}" {{isThisSelected name ../comisionPerson}}>{{name}}</option>
+                        {{/each}}
+                      </select>
+                    </div>
+                    <input type="number" class="form-control cteComision {{isSomethingComisoned _id}}"  placeholder="{{comisionEuros}}" value="{{comisionEuros}}">
+                </td>
+                <td>
+                    {{notas}}<br>
+                    <div class="form-group" style="display: flex; flex-direction:row;">
+                            <label style="margin-top: 10px;">Localiz: </label>
+                            <input type="text" class="form-control localizador"  placeholder="{{localizador}}" value="{{localizador}}">
+                    </div>
+                </td>
+                <td class="actions">
+                    {{#if currentUser}}
+                    <button class="btn btn-default editbooking" data-toggle="modal" data-target="#updatebookingModal"><img src="img/edit.png"></button>
+                    <button class="delete-booking">&times;</button>
+                    <button type="button" class="btn btn-default downloadPdf"><img src="img/pdf-icon.png"></button>
+                    {{/if}}
+                </td>
+              </tr>
+  <!--                Creada por {{userName}} el {{formatDate createdAt}} -->
+
+          {{else}}
+            <p>No reservas</p>
+          {{/each}}
+        </tbody>
+      </table>
+  </div>
+        </div>
+    </div>
+</template>

@@ -1,0 +1,123 @@
+<template name="navbar">
+    <nav class="navbar navbar-inverse">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Reservas</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class=""><a href="{{pathFor 'dashboard'}}">Dashboard</a></li>            
+            <li class="">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reservas <b class="caret"></b></a>
+                    <ul class="dropdown-menu multi-level">
+                        <li><a><b>{{getYear}}</b></a></li>
+                        <li><a href="{{pathFor 'bookingsmonth' _year=getYear _month=getMonthNumber _type='M' _quarter=''}}" class="flex-element flex-row flex-sp-between"><p class="inline-flex-element" style="margin:0;">{{getMonth}} {{getYear}}</p> <span class="badge badge-pill badge-info  pull-right">{{currentMonthBookings}}</span></a></li>
+                        <li><a href="{{pathFor 'bookingstrim' _year=getYear _month='' _type='Q' _quarter=getTrim}}">{{getTrim}}T Trimestre</a></li>
+                        <li><a href="{{pathFor 'bookingsyear' _year=getYear _month='' _type='Y' _quarter=''}}">Todas</a></li>
+                        <li class="divider"></li>
+                        <li><a href="{{pathFor 'bookingsupcoming' _year='' _month='' _type='U' _quarter=''}}">Próximas</a></li>
+                        <li><a href="{{pathFor 'bookingspending' _year='' _month='' _type='P' _quarter=''}}">Pendientes</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-submenu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Mes</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{pathFor 'bookingsmonth' _year=getYear _month='01' _type='M' _quarter=''}}">Enero</a></li>
+                                <li><a href="{{pathFor 'bookingsmonth' _year=getYear _month='02' _type='M' _quarter=''}}">Febrero</a></li>
+                                <li><a href="{{pathFor 'bookingsmonth' _year=getYear _month='03' _type='M' _quarter=''}}">Marzo</a></li>
+                                <li><a href="{{pathFor 'bookingsmonth' _year=getYear _month='04' _type='M' _quarter=''}}">Abril</a></li>
+                                <li><a href="{{pathFor 'bookingsmonth' _year=getYear _month='05' _type='M' _quarter=''}}">Mayo</a></li>
+                                <li><a href="{{pathFor 'bookingsmonth' _year=getYear _month='06' _type='M' _quarter=''}}">Junio</a></li>
+                                <li><a href="{{pathFor 'bookingsmonth' _year=getYear _month='07' _type='M' _quarter=''}}">Julio</a></li>
+                                <li><a href="{{pathFor 'bookingsmonth' _year=getYear _month='08' _type='M' _quarter=''}}">Agosto</a></li>
+                                <li><a href="{{pathFor 'bookingsmonth' _year=getYear _month='09' _type='M' _quarter=''}}">Septiembre</a></li>
+                                <li><a href="{{pathFor 'bookingsmonth' _year=getYear _month='10' _type='M' _quarter=''}}">Octubre</a></li>
+                                <li><a href="{{pathFor 'bookingsmonth' _year=getYear _month='11' _type='M' _quarter=''}}">Noviembre</a></li>
+                                <li><a href="{{pathFor 'bookingsmonth' _year=getYear _month='12' _type='M' _quarter=''}}">Diciembre</a></li>
+                                <!-- <li class="dropdown-submenu hide">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown</a>
+                                    <ul class="dropdown-menu">
+                                        <li class="dropdown-submenu">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown</a>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="#">Action</a></li>
+                                                <li><a href="#">Another action</a></li>
+                                                <li><a href="#">Something else here</a></li>
+                                                <li class="divider"></li>
+                                                <li><a href="#">Separated link</a></li>
+                                                <li class="divider"></li>
+                                                <li><a href="#">One more separated link</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li> -->
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Trimestres</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{pathFor 'bookingstrim' _year=getYear _month='' _type='M' _quarter='1'}}">1T</a></li>
+                                <li><a href="{{pathFor 'bookingstrim' _year=getYear _month='' _type='M' _quarter='2'}}">2T</a></li>
+                                <li><a href="{{pathFor 'bookingstrim' _year=getYear _month='' _type='M' _quarter='3'}}">3T</a></li>
+                                <li><a href="{{pathFor 'bookingstrim' _year=getYear _month='' _type='M' _quarter='4'}}">4T</a></li>
+                                <!-- <li class="dropdown-submenu hide">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown</a>
+                                    <ul class="dropdown-menu">
+                                        <li class="dropdown-submenu">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown</a>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="#">Action</a></li>
+                                                <li><a href="#">Another action</a></li>
+                                                <li><a href="#">Something else here</a></li>
+                                                <li class="divider"></li>
+                                                <li><a href="#">Separated link</a></li>
+                                                <li class="divider"></li>
+                                                <li><a href="#">One more separated link</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li> -->
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Administracion <b class="caret"></b></a>
+                                    <ul class="dropdown-menu multi-level">
+                                        <li><a href="{{pathFor 'contratos'}}" class="flex-element flex-row flex-sp-between">Contratos</a></li>
+                                        <li><a href="{{pathFor 'facturas'}}">Facturas</a></li>
+                                        <li><a href="{{pathFor 'presupuestos'}}">Presupuestos</a></li>
+                                    </ul>
+                                </li>                
+            <li class="hide"><a href="{{pathFor 'bookings'}}">Reservas</a></li>
+            <li><a href="{{pathFor 'contacts'}}" class="hide">Contactos</a></li>
+            {{#if currentUser}}
+            <!-- <li><a href="{{pathFor 'contratos'}}">Crear Contrato</a></li> -->
+            <li><a href="{{pathFor 'flota'}}">Flota</a></li>
+            <li><a href="{{pathFor 'oficinas'}}">Oficinas</a></li>
+            {{/if}}
+
+            <!-- <li><a href="{{pathFor 'facturas'}}">Facturas</a></li> -->
+            <li><a href="{{pathFor 'workers'}}">Workers</a></li>
+            <!-- <li><a href="{{pathFor 'presupuestos'}}">Presupuestos</a></li> -->
+            {{#if isAdmin}}
+            <li><a href="{{pathFor 'tools'}}">Admin.Tools</a></li>
+            {{/if}}
+          </ul>
+            <ul class="nav navbar-nav navbar-right">
+                {{#if currentUser}}
+                     <li><a href="sign-out">Salir</a></li>
+                {{else}}
+                    <li><a href="sign-in">Entrar</a></li>
+                {{/if}}
+
+            </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+</template>

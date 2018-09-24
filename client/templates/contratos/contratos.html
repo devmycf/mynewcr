@@ -1,0 +1,224 @@
+<template name="contratos">
+    <div class="modal fade" id="sendContractMailModal" tabindex="-1" role="dialog" aria-labelledby="sendContractMailLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">Enviar Contrato</h4>
+            </div>
+            <div class="modal-body">
+                  <p><b>Atención!</b> Esto enviará un mail al cliente con una copia del contrato en PDF adjunta</p>
+                  <p>¿Estás seguro de querer mandar una copia a <span>{{clientName}}</span> cuyo email es <span>{{clientEmail}}</span>?</p>
+                  <div class="flex-element flex-row">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                    <div class="loader hide">
+                      <svg class="circular" viewBox="25 25 50 50">
+                        <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+                      </svg>
+                    </div>
+                  <button class="btn btn-primary" id="confirmSendContract">Sí, Confirmar</button>
+                  </div>
+            </div>
+    
+          </div>
+        </div>
+      </div>
+  <div class="container contrato">
+  <h3 class="text-muted">Crear Contrato</h3>
+  <form>
+    <div class="form-group" id="datos-conductor-1">
+      <h4>Datos Conductor 1</h4>
+      <div class="row">
+        <div class="col-md-12 form-inline">
+          <label for="nombre-1">Nombre y Apellidos</label>
+          <input type="text" class="form-control" id="nombre-1" placeholder="Nombre y Apellidos">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 form-inline">
+          <label for="fnac-1">Fecha de Nacimiento</label>
+          <input type="text" class="form-control" id="fnac-1" placeholder="Fecha de Nacimiento">
+        </div>
+        <div class="col-md-6 form-inline">
+          <label for="fperm-1">Fecha Permiso Conducir</label>
+          <input type="text" class="form-control" id="fperm-1" placeholder="Fecha Permiso Conducir">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 form-inline">
+          <label for="aloja-1">Dónde se aloja</label>
+          <input type="text" class="form-control" id="aloja-1" placeholder="Alojado en">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 form-inline">
+          <label for="telf-1">Teléfono</label>
+          <input type="text" class="form-control" id="telf-1" placeholder="Teléfono ">
+        </div>
+        <div class="col-md-6 form-inline">
+          <label for="email-1">Email</label>
+          <input type="text" class="form-control" id="email-1" placeholder="email">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 form-inline check-conductor">
+        <input type="checkbox" class="form-control" id="segundoconductor">
+        <label for="parking">¿Segundo Conductor?</label>
+      </div>
+    </div>
+    <div class="form-group sin-conductor" id="datos-conductor-2">
+      <h4>Datos Conductor 2</h4>
+      <div class="row">
+        <div class="col-md-12 form-inline">
+          <label for="nombre-2">Nombre y Apellidos</label>
+          <input type="text" class="form-control" id="nombre-2" placeholder="Nombre y Apellidos">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 form-inline">
+          <label for="fnac-2">Fecha de Nacimiento</label>
+          <input type="text" class="form-control" id="fnac-2" placeholder="Fecha de Nacimiento">
+        </div>
+        <div class="col-md-6 form-inline">
+          <label for="fperm-2">Fecha Permiso Conducir</label>
+          <input type="text" class="form-control" id="fperm-2" placeholder="Fecha Permiso Conducir">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 form-inline">
+          <label for="aloja-2">Dónde se aloja</label>
+          <input type="text" class="form-control" id="aloja-2" placeholder="Alojado en">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 form-inline">
+          <label for="telf-2">Teléfono</label>
+          <input type="text" class="form-control" id="telf-2" placeholder="Teléfono ">
+        </div>
+        <div class="col-md-6 form-inline">
+          <label for="email-2">Email </label>
+          <input type="text" class="form-control" id="email-2" placeholder="email">
+        </div>
+      </div>
+    </div>
+    <div class="form-group" id="datos-vehiculo">
+      <h4>Datos Vehículo</h4>
+      <div class="row">
+        <div class="col-md-6 form-inline">
+          <label for="matricula">Matrícula</label>
+          <input type="text" class="form-control" id="matricula" placeholder="Matrícula">
+        </div>
+        <div class="col-md-6 form-inline">
+          <label for="marca">Marca/Modelo</label>
+          <input type="text" class="form-control" id="marca" placeholder="Marca/Modelo">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 form-inline">
+          <label for="bastidor">Bastidor</label>
+          <input type="text" class="form-control" id="bastidor" placeholder="Bastidor">
+        </div>
+        <div class="col-md-6 form-inline">
+          <label for="cia-seguros">CIA de Seguros</label>
+          <input type="text" class="form-control" id="cia-seguros" placeholder="CIA de Seguros">
+        </div>
+        <div class="col-md-6 form-inline">
+          <label for="poliza">Póliza</label>
+          <input type="text" class="form-control" id="poliza" placeholder="Póliza">
+        </div>
+      </div>
+
+
+    </div>
+    <div class="form-group" id="datos-contrato">
+      <h4>Datos Contrato</h4>
+      <div class="row">
+        <div class="col-md-4 form-inline col-centered">
+          <label for="salida">Lugar de Salida</label>
+          <input type="text" class="form-control" id="salida" placeholder="Lugar de Salida">
+        </div>
+        <div class="col-md-4 form-inline col-centered">
+          <label for="fsalida">Fecha de Salida</label>
+          <input type="text" class="form-control" id="fsalida" placeholder="Fecha de Salida">
+        </div>
+        <div class="col-md-4 form-inline col-centered">
+          <label for="hsalida">Hora</label>
+          <input type="text" class="form-control" id="hsalida" placeholder="Hora">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 form-inline">
+          <label for="devolucion">Lugar de Devolución</label>
+          <input type="text" class="form-control" id="devolucion" placeholder="Lugar de Devolución">
+        </div>
+        <div class="col-md-4 form-inline">
+          <label for="fdevolucion">Fecha de Devolución</label>
+          <input type="text" class="form-control" id="fdevolucion" placeholder="Fecha de Devolucion">
+        </div>
+        <div class="col-md-4 form-inline">
+          <label for="hdevolucion">Hora</label>
+          <input type="text" class="form-control" id="hdevolucion" placeholder="Hora">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 form-inline">
+          <label for="dias">Días</label>
+          <input type="text" class="form-control" id="dias" placeholder="Días">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 form-inline">
+          <p>Extras</p>
+        </div>
+        <div class="col-md-4 form-inline">
+          <input type="checkbox" class="form-control" id="parking">
+          <label for="parking">Parking 10€/noche</label>
+        </div>
+        <div class="col-md-4 form-inline">
+          <input type="checkbox" class="form-control" id="segcond">
+          <label for="segcond">2ºConductor 10€</label>
+        </div>
+        <div class="col-md-4 form-inline">
+          <input type="checkbox" class="form-control" id="devfuera">
+          <label for="devfuera">Devolución fuera de oficina</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 form-inline">
+          <input type="checkbox" class="form-control" id="gps">
+          <label for="gps">GPS 10€</label>
+        </div>
+        <div class="col-md-4 form-inline">
+          <input type="checkbox" class="form-control" id="servfuera">
+          <label for="servfuera">Servicio Fuera de Horarios 10€</label>
+        </div>
+        <div class="col-md-4 form-inline">
+          <input type="checkbox" class="form-control" id="otros">
+          <label for="otros">Otros</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 form-inline">
+          <label for="precio">Precio Total</label>
+          <input type="text" class="form-control" id="precio">
+        </div>
+        <div class="col-md-6 form-inline">
+          <label for="prepago">Prepago</label>
+          <input type="text" class="form-control" id="prepago">
+        </div>
+        <div class="col-md-6 form-inline">
+          <label for="resto">Resto</label>
+          <input type="text" class="form-control" id="resto">
+        </div>
+        <div class="col-md-6 form-inline">
+          <label for="km">Km de Salida</label>
+          <input type="text" class="form-control" id="km">
+        </div>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Crear PDF</button>
+    <a class="btn btn-primary" id="sendPDFtrigger">Crear y Enviar PDF</a>
+  </form>
+</div>
+</template>

@@ -1,0 +1,50 @@
+<template name="tideViz">
+        <div class="modal fade" id="infoTides" tabindex="-1" role="dialog" aria-labelledby="confirmExpense" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h2 class="modal-title" id="confirmExpenseLabel">Configuración Actual de Niveles</h2>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                  <ul class="flex-element flex-column">
+                      {{#each tides}}
+                      <li class="flex-element flex-row flex-just-start flex-vcenter">
+                          <span class="tide-circle flex-element"></span>
+                          <div class="flex-element flex-row part">
+                              <p><b>Nivel </b></p>
+                              <p>{{level}}</p>
+                          </div>
+                          <div class="flex-element flex-row part">
+                              <p><b>Desde </b></p>
+                              <p>{{threshold}}€</p>
+                          </div>
+                      </li>
+                      {{/each}}
+                  </ul>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Volver</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex-element flex-row flex-vcenter">
+            <div class="flex-element flex-column flex-vcenter">
+                <div class="liquid-disk">
+                    <div class="liquid-inner {{getCurrentTideClass}}" style="top:{{getTideTop}}%">
+                    </div>
+                </div>
+                <a href="#" data-toggle="modal" data-target="#infoTides">+ Info</a>
+            </div>
+            <div class="flex-element flex-column">
+                <p class="monthtitle">{{getCurrentMonthYear}}</p>
+                <span class="tideline {{getCurrentTideClass}}" style="width: {{getMyCurrentWidth}}px"></span>
+                <span class="tidetitle">Nivel</span>
+                <p class="tidenumber">{{getCurrentTide}}</p>
+                <p class="threshold">Entre <span class="{{getCurrentTideClassColor}}">{{getCurrentThreshold}}€</span> y <span class="{{getCurrentTideClassColor}}">{{getNextThreshold}}€</span></p>
+            </div>
+        </div>
+</template>

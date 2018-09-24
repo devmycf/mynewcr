@@ -1,0 +1,299 @@
+<template name="tools">
+    <div class="modal fade" id="confirmExpense" tabindex="-1" role="dialog" aria-labelledby="confirmExpense" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="confirmExpenseLabel">Cambio de Tide</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            ¡Esto cambiará al siguiente Tide!
+            ¿Seguro?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+            <button type="button" class="btn btn-primary" id="confirmExpenseBtn">Confirmar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="flex-element flex-row flex-sp-between">
+      <div class="panel panel-default">
+        <div class="panel-heading">Comisionables</div>
+        <div class="panel-body flex-element flex-column">
+            Comsionables to Cities
+            <table class="table table-responsive">
+                <thead>
+                    <th>Nombre</th>
+                    <th>Ciudad</th>
+                    <th>Sugerido</th>
+                    <th></th>
+                </thead>
+                <tbody>
+
+                    {{#each myComis}}
+                    <tr data-id="{{_id}}" class="comirow">
+                      <td>{{name}}</td>
+                      <td>{{ciudad}}</td>
+                      <td><input type="text" id="name_city" value="{{getMySuggested name}}"></td>
+                      <td><a class="triggerCity">-></a></td>
+                     </tr>
+                    {{/each}}
+                </tbody>
+             </table>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">PDF Testing</div>
+        <div class="panel-body flex-element flex-column">
+            Testar creacion y adjunto de pdf
+            <input type="text" id="pdf_text" value=""/>
+            <a href="#" class="btn btn-primary" id="create_pdf">Crear PDF</a>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">Ciudades unicas</div>
+        <div class="panel-body flex-element flex-column">
+            Ciudades Unicas
+            <table class="table table-responsive">
+                <thead>
+                    <th>Ciudad</th>
+                    <th></th>
+                    <th></th>
+                </thead>
+                <tbody>
+                    {{#each val in ciudadesUnicas}}
+                    <tr>
+                        <td>{{val}}</td>
+                        {{#if isCityMissing val}}
+                        <td><span style="color: red;">Missing</span></td>
+                        <td><a class="triggerInMap" data-val={{val}} >-></a></td>
+                        {{else}}
+                        <td><span style="color: green;">OK</span></td>
+                        <td></td>
+                        {{/if}}
+                    </tr>
+                    {{/each}}
+                </tbody>
+             </table>
+        </div>
+      </div>
+    </div>
+    <div class="flex-element flex-row flex-sp-between">
+        <div class="panel panel-default">
+          <div class="panel-heading">Actividad</div>
+          <div class="panel-body flex-element flex-column">
+              Ultimas Actividades
+              <table class="table table-responsive">
+                  <thead>
+                      <th></th>
+                      <th></th>
+                  </thead>
+                  <tbody>
+
+                      {{#each lastActivities}}
+                      <tr>
+                        <td>{{formatActDate time}}<br><span>{{formatActTime time}}</span></td>
+                        <td>{{desc}}</td>
+                       </tr>
+                      {{/each}}
+                  </tbody>
+               </table>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">Tides and Expenses</div>
+          <div class="panel-body flex-element flex-column">
+              <div class="flex-element flex-row">
+                  <div class="panel panel-default">
+                    <div class="panel-heading">Config Tides</div>
+                    <div class="panel-body">
+                        <div class="">
+                            Utilidad para configurar los valores de tides
+                        </div>
+                        <div class="flex-element flex-column">
+                            <div class="flex-element flex-row">
+                                <label>Nivel 0</label>
+                                <p>0</p>
+                            </div>
+                            <div class="flex-element flex-row">
+                                <label>Nivel 1</label>
+                                <input type="number" name="first_level" value="{{getTide 1}}">
+                            </div>
+                            <div class="flex-element flex-row">
+                                <label>Nivel 2</label>
+                                <input type="number" name="second_level" value="{{getTide 2}}">
+                            </div>
+                            <div class="flex-element flex-row">
+                                <label>Nivel 3</label>
+                                <input type="number" name="third_level" value="{{getTide 3}}">
+                            </div>
+                            <div class="flex-element flex-row">
+                                <label>Nivel 4</label>
+                                <input type="number" name="forth_level" value="{{getTide 4}}">
+                            </div>
+                            <div class="flex-element flex-row">
+                                <label>Nivel 5</label>
+                                <input type="number" name="fifth_level" value="{{getTide 5}}">
+                            </div>
+                            <a href="#" class="btn btn-primary" id="set_tides">Set Levels</a>
+                            <!-- <div class="col-md-12">
+                                <input type="text" id="name_enterprise">
+                                <a href="#" class="btn btn-primary" id="create_company">Create Empresa</a>
+                            </div> -->
+                        </div>
+                    </div>
+                  </div>
+                  <div class="panel panel-default">
+                    <div class="panel-heading">Expenses ({{getCurrentMonth}})</div>
+                    <div class="panel-body">
+                        <div class="">
+                            Utilidad para añadir/restar expenses
+                        </div>
+                        <div class="flex-element flex-column">
+                            <div class="flex-element flex-column">
+                                <div>
+                                    <label>Expenses Feb</label>
+                                    <p id="currentDevExp">{{getCurrentMonthDevExpenses}}€</p>
+                                </div>
+                                <div>
+                                    <label>Current Tide</label>
+                                    <p id="myCurrentTide">{{getCurrentTide}}</p>
+                                </div>
+                                <div>
+                                    <label>Till next tide</label>
+                                    <p class="till_next">{{getToNext}}</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="flex-element flex-column">
+                                <div class="flex-element flex-row">
+                                    <input type="number" name="new_expense" placeholder="price"/>
+                                    <input type="text" name="new_expense_concept" placeholder="concept"/>
+                                </div>
+                                <a href="#" class="btn btn-primary" id="add_expense">Add Expense</a>
+                            </div>
+
+                        </div>
+                    </div>
+                  </div>
+              </div>
+              <div>
+                  <h5>Last Expenses</h5>
+                  <table class="table table-responsive">
+                      <thead>
+                          <tr>
+                              <th>Año</th>
+                              <th>Mes</th>
+                              <th>Qty</th>
+                              <th>Concept</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          {{#each lastExpenses}}
+                          <tr>
+                              <td>{{year}}</td>
+                              <td>{{month}}</td>
+                              <td>{{amount}}</td>
+                              <td>{{concept}}</td>
+                          </tr>
+                          {{/each}}
+                     </tbody>
+                  </table>
+              </div>
+          </div>
+      </div>
+
+        <div class="panel panel-default">
+          <div class="panel-heading">Añadir Compañia</div>
+          <div class="panel-body">
+              <div class="">
+                  <div class="col-md-12">
+                      Utilidad para añadir empresa para alquiler
+                  </div>
+              </div>
+              <div class="">
+                  <div class="col-md-12">
+                      <input type="text" id="name_enterprise">
+                      <a href="#" class="btn btn-primary" id="create_company">Create Empresa</a>
+                  </div>
+              </div>
+          </div>
+
+          <div class="panel panel-default">
+            <div class="panel-heading">Test Daily Mail</div>
+            <div class="panel-body flex-element flex-column">
+                Utilidad para testear mails
+                <button type="button" class="btn btn-primary dailyTrigger">Daily Email</button>
+            </div>
+          </div>
+
+          <div class="panel panel-default">
+            <div class="panel-heading">Send Level Mail</div>
+            <div class="panel-body flex-element flex-column">
+                Utilidad para subir varios niveles
+                <input type="number" id="custom_level">
+                <button type="button" class="btn btn-primary dailyTrigger">Daily Email</button>
+            </div>
+          </div>
+        </div>
+
+    </div>
+    <!-- <div class="row">
+        <button type="button" class="btn btn-primary btn-lg dailyTrigger">Daily Email</button>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+              <div class="panel-heading">Crear Monthly Income</div>
+              <div class="panel-body">
+                  Utilidad para crear en la tabla Income la entrada del mes seleccionado y cargar el amount correspondiente
+                  <a href="#" class="btn btn-primary" id="create_income">Create Income</a>
+              </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+              <div class="panel-heading">Cerrar año</div>
+              <div class="panel-body">Utilidad para separar de la tabla bookings las reservas de años pasados, copiar Bookings -> AllBookings y eliminar de Bookings aquellas que no son del año actual</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+              <div class="panel-heading">Cerrar Dia</div>
+              <div class="panel-body">Utilidad para añadir en la tabla MonthlyIncome el importe facturado hoy. Es importante el día 1 de cada mes, crear la entrada en monthlyincome correspondiente</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+              <div class="panel-heading">Eliminar NaNs</div>
+              <div class="panel-body">Utilidad para eliminar de las tablas que tengan NaN en total € y sustituir por 0</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+              <div class="panel-heading">Archivo Otros años</div>
+              <div class="panel-body">Utilidad para acceder a Reservas de otros años, bien mediante descarga de excel, bien mediante tablas normales</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+              <div class="panel-heading">Añadir Compañia</div>
+              <div class="panel-body">
+                  <div class="row">
+                      <div class="col-md-12">
+                          Utilidad para añadir empresa para alquiler
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div class="col-md-12">
+                          <input type="text" id="name_enterprise">
+                          <a href="#" class="btn btn-primary" id="create_company">Create Empresa</a>
+                      </div>
+                  </div>
+
+              </div>
+            </div>
+        </div>
+    </div> -->
+</template>

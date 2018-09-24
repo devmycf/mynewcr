@@ -1,0 +1,98 @@
+<template name="excelfactory">
+
+    <h1>Excel Factory</h1>
+        <a href="#" id="lastYear">Descargar reservas de 2017</a>
+        <div id="main">
+    <form>
+        Generar Excel con las reservas
+        <div class="choose">
+            <a class="choose-toogle choose-mode">Mensuales</a>
+            <ul>
+                <li class="init" id="trigger-m">Mensuales</li>
+                <li id="trigger-t">Trimestrales</li>
+                <li id="trigger-c">entre estas fechas</li>
+                <!-- <li id="trigger-y">Anuales</li> -->
+            </ul>
+        </div>
+        <div id="not-custom" style="display: inline;">
+        correspondientes a
+        <div class="choose choose-m">
+            <a class="choose-toogle choose-month">{{currentMonth}}</a>
+            <ul id="list-months">
+                <li>Enero</li>
+                <li>Febrero</li>
+                <li>Marzo</li>
+                <li>Abril</li>
+                <li>Mayo</li>
+                <li>Junio</li>
+                <li>Julio</li>
+                <li>Agosto</li>
+                <li>Septiembre</li>
+                <li>Octubre</li>
+                <li>Noviembre</li>
+                <li>Diciembre</li>
+            </ul>
+        </div>
+        <div class="choose choose-t hide">
+            <a class="choose-toogle choose-trim">{{currentTrimestre}}</a>
+            <ul>
+                <li>Primer Trimestre</li>
+                <li>Segundo Trimestre</li>
+                <li>Tercer Trimestre</li>
+                <li>Cuarto Trimestre</li>
+            </ul>
+        </div>
+        <div class="choose choose-y hide">
+            <a class="choose-toogle choose-year">{{currentYear}}</a>
+            <ul>
+                <li>2016</li>
+                <li>2017</li>
+            </ul>
+        </div>
+        <span class="js_only_month_trim">de {{currentYear}}</span>
+        <br>
+        </div>
+        <div id="custom" class="hide" style="display: inline;">
+            : desde el 1 de
+            <div class="choose choose-fini">
+                <a class="choose-toogle choose-mes-ini">Enero</a>
+                <ul id="list-months">
+                    <li>Enero</li>
+                    <li>Febrero</li>
+                    <li>Marzo</li>
+                    <li>Abril</li>
+                    <li>Mayo</li>
+                    <li>Junio</li>
+                    <li>Julio</li>
+                    <li>Agosto</li>
+                    <li>Septiembre</li>
+                    <li>Octubre</li>
+                    <li>Noviembre</li>
+                    <li>Diciembre</li>
+                </ul>
+            </div>
+            hasta el 31 de
+            <div class="choose choose-ffin">
+                <a class="choose-toogle choose-mes-fin">Diciembre</a>
+                <ul id="list-months">
+                    <li>Enero</li>
+                    <li>Febrero</li>
+                    <li>Marzo</li>
+                    <li>Abril</li>
+                    <li>Mayo</li>
+                    <li>Junio</li>
+                    <li>Julio</li>
+                    <li>Agosto</li>
+                    <li>Septiembre</li>
+                    <li>Octubre</li>
+                    <li>Noviembre</li>
+                    <li>Diciembre</li>
+                </ul>
+            </div>
+            de 2017
+        </div>
+        <button class="submit" type="submit" style="display: block;">Descargar Excel</button>
+        <div class="overlay-excel"></div>
+    </form>
+</div>
+</template>

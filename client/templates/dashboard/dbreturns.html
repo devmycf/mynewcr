@@ -1,0 +1,127 @@
+<template name="returnBookings">
+    <h3>Dashboard | Próximas Devoluciones</h3>
+    <a href="{{pathFor 'dashboard'}}">Ver próximas Recogidas</a>
+      <div class="row">
+          <div class="col-md-3 db-panel">
+              <p class="title">Proxima Devolución</p>
+              <p class="num">{{nextDevo}} ({{nextDevoCar}})</p>
+
+          </div>
+      </div>
+
+      <div class="row">
+          <div class="col-md-6">
+                <div class="bs-example" data-example-id="simple-table">
+        <table class="table table-responsive">
+          <caption></caption>
+          <thead>
+            <tr>
+                  <th>Fecha</th>
+                  <th></th>
+                  <th>#Factura</th>
+                  <th>Recogida</th>
+                  <th>Devolución</th>
+                  <th>FechaCreación</th>
+                  <th>Nombre</th>
+                  <th>Contacto</th>
+                  <th>Compañía</th>
+                  <th>Tipo</th>
+                  <th>Procedencia</th>
+                  <th>Días</th>
+                  <!-- <th>Suplemento</th>
+                  <th>€ Proveedor</th>
+                  <th>€ Carflet</th> -->
+                  <th>Total €</th>
+                  <th>Coste Coche</th>
+                  <th>Notas</th>
+                {{#if currentUser}}
+                  <th>Acciones</th>
+                {{/if}}
+            </tr>
+          </thead>
+          <tbody>
+            {{#each devosFromNow}}
+                <tr class="bookingrow">
+                  <th><p class="year">{{getYear fechadevo}}</p><p class="day">{{getDay fechadevo}}</p><p class="month" style="background:#2ecc71;">{{getMonth fechadevo}}</p><p class="author">{{userName}}</p></th>
+                                      <td>
+                        {{#if currentUser}}
+                          <button type="button" class="btn btn-default sendConfirmationMail" onclick="location.href = '{{pathFor 'email'}}';" href=""><img src="img/send.svg"></button>
+                          {{/if}}
+                        </td>
+                  <td>
+                      {{numFactura}}
+                      <br>
+                      {{#if pagada}}
+                      <a href="#" class="status-pago pagada">Pagada</a>
+                      {{else}}
+                      <a href="#" class="status-pago no-pagada">Pendiente</a>
+                      <div class="form-group" style="display: flex; flex-direction:row;">
+                          <input type="text" class="form-control qtypending"  placeholder="{{qtyPendiente}}">
+                          <label style="margin-top: 10px;">€</label>
+                      </div>
+
+                      {{/if}}
+                  </td>
+                  <td>{{recogida}} <br> {{formatDate fechareco}}</td>
+                  <td>{{devolucion}} <br> {{formatDate fechadevo}}</td>
+                  <td>{{formatDate createdAt}}</td>
+                  <td>{{nombre}}</td>
+                  <td>{{emailCliente}}<br>{{telefonoCliente}}</td>
+                  <td>
+                      <select class="form-control bookingCar" style="padding: 0;border: none;min-width: 100px;">
+                          <option selected>Pendiente</option>
+                          {{#each enterprises}}
+                              <option {{isThisSelected name ../company}}>{{name}}</option>
+                          {{/each}}
+                          {{#each flota}}
+                              <option {{isThisSelected nombreCoche ../company}}>{{nombreCoche}}</option>
+                          {{/each}}
+                      </select>
+                  </td>
+                  <td>{{tipo}} <br> {{tarifa}}</td>
+                  <td>{{procedencia}}</td>
+                  <td>{{getNumberDays fechadevo fechareco}}</td>
+                    <!-- <td class="suplementos">
+                        {{getSuplementoDev supdevolucion}}<br>
+                        {{getSuplementoGPS supgps}}<br>
+                        {{getSuplementoTransfer suptransfer}}
+                    </td> -->
+                  <!-- <td>{{formatEuros eurosproveedor}}</td> -->
+                  <!-- <td>{{euroscarflet}}€</td> -->
+                  <td>
+                      {{getTotalAmount eurosprocedencia eurosproveedor euroscarflet}}€
+                      {{#if isPartialPrepaid qtyPrepago}}
+                      <br>
+                      <p>Prepago: {{qtyPrepago}} €</p>
+                      {{/if}}
+                  </td>
+                  <td>
+                      <div class="form-group" style="display: flex; flex-direction:row;">
+                          <input type="text" class="form-control cteCoche"  placeholder="{{costeCoche}}">
+                          <label style="margin-top: 10px;">€</label>
+                      </div>
+                  </td>
+                  <td>{{notas}}</td>
+                  <td class="actions">
+                      {{#if currentUser}}
+                      <button class="btn btn-default editbooking" data-toggle="modal" data-target="#updatebookingModal"><img src="img/edit.png"></button>
+                      <button class="delete-booking">&times;</button>
+                      <button type="button" class="btn btn-default downloadPdf"><img src="img/pdf-icon.png"></button>
+
+
+                      <!-- Modal -->
+    <!--                      <a href="{{pathFor 'getPDF' this._id}}">Ver</a>-->
+                      {{/if}}
+                  </td>
+                </tr>
+    <!--                Creada por {{userName}} el {{formatDate createdAt}} -->
+
+            {{else}}
+              <p>No reservas</p>
+            {{/each}}
+          </tbody>
+        </table>
+    </div>
+          </div>
+      </div>
+</template>

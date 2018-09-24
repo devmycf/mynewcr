@@ -1,0 +1,79 @@
+<template name="facturas">
+    <div class="container facturas">
+        <h3 class="text-muted">Crear Factura</h3>
+        <form>
+            <div class="form-group" id="datos-cliente">
+              <h4>Datos Cliente</h4>
+              <div class="row">
+                <div class="col-md-3">
+                  <label for="nombre">Nombre Empresa</label>
+                  <input type="text" class="form-control" id="nombre" placeholder="Nombre Empresa">
+                </div>
+                <div class="col-md-3">
+                  <label for="direccion">Dirección</label>
+                  <input type="text" class="form-control" id="direccion" placeholder="Direccion">
+                </div>
+                <div class="col-md-3">
+                  <label for="direccion-2">Dirección (cont)</label>
+                  <input type="text" class="form-control" id="direccion-2" placeholder="Direccion(cont) ciudad y pais">
+                </div>
+                <div class="col-md-3">
+                  <label for="cif">CIF</label>
+                  <input type="text" class="form-control" id="cif" placeholder="CIF">
+                </div>
+              </div>
+             </div>
+             <hr>
+              <div class="form-group" id="datos-fac">
+                <h4>Item</h4>
+                <div class="row">
+                  <div class="col-md-9">
+                    <label for="item">Item</label>
+                    <input type="text" class="form-control" id="item" placeholder="item">
+                  </div>
+                  <div class="col-md-3">
+                    <label for="precio">Precio</label>
+                    <input type="text" class="form-control" id="precio" placeholder="Precio">
+                  </div>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-4">
+                    <h4>Anterior Factura</h4>
+                    <p>{{lastFactura}}</p>
+                </div>
+                <div class="col-md-4">
+                    <h4>Próxima Factura</h4>
+                    <p id="mifactura">{{nextFactura}}</p>
+                </div>
+                <div class="col-md-4">
+                    <label for="fechapago">Fecha Pago</label>
+                    <input type="text" class="form-control" id="fechapago" placeholder="DD-MM-YYYY">
+                </div>
+                <div class="col-md-12">
+                    <button type="submit" class="btn btn-primary pull-right trigger" data-toggle="modal" data-target="#confirmModal">Crear Factura</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+<!-- Modal -->
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Confirmar Factura</h4>
+      </div>
+      <div class="modal-body">
+        ¿Es la factura {{nextFactura}} correcta?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+        <button type="button" class="btn btn-primary save-factura" data-dismiss="modal">Si</button>
+      </div>
+    </div>
+  </div>
+</div>
+</template>

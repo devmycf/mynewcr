@@ -1,0 +1,147 @@
+<template name="presupuestos">
+  <div class="modal fade" id="newPresupModal" tabindex="-1" role="dialog" aria-labelledby="newPresupModal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Nuevo Presupuesto</h4>
+        </div>
+        <div class="modal-body modal-insert">
+          {{#autoForm collection="Presupuestos" id="insertPresupForm" type="insert"}}
+              <div class="row" style="margin-top: 0;">
+                  <div class="col-md-6">
+                      {{> afFormGroup name="nombrepre"}}
+                  </div>
+                  <div class="col-md-6">
+                      {{> afFormGroup name="tfonopre"}}
+                  </div>
+                  <div class="col-md-12">
+                      {{> afFormGroup name="mailpre"}}
+                  </div>
+                  <div class="col-md-6">
+                      {{> afFormGroup name="fecharecopre"}}
+                  </div>
+                  <div class="col-md-6">
+                      {{> afFormGroup name="fechadevopre"}}
+                  </div>
+                  <div class="col-md-6">
+                      {{> afFormGroup name="recopre"}}
+                  </div>
+                  <div class="col-md-6">
+                      {{> afFormGroup name="devopre"}}
+                  </div>
+                  <div class="col-md-6">
+                      {{> afFormGroup name="type"}}
+                  </div>
+                  <div class="col-md-6">
+                      {{> afFormGroup name="fechacotizacion"}}
+                  </div>
+                  <div class="col-md-6">
+                      {{> afFormGroup name="fechavalidez"}}
+                  </div>
+                  <div class="col-md-6">
+                      {{> afFormGroup name="costepre"}}
+                  </div>
+                  <div class="col-md-6">
+                      {{> afFormGroup name="cotizacion"}}
+                  </div>
+                  <div class="col-md-6">
+                      {{> afFormGroup name="company"}}
+                  </div>
+                  <div class="col-md-12">
+                      {{> afFormGroup name="observaciones"}}
+                  </div>
+                  <div class="col-md-12">
+                      {{> afFormGroup name="sent" type="boolean-radios"}}
+                  </div>
+
+              </div>
+              <div class="row" style="margin-top: 0;">
+                  <div class="col-md-12">
+                      <button type="submit" class="btn btn-primary">Crear Presupuesto</button>
+                  </div>
+              </div>
+          {{/autoForm}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="flex-element flex-row">
+    <a class="new-presupuesto flex-element flex-row flex-fullcenter btn btn-primary" data-toggle="modal" data-target="#newPresupModal">
+      Alta de Presupuesto
+    </a>
+  </div>
+  <hr>
+  <h2>Presupuestos</h2>
+  <table class="table table-responsive tareas">
+      <thead>
+        <tr>
+              <th style="text-align: left">Fecha Cotizacion</th>
+              <th>Nombre</th>
+              <th>Contacto</th>
+              <th>Recogida</th>
+              <th>Devolucion</th>
+              <th>Coche</th>
+              <th>Coste</th>
+              <th>Precio</th>
+              <th>Validez</th>
+              <th>Company</th>
+              <th>Notas</th>
+              <th></th>
+        </tr>
+      </thead>
+      <tbody>
+          {{#each presupuestos}}
+              <tr class="{{isSent sent}}">
+                  <td>{{formatDate fechacotizacion}}
+                    <br>
+                    {{#if sent}}
+                    <a href="#" class="status-pago status-sent pagada">Enviado</a>
+                    {{else}}
+                    <a href="#" class="status-pago status-sent no-pagada">Pendiente</a>
+                    {{/if}}
+                  </td>
+                  <td>{{nombrepre}}</td>
+                  <td>
+                    {{mailpre}}<br>{{tfonopre}}
+                  </td>
+                  <td>{{recopre}}<br>{{formatDate fecharecopre}}</td>
+                  <td>{{devopre}}<br>{{formatDate fechadevopre}}</td>
+                  <td>
+                    {{type}}
+                  </td>
+                  <td>
+                    <div class="form-group" style="display: flex; flex-direction:row;">
+                      <input type="number" class="form-control ctePresup"  placeholder="{{costepre}}" value="{{costepre}}">
+                      <label style="margin-top: 10px;">€</label>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="form-group" style="display: flex; flex-direction:row;">
+                      <input type="number" class="form-control precioPresup"  placeholder="{{cotizacion}}" value="{{cotizacion}}">
+                      <label style="margin-top: 10px;">€</label>
+                    </div>
+                  </td>
+                  <td>{{formatDate fechavalidez}}</td>
+                  <td>
+                    <select class="form-control companyPresup" style="padding: 0;border: none;min-width: 150px;">
+                        <option selected>Pendiente</option>
+                        {{#each enterprises}}
+                            <option {{isThisSelected name ../company}}>{{name}}</option>
+                        {{/each}}
+                        {{#each flota}}
+                            <option {{isThisSelected nombreCoche ../company}}>{{nombreCoche}}</option>
+                        {{/each}}
+                    </select>
+                  </td>
+                  <td>
+                    <div class="form-group" style="display: flex; flex-direction:row;">
+                      <input type="text" class="form-control observ"  placeholder="{{observaciones}}" value="{{observaciones}}">
+                    </div>
+                  </td>
+                  <td><button class="delete-booking">x</button></td>
+              </tr>
+          {{/each}}
+      </tbody>
+  </table>
+</template>

@@ -1,0 +1,65 @@
+<template name="estaciones">
+  <h3>Puntos en Estaciones</h3>
+  <div class="bs-example" data-example-id="simple-table">
+      <table class="table">
+        <caption></caption>
+        <thead>
+          <tr>
+                <th>Tipo</th>
+                <th>Nombre</th>
+                <th>Empresa Principal</th>
+                <th>Ciudad</th>
+                <th>Direccion</th>
+                <th>CP</th>
+                <th>Horarios</th>
+                <th>Empresas</th>
+              {{#if currentUser}}
+                <th>Acciones</th>
+              {{/if}}
+          </tr>
+        </thead>
+        <tbody>
+          {{#each estaciones}}
+              <tr class="ofirow">
+                <td><img src="img/Estacion.jpg" style="width: 48px;"><br>{{tipo}}</td>
+                <td>{{nombre}}</td>
+                <th><img src="img/{{getPrincipalEmpresa empresas}}.jpg"></th>
+                <td>{{direccion.ciudad}}</td>
+                <td>{{direccion.lugar}}<br>{{direccion.calle}}</td>
+                <td>{{direccion.cp}}</td>
+                <td style="text-align: left; width: 250px;">
+                  <p>L-J: {{horario.LJ}}</p>
+                  <p>V: {{horario.V}}</p>
+                  <p>S: {{horario.S}}</p>
+                  <p>D: {{horario.D}}</p>
+                </td>
+                <td>
+                  <table class="table empresas">
+                    <tbody>
+                      <tr>
+                        {{#each empresas}}
+                          <td>{{nombre}}<br>{{telefono}}</td>
+                        {{/each}}
+                      </tr>
+                    </tbody>
+                  </table>
+
+                </td>
+
+                <td class="actions">{{#if currentUser}}
+                  <button class="btn btn-default editbooking" data-toggle="modal" data-target="#updatebookingModal"><img src="img/edit.png"></button>
+                  <button class="delete-ofi">&times;</button>
+
+  <!--                      <a href="{{pathFor 'getPDF' this._id}}">Ver</a>-->
+                    {{/if}}
+                </td>
+              </tr>
+  <!--                Creada por {{userName}} el {{formatDate createdAt}} -->
+
+          {{else}}
+            <p>No Oficinas</p>
+          {{/each}}
+        </tbody>
+      </table>
+  </div>
+</template>
