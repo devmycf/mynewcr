@@ -1,0 +1,180 @@
+<template name="workerspast">
+    <div class="modal fade" id="confirmInactive" tabindex="-1" role="dialog" aria-labelledby="confirmInactive" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h2 class="modal-title" id="confirmInactiveLabel">Desactivar Worker</h2>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              ¡Esto deshabilitará el worker!
+              ¿Seguro?
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+              <button type="button" class="btn btn-primary" id="confirmInactiveWorkerBtn">Confirmar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+        <div class="modal fade" id="newWorkerModal" tabindex="-1" role="dialog" aria-labelledby="newWorkerModal">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Nuevo Worker</h4>
+              </div>
+              <div class="modal-body modal-insert">
+                {{#autoForm collection="Workers" id="insertWorkerForm" type="insert"}}
+                    <div class="row" style="margin-top: 0;">
+                        <div class="col-md-12">
+                            {{> afFormGroup name="nombre"}}
+                        </div>
+                        <div class="col-md-12">
+                            {{> afFormGroup name="ciudad"}}
+                        </div>
+                        <div class="col-md-12 hide">
+                            {{> afFormGroup name="isActive"}}
+                        </div>
+    
+                    </div>
+                    <div class="row" style="margin-top: 0;">
+                        <div class="col-md-12">
+                            <button type="submit" class="btn btn-primary">Crear Worker</button>
+                        </div>
+                    </div>
+                {{/autoForm}}
+              </div>
+            </div>
+          </div>
+        </div>
+        <ul class="flex-element flex-row worker-list">
+            <li class="flex-element flex-column flex-vcenter is-relative worker-single">
+                <a class="worker flex-element flex-row flex-fullcenter worker-selected" worker-trigger="All Workers" is-all="true">
+                    <p style="pointer-events: none;">ALL</p>
+                </a>
+            </li>
+            {{#each workers}}
+                <li class="flex-element flex-column flex-vcenter is-relative worker-single {{#if isActive}} active {{else}} inactive {{/if}}">
+                    <a class="worker flex-element flex-row flex-fullcenter" worker-trigger="{{nombre}}" worker-id="{{_id}}">
+                        <p style="pointer-events: none;">{{getWorkerInitials nombre}}</p>
+                        {{#if isActive}}
+                        <a class="worker-remove" data-toggle="modal" data-target="#confirmInactive">
+                            <p class="cross">X</p>
+                        </a>
+                        {{else}}
+                        <a class="worker-reactive">
+                            <p class="cross">+</p>
+                        </a>
+                        {{/if}}
+                    </a>
+                    <p class="worker-name">{{nombre}}</p>
+                    <span class="worker-city">{{ciudad}}</span>
+                    <div class="flex-element flex-row">
+                      {{#if isActive}}
+                        <div class="worker-action flex-element flex-row flex-fullcenter">
+                            <p class="plus">+</p>
+                            <div class="inner-form2">
+                                    <h4>Asignar a {{nombre}}</h4>
+                                      {{#autoForm collection="TareasWorkers" id="newTaskWorker" type="insert"}}
+                                        <div class="flex-element flex-row hide">
+                                            <input type="text" name="worker" />
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                {{> afQuickField name="type"}}
+    
+                                            </div>
+                                            <div class="col-md-12">
+                                                {{> afQuickField name="ciudad"}}
+                                            </div>
+                                        </div>
+    
+                                        <div class="flex-element flex-row">
+                                            {{> afQuickField name="coche"}}
+                                        </div>
+                                        <div class="flex-element flex-row">
+                                            {{> afQuickField name="fecha"}}
+                                        </div>
+                                        <div class="flex-element flex-row">
+                                            {{> afQuickField name="precio"}}
+                                        </div>
+                                        <div class="flex-element flex-row">
+                                            {{> afQuickField name="tarea"}}
+                                        </div>
+                                        <div class="flex-element flex-row">
+                                            {{> afQuickField name="comments"}}
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Crear Tarea</button>
+                                      {{/autoForm}}
+                            </div>
+                        </div>
+                        {{/if}}
+                    </div>
+                </li>
+            {{/each}}
+            <li class="flex-element flex-column flex-vcenter is-relative">
+                <a class="new-worker flex-element flex-row flex-fullcenter" data-toggle="modal" data-target="#newWorkerModal">
+                    <p class="plus">+</p>
+                </a>
+            </li>
+        </ul>
+        <div class="overlay-full"></div>
+        <hr>
+        <div class="flex-element flex-row">
+            <div>
+                <h2 style="max-width: 200px;">Tareas All Workers</h2>
+                <br>
+                <a href="#" id="pastTasksExcel">Descargar tareas de {{getPastYear}} en Excel </a>
+            </div>
+            <ul class="flex-element flex-row flex-vcenter flex-sp-between flex-row-wrap flex-grow-1 months months-filter">
+                    <li><a filter-month="0" class="month-selected">Todos<p>{{getGlobalMonthlyDebt "0"}}€</p></a></li>
+                    <li><a filter-month="1">Ene<p>{{getGlobalMonthlyDebt "1"}}€</p></a></li>
+                    <li><a filter-month="2">Feb<p> {{getGlobalMonthlyDebt "2"}}€</p></a></li>        
+                    <li><a filter-month="3">Mar<p> {{getGlobalMonthlyDebt "3"}}€</p></a></li>        
+                    <li><a filter-month="4">Abr<p>{{getGlobalMonthlyDebt "4"}}€</p></a></li>        
+                    <li><a filter-month="5">May<p>{{getGlobalMonthlyDebt "5"}}€</p></a></li>        
+                    <li><a filter-month="6">Jun<p>{{getGlobalMonthlyDebt "6"}}€</p></a></li>        
+                    <li><a filter-month="7">Jul<p>{{getGlobalMonthlyDebt "7"}}€</p></a></li>        
+                    <li><a filter-month="8">Ago<p>{{getGlobalMonthlyDebt "8"}}€</p></a></li>        
+                    <li><a filter-month="9">Sep<p>{{getGlobalMonthlyDebt "9"}}€</p></a></li>   
+                    <li><a filter-month="10">Oct<p>{{getGlobalMonthlyDebt "10"}}€</p></a></li>        
+                    <li><a filter-month="11">Nov<p>{{getGlobalMonthlyDebt "11"}}€</p></a></li>        
+                    <li><a filter-month="12">Dic<p>{{getGlobalMonthlyDebt "12"}}€</p></a></li>                            
+            </ul>
+        </div>
+        <table class="table table-responsive tareas" style="margin-top: 30px;">
+            <thead>
+              <tr>
+                    <th style="text-align: left">Tarea</th>
+                    <th>Worker</th>
+                    <th>Tipo</th>
+                    <th>Coche</th>
+                    <th>Fecha/Ciudad</th>
+                    <th>Coste</th>
+                    <th></th>
+              </tr>
+            </thead>
+            <tbody>
+                {{#each tareaspast}}
+                    <tr worker-catcher="{{worker}}" worker-month="{{getMyMonth fecha}}" style="border-left: 7px solid {{getMyTaskColor type}}; border-right: 7px solid {{getMyTaskColor type}}">
+                        <td style="text-align: left">{{tarea}}</td>
+                        <td>{{worker}}</td>
+                        <td>
+                          <span class="transfer" style="background-color: {{getMyTaskColor type}}">{{type}}</span></td>
+                        <td>{{coche}}</td>
+                        <td>{{formatDate fecha}}<br>{{ciudad}}</td>
+                        <td>
+                          <div class="flex-element flex-row flex-vcenter">
+                            <input type="text" class="form-control cteTask"  placeholder="{{precio}}" value="{{precio}}">
+                            <span>€</span>
+                          </div>
+                        </td>
+                        <td><button class="delete-booking">x</button></td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+</template>

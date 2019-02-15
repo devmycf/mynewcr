@@ -14,6 +14,10 @@
    text-align: right;
 }
 
+.task__success p {
+    color: green;
+}
+
 .loader {
     position: relative;
     /* margin: 0 auto; */
@@ -1249,6 +1253,21 @@ input:-webkit-autofill {
     border-radius: 0px;
     text-transform: uppercase;
     text-align: right;
+}
+
+.hook-oilChange {
+    border-radius: 0px;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    border-bottom: 1px solid #e0e7da;
+    color: #fff;
+    text-align: left;
+    max-width: 120px;
+}
+
+.hook-oilChange::placeholder {
+    color: #fff;
 }
 
 .cteTask {

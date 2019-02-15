@@ -103,7 +103,7 @@
                     </td> -->
                   <!-- <td>{{formatEuros eurosproveedor}}</td> -->
                   <!-- <td>{{euroscarflet}}€</td> -->
-                  <td>{{getTotalAmount eurosprocedencia eurosproveedor euroscarflet}}€</td>
+                  <td>{{getTotalAmount eurosprocedencia qtyPrepago euroscarflet}}€</td>
                   <td>
                       <div class="form-group" style="display: flex; flex-direction:row;">
                           <input type="text" class="form-control cteCoche"  placeholder="{{costeCoche}}">
@@ -225,7 +225,7 @@
 
                 <div class="row">
                     <div class="col-md-6">
-                        {{> afQuickField name="eurosproveedor"}}
+                        {{> afQuickField name="qtyPrepago"}}
                     </div>
                     <div class="col-md-6">
                         {{> afQuickField name="euroscarflet"}}

@@ -96,6 +96,8 @@ Template.workers.helpers({
           break;
         case "Taller": return "#ff5e00";
           break;
+        case "Efectivo": return "#333333";
+          break;
         case "Aceite": return "#ded819";
           break;
 
@@ -118,6 +120,9 @@ Template.workers.helpers({
           },
           {
             "name": "Taxi",
+          },
+          {
+            "name": "Efectivo",
           }
         ];
     },
@@ -149,6 +154,7 @@ AutoForm.hooks({
 },
   newTaskWorker: {
     onSuccess: function(formType, result) {
+      console.log("sadfsdf");
       $('.worker-list').removeClass('opened');
       $('.worker-single').removeClass('opened');
     },
@@ -187,6 +193,16 @@ Template.workers.events({
           link.click();
       });
   },
+
+  'click #pastTasksExcel': function(){
+    var theyear = moment(new Date()).format('YYYY') - 1;
+    Meteor.call("downloadTareasWorkersOtherYear", theyear, function(err, fileUrl){
+        var link = document.createElement("a");
+            link.download = 'ListadoTareas'+theyear+'.xlsx';
+        link.href = fileUrl;
+        link.click();
+    });
+},
     'click .worker-action': function(e){
         // console.log($(this));
         // console.log($(e.target));
@@ -215,16 +231,13 @@ Template.workers.events({
     },
 
     'submit #newTaskWorker': function(event){
-        console.log("safgfdsg");
         var type = event.target.type.value;
         var ciudad = event.target.ciudad.value;
         var coche = event.target.coche.value;
         var fecha = event.target.fecha.value;
         var fechafo = fecha.toString().split("/");
-        console.log(fechafo);
         var fechafin = new Date(fechafo[2], fechafo[1] - 1, fechafo[0]);
         // fecha = moment(fecha).format("DD-MM-YYYY");
-                console.log(fechafin);
         var precio = event.target.precio.value;
         var tarea = event.target.tarea.value;
         var comments = event.target.comments.value;
@@ -239,8 +252,13 @@ Template.workers.events({
           "tarea": tarea,
           "comments": comments,
         }
-        console.log(tareastructure);
-        Meteor.call("insertTask", tareastructure);
+        Meteor.call("insertTask", tareastructure, function(error, result){
+          if(error) {
+            alert("Error")
+          } else {
+            alert ("Tarea Creada");
+          }
+        });
     },
 
     'click .overlay-full': function(){
@@ -290,13 +308,7 @@ Template.workers.events({
               var end = moment((parseInt(mimes)+1)+"-01-"+currentYear+"", "MM-DD-YYYY").toDate();
           }
     
-          if(parseInt(mimes) == 0){
-            start = moment("01-01-"+currentYear+"", "MM-DD-YYYY").toDate();
-            var end = moment("01-01-"+nextYear+"", "MM-DD-YYYY").toDate();
-            var TaskByMonth = TareasWorkers.find({"worker": miworker, "fecha": {$gte: start, $lt: end}}).fetch();
-          } else {
-            var TaskByMonth = TareasWorkers.find({"worker": miworker, "fecha": {$gte: start, $lt: end}}).fetch();
-          }
+          var TaskByMonth = TareasWorkers.find({"worker": miworker, "fecha": {$gte: start, $lt: end}}).fetch();
     
             console.log(TaskByMonth);
             var theDebt = 0;
@@ -307,6 +319,25 @@ Template.workers.events({
             console.log(theDebt);
     
             $(".months-filter li a[filter-month = '"+mimes+"']").find("p").html(theDebt+"€");
+        }
+
+        function getAllWorkersDebt(){
+          for(var i = 1; i < 13; i++){
+            var currentYear = moment().format('YYYY');
+            var nextYear = parseInt(currentYear) +1;
+            var start = moment(parseInt(i)+"-01-"+currentYear+"", "MM-DD-YYYY").toDate();
+            var end = moment("01-01-"+(nextYear)+"", "MM-DD-YYYY").toDate();
+
+            var TaskByMonth = TareasWorkers.find({"worker": miworker, "fecha": {$gte: start, $lt: end}}).fetch();
+            var theDebt = 0;
+            TaskByMonth.forEach(function(task, i){
+              theDebt = theDebt + parseFloat(task.precio);
+              theDebt = Math.round(theDebt * 100) / 100;
+            });
+            console.log(theDebt);
+    
+            $(".months-filter li a[filter-month = '"+i+"']").find("p").html(theDebt+"€");
+          }
         }
 
         Session.set("selectedWorkerId", this._id);
@@ -334,8 +365,12 @@ Template.workers.events({
 
           $(".months-filter").find("a[filter-month='0']").click();
 
-          for(var i = 0; i < 13; i++){
-            getMyDebt(filterWorker, i);
+          if(isAll == "true"){
+            getAllWorkersDebt();
+          } else {
+            for(var i = 1; i < 13; i++){
+              getMyDebt(filterWorker, i);
+            }
           }
 
           // var theMonth = Template.workers.__helpers.get('getMonthDebtByWorker', filterWorker, '5').call();

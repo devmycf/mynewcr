@@ -21,6 +21,8 @@
                         <li><a href="{{pathFor 'bookingstrim' _year=getYear _month='' _type='Q' _quarter=getTrim}}">{{getTrim}}T Trimestre</a></li>
                         <li><a href="{{pathFor 'bookingsyear' _year=getYear _month='' _type='Y' _quarter=''}}">Todas</a></li>
                         <li class="divider"></li>
+                        <li><a href="{{pathFor 'bookingstrim' _year=getPastYear _month='' _type='Q' _quarter=4}}">{{getPastYear}} 4T </a></li>
+                        <li class="divider"></li>
                         <li><a href="{{pathFor 'bookingsupcoming' _year='' _month='' _type='U' _quarter=''}}">Próximas</a></li>
                         <li><a href="{{pathFor 'bookingspending' _year='' _month='' _type='P' _quarter=''}}">Pendientes</a></li>
                         <li class="divider"></li>
@@ -92,6 +94,7 @@
                                         <li><a href="{{pathFor 'contratos'}}" class="flex-element flex-row flex-sp-between">Contratos</a></li>
                                         <li><a href="{{pathFor 'facturas'}}">Facturas</a></li>
                                         <li><a href="{{pathFor 'presupuestos'}}">Presupuestos</a></li>
+                                        <li><a href="{{pathFor 'excelfactory'}}">Excels</a></li>
                                     </ul>
                                 </li>                
             <li class="hide"><a href="{{pathFor 'bookings'}}">Reservas</a></li>
@@ -103,7 +106,13 @@
             {{/if}}
 
             <!-- <li><a href="{{pathFor 'facturas'}}">Facturas</a></li> -->
-            <li><a href="{{pathFor 'workers'}}">Workers</a></li>
+            <li class="">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Workers <b class="caret"></b></a>
+                <ul class="dropdown-menu multi-level">
+                    <li><a href="{{pathFor 'workers'}}">Workers {{getYear}}</a></li>
+                    <li><a href="{{pathFor 'workersPast'}}">Workers {{getPastYear}}</a></li>
+                </ul>
+            </li>
             <!-- <li><a href="{{pathFor 'presupuestos'}}">Presupuestos</a></li> -->
             {{#if isAdmin}}
             <li><a href="{{pathFor 'tools'}}">Admin.Tools</a></li>

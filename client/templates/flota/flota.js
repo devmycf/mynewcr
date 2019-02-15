@@ -324,14 +324,18 @@ Template.flota.events({
   "change .hook-lastitv": function(e){
     var currentId = this._id;
     var currentName = this.nombreCoche;
-    // console.log(currentId);
     var updatedDate = $(".card[name-coche='"+currentName+"']").find(".datepicker").datepicker('getDate');
-    // console.log(updatedDate);
-    // var newCoste = $(e.target).val();
-    // // console.log(newCoste);
+
     Meteor.call("updateLastITV", currentName, updatedDate);
-    // Meteor.call("test");
-},
+  },
+
+  "change .hook-oilChange": function(e) {
+    var currentId = this._id;
+    var currentName = this.nombreCoche;
+    var updatedKm = $(".card[name-coche='"+currentName+"']").find(".hook-oilChange").val();
+
+    Meteor.call("updateOilChange", currentName, updatedKm);
+  },
 
 
   "click .card": function(){

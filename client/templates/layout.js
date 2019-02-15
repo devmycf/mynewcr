@@ -32,6 +32,11 @@ Template.registerHelper('getYear', function(date){
     // return "2017";
 });
 
+Template.registerHelper('getPastYear', function(date){
+    return moment(date).format('YYYY') - 1;
+    // return "2017";
+});
+
 //Formate Year
 Template.registerHelper('getTrim', function(date){
     return moment(date).format('Q');

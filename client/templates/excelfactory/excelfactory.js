@@ -90,9 +90,11 @@ Template.excelfactory.events({
             finitial = 0,
             ffin = 0;
 
-        Meteor.call("downloadExcelCustom", mode, period, finitial, ffin, function(err, fileUrl){
+        var lastYearNum = moment().format('YYYY') - 1;
+
+        Meteor.call("downloadExcelCustom", mode, lastYearNum, finitial, ffin, function(err, fileUrl){
             var link = document.createElement("a");
-                link.download = 'ListadoReservas2017.xlsx';
+                link.download = 'ListadoReservas'+lastYearNum+'.xlsx';
             link.href = fileUrl;
             link.click();
         });
