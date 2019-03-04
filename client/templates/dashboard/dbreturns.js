@@ -200,6 +200,14 @@ Template.returnBookings.events({
 
                             if(diferencia == 0){
                                 diferencia = 1;
+                            } else {
+                                if(a.hour < b.hour) {
+                                    diferencia = diferencia + 1;
+                                } else if (a.hour == b.hour) {
+                                    if (a.minute < b.minute) {
+                                        diferencia = diferencia + 1;
+                                    }
+                                }
                             }
 
                             return diferencia;

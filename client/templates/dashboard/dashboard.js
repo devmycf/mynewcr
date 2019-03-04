@@ -118,6 +118,18 @@ Template.dashboard.helpers({
     }
 });
 
+AutoForm.hooks({
+    updateBookingForm: {
+      onSuccess: function(formType, result) {
+        $('#updatebookingModal').modal('hide');
+        FlashMessages.sendSuccess("Reserva Actualizada", { autoHide: true, hideDelay: 3000 });
+      },
+      onError: function(formType, error) {
+        FlashMessages.sendError("Error en la actualizacion", { autoHide: true, hideDelay: 3000 });
+      }
+  },
+  });
+
 Template.dashboard.rendered = function() {
   // Meteor.call('catchNewBookings', function(err, resp){
   //   if(err) {
@@ -381,13 +393,6 @@ Template.dashboard.events({
             //Prevent submit
             return false;
 
-        },
-
-        "submit .modal-up": function(event){
-            $('#updatebookingModal').modal('hide');
-            FlashMessages.sendSuccess("Reserva Actualizada", { autoHide: true, hideDelay: 3000 });
-            //Prevent submit
-            return false;
         },
 
         "click .downloadPdf": function(){

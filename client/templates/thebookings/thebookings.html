@@ -103,7 +103,13 @@
                     </td> -->
                   <!-- <td>{{formatEuros eurosproveedor}}</td> -->
                   <!-- <td>{{euroscarflet}}€</td> -->
-                  <td>{{getTotalAmount eurosprocedencia qtyPrepago euroscarflet}}€</td>
+                  <td>
+                    {{getTotalAmount eurosprocedencia eurosproveedor euroscarflet}}€
+                    {{#if isPartialPrepaid qtyPrepago}}
+                    <br>
+                    <p>Prepago: {{qtyPrepago}} €</p>
+                    {{/if}}
+                  </td>
                   <td>
                       <div class="form-group" style="display: flex; flex-direction:row;">
                           <input type="text" class="form-control cteCoche"  placeholder="{{costeCoche}}">

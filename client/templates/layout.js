@@ -68,8 +68,17 @@ Template.registerHelper('getNumberDays', function(date1, date2){
 
     var diferencia = a.diff(b, 'days');
 
+
     if(diferencia == 0){
         diferencia = 1;
+    } else {
+        if(moment(b).hour() < moment(a).hour()) {
+            diferencia = diferencia + 1;
+        } else if (moment(b).hour() == moment(a).hour()) {
+            if (moment(b).minute() < moment(a).minute()) {
+                diferencia = diferencia + 1;
+            }
+        }
     }
 
     return diferencia;
