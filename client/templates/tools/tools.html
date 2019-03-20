@@ -20,6 +20,36 @@
       </div>
     </div>
     <div class="flex-element flex-row flex-sp-between">
+        <div class="panel panel-default">
+            <div class="panel-heading">Llaves</div>
+                <div class="panel-body flex-element flex-column">
+                        LLaves en coches
+                        <table class="table table-responsive">
+                            <thead>
+                                <th>Coche</th>
+                                <th>Llave 1</th>
+                                <th>Llave 2</th>
+                                <th>Llave 3</th>
+                                <th>Acciones</th>
+                            </thead>
+                            <tbody>            
+                                {{#each myFlota}}
+                                <tr data-id="{{_id}}" class="cocherow" data-name="{{nombreCoche}}">
+                                  <td class="nombcoche">{{nombreCoche}}</td>
+                                  <td>{{getMyKey _id 1}}</td>
+                                  <td>{{getMyKey _id 2}}</td>
+                                  <td>{{getMyKey _id 3}}</td>
+                                  <td>
+                                      {{#if stillNoKeys _id}}
+                                        <button class="keybtn"><i class="fa fa-key"></i></button>
+                                      {{/if}}
+                                  </td>
+                                 </tr>
+                                {{/each}}
+                            </tbody>
+                         </table>
+                    </div>
+        </div>  
       <div class="panel panel-default">
         <div class="panel-heading">Comisionables</div>
         <div class="panel-body flex-element flex-column">

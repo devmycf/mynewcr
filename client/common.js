@@ -17,6 +17,7 @@ Meteor.subscribe("presupuestos");
 Meteor.subscribe("tides");
 Meteor.subscribe("comisionables");
 Meteor.subscribe("ciudades");
+Meteor.subscribe("llaves");
 
 
 Meteor.startup(function () {

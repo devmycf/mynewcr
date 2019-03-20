@@ -5,6 +5,29 @@ Template.flota.helpers({
   flota: function(){
       return Flota.find({});
   },
+
+  comis: function(){
+    return Comisionables.find({});
+  },
+
+  noKey: function(coche, ordKey) {
+    var theKey = Llaves.findOne({'idFlota': coche, 'ordinalInFlota': ordKey});
+    if (theKey.locationName == '-'){
+      return 'selected';
+    } else {
+      return '';
+    }
+  },
+
+  inHouse: function(coche, ordKey) {
+    var theKey = Llaves.findOne({'idFlota': coche, 'ordinalInFlota': ordKey});
+    if (theKey.locationName == 'Oficinas Carflet'){
+      return 'selected';
+    } else {
+      return '';
+    }
+  },
+
   tipocoche: function () {
       return [
         {
@@ -26,6 +49,34 @@ Template.flota.helpers({
         }
       ];
   },
+
+  whichLocationTypeCode: function(car, numkey){
+
+    var theKeyLoc = Llaves.findOne({'idFlota': car, 'ordinalInFlota': numkey});
+    if(theKeyLoc.locationName == '-' || theKeyLoc.locationId == '-') {
+      return 'not-defined';
+    } else if (theKeyLoc.locationName == 'Oficinas Carflet') {
+      return 'house';
+    } else {
+      return 'somewhere';
+    }
+  },
+
+  keyLocationName: function(car, numkey) {
+    var theKeyLoc = Llaves.findOne({'idFlota': car, 'ordinalInFlota': numkey});
+    return theKeyLoc.locationName;
+  },
+
+  isThisSelected: function(name, car, ncar, ord){
+    var theKey = Llaves.findOne({'idFlota': car, 'ordinalInFlota': ord});
+    if(theKey.locationName == name){
+      return "selected";
+    } else {
+      return "";
+    }
+ },
+
+
   getImagenPath: function(img){
     return "img/flota/"+img+".jpg";
   },
@@ -329,12 +380,47 @@ Template.flota.events({
     Meteor.call("updateLastITV", currentName, updatedDate);
   },
 
+  "click .key__trigger": function(e){
+    $(e.target).closest("li").find(".key-selector").removeClass("hide");
+    $(".overlay-flota").addClass("opened");
+    $(e.target).closest(".card").addClass("card--opened");
+  },
+
+  "click .overlay-flota": function(e) {
+    $(".overlay-flota").removeClass("opened");
+    $(".key-selector").addClass("hide");
+  },
+
   "change .hook-oilChange": function(e) {
     var currentId = this._id;
     var currentName = this.nombreCoche;
     var updatedKm = $(".card[name-coche='"+currentName+"']").find(".hook-oilChange").val();
 
     Meteor.call("updateOilChange", currentName, updatedKm);
+  },
+
+  "change .llave-selector": function(e) {
+
+    var theCar = $(e.target).attr("data-car");
+    var theCarN = $(e.target).closest(".card").attr("name-coche");
+    var theKey = $(e.target).attr("data-key");
+    var theLoc = $(e.target).val();
+    var theLocN = $('option:selected', $(e.target)).html();
+
+    var myLlave = Llaves.find({'idFlota': theCar}).fetch().filter(llave => llave.ordinalInFlota == theKey);
+
+    var myId = myLlave[0]._id;
+
+
+    Meteor.call("updateKeyLoc", myId, theLoc, theLocN, function(error, result){
+      if(error){
+          FlashMessages.sendError("No se pudo enviar cambiar la llave)", { autoHide: true, hideDelay: 3000 });
+      } else {
+          FlashMessages.sendSuccess("Llave "+theKey+" del "+theCarN+" actualizada a "+theLocN+"", { autoHide: true, hideDelay: 3000 });
+      }
+      $(".overlay-flota").removeClass("opened");
+      $(".key-selector").addClass("hide");
+    });
   },
 
 

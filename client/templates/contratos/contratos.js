@@ -85,7 +85,7 @@ Template.contratos.events({
                 if(error){
                     console.log("hubo un error al mandar el mail");
                     $('#sendContractMailModal').modal('hide');
-                    FlashMessages.sendErro("No se pudo enviar el mail a "+Session.get('nombreCliente')+"("+Session.get('emailCliente')+")", { autoHide: true, hideDelay: 3000 });
+                    FlashMessages.sendError("No se pudo enviar el mail a "+Session.get('nombreCliente')+"("+Session.get('emailCliente')+")", { autoHide: true, hideDelay: 3000 });
                     $("#confirmSendContract").removeClass("hide");
                     $(".loader").addClass("hide");
                 } else {

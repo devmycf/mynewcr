@@ -3,6 +3,27 @@ Template.tools.helpers({
         return Incomes.find();
     },
 
+    myFlota: function(){
+        return Flota.find();
+    },
+
+    getMyKey: function(carId, llaveOrd){
+        var myCarKeys = Llaves.find({'idFlota': carId}).fetch().filter(llave => llave.ordinalInFlota == llaveOrd);
+        console.log(carId);
+        console.log('myCarKeyfgbs');
+        console.log(myCarKeys);
+        return myCarKeys[0].locationName;
+    },
+
+    stillNoKeys: function(carId) {
+        var myKeys = Llaves.find({idFlota: carId}).fetch();
+        if(myKeys.length == 0){
+            return true;
+        } else {
+            return false;
+        }
+    },
+
     lastExpenses: function(){
         // {sort: {fechareco: 1}}
         return DevExpenses.find({}, {sort: {time: -1}, limit: 20});
@@ -149,6 +170,13 @@ Template.tools.events({
                   console.log(error);
                 }
               });
+        },
+
+        "click .keybtn": function(e){
+            var currentCarId = this._id;
+            var nameCar = $(e.target).closest("tr").attr("data-name");
+
+            Meteor.call("makeTheKeys", currentCarId, nameCar);
         },
 
         "click #create_pdf": function () {

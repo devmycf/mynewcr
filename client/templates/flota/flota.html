@@ -92,6 +92,56 @@
     </div> -->
     {{#each flota}}
       <div class="card" data-coche="{{_id}}" name-coche="{{nombreCoche}}">
+        <ul class="thekeys flex-element flex-row">
+          <li class="{{whichLocationTypeCode _id 1}}">
+            <a href="#" class="key__trigger">
+              <i class="fa fa-key"></i>
+              <span>{{keyLocationName _id 1}}</span>
+            </a>
+            <div class="key-selector hide">
+              <p>Llave 1 del {{nombreCoche}}</p>
+              <select name="llave1-{{_id}}" id="llave1-{{_id}}" class="llave-selector" data-key="1" data-car="{{_id}}">
+                  <option value="-" {{noKey _id 1}}>No llave</option>
+                  <option value="0" {{inHouse _id 1}}>Oficinas Carflet</option>
+                  {{#each comis}}
+                    <option value="{{_id}}" {{isThisSelected name ../_id ../nombreCoche 1}}>{{name}}</option>
+                  {{/each}}
+              </select>
+            </div>
+          </li>
+          <li class="{{whichLocationTypeCode _id 2}}">
+              <a href="#" class="key__trigger">
+                  <i class="fa fa-key"></i>
+                  <span>{{keyLocationName _id 2}}</span>
+              </a>
+              <div class="key-selector hide">
+                <p>Llave 2 del {{nombreCoche}}</p>
+                <select name="llave2-{{_id}}" id="llave2-{{_id}}" class="llave-selector" data-key="2" data-car="{{_id}}">
+                    <option value="-" {{noKey _id 2}}>No llave</option>
+                    <option value="0" {{inHouse _id 2}}>Oficinas Carflet</option>
+                    {{#each comis}}
+                      <option value="{{_id}}" {{isThisSelected name ../_id ../nombreCoche 2}}>{{name}}</option>
+                    {{/each}}
+                </select>
+              </div>
+          </li>
+          <li class="{{whichLocationTypeCode _id 3}}">
+              <a href="#" class="key__trigger">
+                  <i class="fa fa-key"></i>
+                  <span>{{keyLocationName _id 3}}</span>
+              </a>
+              <div class="key-selector hide">
+                <p>Llave 3 del {{nombreCoche}}</p>
+                <select name="llave3-{{_id}}" id="llave3-{{_id}}" class="llave-selector" data-key="3" data-car="{{_id}}">
+                    <option value="-" {{noKey _id 3}}>No llave</option>
+                    <option value="0" {{inHouse _id 3}}>Oficinas Carflet</option>
+                    {{#each comis}}
+                      <option value="{{_id}}" {{isThisSelected name ../_id ../nombreCoche 3}}>{{name}}</option>
+                    {{/each}}
+                </select>
+              </div>
+            </li>
+        </ul>
         <div class="light" style="background-color:{{getAvailColor nombreCoche}}">
             <div id="light-cont">
                 <div class="flex-element flex-row flex-sp-between">
@@ -198,7 +248,9 @@
           </div>
         </div>
     </div>
+
     {{/each}}
+    <div class="overlay-flota"></div>
     <!-- Modal -->
     <div class="modal fade" id="newCarfletBooking" tabindex="-1" role="dialog" aria-labelledby="newCarfletBookingLabel">
       <div class="modal-dialog" role="document">

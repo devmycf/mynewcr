@@ -18,6 +18,142 @@
     color: green;
 }
 
+.thekeys {
+    position: absolute;
+    top: 10px;
+    left: 15px;
+    /* width: 50%; */
+    list-style-type: none;
+    padding: 0;
+}
+
+.thekeys li {
+    margin: 0 5px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #c1c1c1;
+    position: relative;
+}
+
+.thekeys li a span {
+    position: absolute;
+    left: -50%;
+    top: 100%;
+    margin-top: 1rem;
+    padding: 15px;
+    background: #333;
+    color: #fff;
+    width: 200px;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    text-align: left;
+    opacity: 0;
+    transform: rotate(30deg);
+    -webkit-transform: rotate(30deg);
+    -moz-transform: rotate(30deg);
+    -o-transform: rotate(30deg);
+    transform-origin: 0 0;
+    transition: all 0.3s ease;
+}
+
+.thekeys li a span:before {
+    width: 12px;
+    height: 12px;
+    content: '';
+    top: -10%;
+    left: 18px;
+    position: absolute;
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    background: #333;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+}
+
+.thekeys li:hover a span {
+    opacity: 1;
+    transform: rotate(0deg);
+}
+
+.thekeys li a i {
+    color: #ffffff;
+}
+
+.thekeys li.house {
+    background: #e5e5e5;
+}
+
+.thekeys li.house a i {
+    color: #ffffff;
+}
+
+.thekeys li.not-defined {
+    background: #fff;
+    border: 2px dashed #c1c1c1;
+    color: #333;
+}
+
+.thekeys li.not-defined a i {
+    color: #c1c1c1;
+}
+
+.thekeys li .key-selector {
+    position: absolute;
+    bottom: 150%;
+    background: #333;
+    padding: 15px;
+    width: 200px;
+}
+
+.thekeys li .key-selector p {
+    color: #fff;
+}
+
+.thekeys li .key-selector:before {
+    position: absolute;
+    content: '';
+    bottom: 0;
+    width: 12px;
+    height: 12px;
+    border-radius: 4px;
+    left: 6px;
+    bottom: -5px;
+    background: #333;
+    transform: rotate(45deg);
+}
+
+.thekeys a {
+    color: #333333;
+}
+
+.thekeys i {
+    vertical-align: middle;
+}
+
+.key-selector select {
+    width: 100%;
+}
+
+.overlay-flota{
+    visibility: hidden;
+    opacity: 0;
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    z-index: 1;
+    left: 0;
+    background: rgba(255, 255, 255, 0.75);
+}
+
+.overlay-flota.opened {
+    visibility: visible;
+    opacity: 1;
+}
+
 .loader {
     position: relative;
     /* margin: 0 auto; */
@@ -945,6 +1081,11 @@ button.createContract{
     padding-bottom: 15px;
 }
 
+.card.card--opened {
+    position: relative;
+    z-index: 1000;
+}
+
 .hook-lastitv {
     background: transparent;
     border: none;
@@ -1331,6 +1472,7 @@ input:-webkit-autofill {
     -moz-transition-delay: 0s;
     transition-delay: 0s;
 }
+
 
 .inner-form {
     position: absolute;
