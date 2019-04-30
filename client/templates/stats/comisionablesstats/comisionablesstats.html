@@ -1,4 +1,18 @@
 <template name="comisionablesstats">
     Comisionables stats
-    <div id="chart"></div>
+    <div class="comistatscont">
+        <div id="chart"></div>
+        <div id="com-selector">
+            <a class="all">Seleccionar todos</a>
+            <a class="none">Quitar todos</a>
+            {{#each thecomis}}
+                <div>
+                    <span style="background-color: {{getMyColor @index}}"></span>
+                    <input type="checkbox" class="comifilter" id="{{name}}" checked data-name="{{name}}"/>
+                    <label for="{{name}}">{{name}}</label>
+                </div>
+            {{/each}}
+        </div>
+    </div>
 </template>
+

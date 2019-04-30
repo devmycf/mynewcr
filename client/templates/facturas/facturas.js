@@ -12,10 +12,12 @@ Template.facturas.helpers({
 
     nextFactura: function(){
         var ultima = HelpersFactura.find({}).fetch();
+        console.log("ultima");
         if(ultima.length > 0) {
             var ultimaFecha = moment(ultima[0].facFecha).format("DD-MM-YYYY");
         } else {
-            var ultimaFecha = moment(new Date()).format("DD-MM-YYYY");
+            console.log("gfhd");
+            return moment(new Date()).format('YY[20]-MM-DD') + "-" + "0";
         }
         // var ultimaFecha = moment(ultima[0].facFecha).format("DD-MM-YYYY");
         var today = moment(new Date()).format("DD-MM-YYYY");
@@ -355,11 +357,34 @@ Template.facturas.events({
       console.log('conductor');
       var factura = $("#mifactura").html();
       var facNumber = factura.split("-");
-      console.log(facNumber);
+
       var factNumberReal = parseInt(facNumber[(facNumber.length)-1]);
-      console.log(factNumberReal);
-      console.log(factura);
-      Meteor.call("insertFactura", new Date(), factNumberReal)
+
+      Meteor.call("insertFactura", new Date(), factNumberReal, function(error, result){
+        if(error){
+            console.log(error);
+            FlashMessages.sendError("No se pudo guardar el numero de la factura", { autoHide: true, hideDelay: 3000 });
+        } else {
+            FlashMessages.sendSuccess("Siguiente numero de factura actualizado", { autoHide: true, hideDelay: 3000 });
+        }
+      });
+
+      var nameComi = $(".facturas #nombre").val();
+      var precio = $(".facturas #precio").val();
+      var fechapago = $(".facturas #fechapago").val();
+      var dirComi = $(".facturas #direccion").val();
+      var dirComi2 = $(".facturas #direccion-2").val();
+      var cifComi = $(".facturas #cif").val();
+      var facCode =  $(".facturas #mifactura").html();
+
+      Meteor.call("insertFacturaManagement", new Date(), facCode, false, "", nameComi, dirComi, dirComi2, cifComi, precio, fechapago, function(error, result){
+        if(error){
+            console.log(error);
+            FlashMessages.sendError("No se pudo guardar la factura", { autoHide: true, hideDelay: 3000 });
+        } else {
+            FlashMessages.sendSuccess("Factura guardada", { autoHide: true, hideDelay: 3000 });
+        }
+      });
   }
 
 });

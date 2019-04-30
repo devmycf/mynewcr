@@ -96,8 +96,6 @@ Template.oficinas.rendered = function() {
 
 Template.oficinas.events({
     "click .available_cities .citytag": function(){
-      console.log(this._id);
-      console.log(this.nombre);
       var selectedCityId = this._id;
       var selectedCityNombre = this.nombre;
       var newSelectedCity = $(".citytemp").clone().removeClass("citytemp hide");

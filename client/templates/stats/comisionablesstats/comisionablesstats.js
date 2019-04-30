@@ -43,6 +43,58 @@ Template.comisionablesstats.helpers({
     //     console.log(mycomisGroupsArr);
     //     return mycomisGroupsArr;
     // }
+
+    comis: function(){
+      return Comisionables.find({}, {sort:{name: 1}});
+    },
+
+    thecomis: function(){
+      var currentYear = moment().format('YYYY');
+      var start = moment("01-01-"+currentYear+"", "MM-DD-YYYY").toDate();
+      var nextYear = parseInt(currentYear)+1;
+      var end = moment("01-01-"+nextYear+"", "MM-DD-YYYY").toDate();
+  
+      // var theComis = Bookings.find({"fechareco": {$gte: start, $lt: end}, "isComissioned": true}, {fields:  {comisionPerson: 1, comisionId: 1, comisionEuros: 1, comisionDate: 1, fechareco: 1}}).fetch();
+  
+      // console.log("sdg");
+      // console.log(end);
+  
+      var comisGroups = Bookings.find({
+                  "fechareco": {$gte: start, $lt: end}, 
+                  "isComissioned": true
+              }, 
+              {
+                  fields:  {
+                      "comisionPerson": 1, 
+                      "comisionId": 1, 
+                      "comisionEuros": 1, 
+                      "comisionDate": 1, 
+                      "fechareco": 1
+                  }
+              }).fetch();
+
+              console.log("comisGroups");
+              console.log(comisGroups);
+      var mycomisGroups = _.groupBy(comisGroups, "comisionPerson");
+      var mycomisGroupsArr = Object.keys(mycomisGroups).map((key) => {
+        return {
+          name: key,
+        }
+      });
+      return mycomisGroupsArr;
+    },
+
+    getMyColor: function(indexing){
+      var mycolor = d3.scaleOrdinal(d3.schemeCategory10);
+      var mycolor = ["#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c", "#98df8a", "#d62728", "#ff9896", "#9467bd", "#c5b0d5", "#8c564b", "#c49c94", "#e377c2", "#f7b6d2", "#7f7f7f", "#c7c7c7", "#bcbd22", "#dbdb8d", "#17becf", "#9edae5"]
+      var thecolor;
+      if(indexing < 20) {
+        thecolor = mycolor[indexing];
+      } else {
+        thecolor = mycolor[parseInt(indexing%20)];
+      }
+      return thecolor;
+    }
 });
 
 Template.comisionablesstats.onRendered(function () {
@@ -97,6 +149,8 @@ Template.comisionablesstats.onRendered(function () {
   console.log("sdafsajklsdf");
   console.log(data);
 
+  var maximumY = 0;
+
 
 
 
@@ -105,20 +159,24 @@ Template.comisionablesstats.onRendered(function () {
   function getComisCurrentYear () {
 
     function monthlyIncome(myComi) {
-      var myArr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+      var myArr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
       for (var i = 0; i < myComi.length; i++){
         var theMonth = moment(myComi[i].fechareco).format("M");
         if(myComi[i].comisionEuros) {
-          myArr[theMonth-1] = myArr[theMonth-1] + myComi[i].comisionEuros;
+          myArr[theMonth] = myArr[theMonth] + myComi[i].comisionEuros;
         }
       }
 
       var myArrDef = [];
-
+      
       for(var i = 0; i<myArr.length;i++){
         var singleComiObj = {
-          date: i+1,
-          price: myArr[i]
+          mes: i,
+          price: parseFloat(myArr[i]).toFixed(2)
+        }
+
+        if(maximumY < parseFloat(myArr[i])) {
+          maximumY = parseFloat(myArr[i]);
         }
 
         myArrDef.push(singleComiObj);
@@ -160,37 +218,52 @@ Template.comisionablesstats.onRendered(function () {
       }
     });
 
-    console.log(mycomisGroupsArr);
     return mycomisGroupsArr;
+}
+
+function giveMeColor(indexing){
+  var mycolor = d3.scaleOrdinal(d3.schemeCategory10);
+  var mycolor = ["#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c", "#98df8a", "#d62728", "#ff9896", "#9467bd", "#c5b0d5", "#8c564b", "#c49c94", "#e377c2", "#f7b6d2", "#7f7f7f", "#c7c7c7", "#bcbd22", "#dbdb8d", "#17becf", "#9edae5"]
+  var thecolor;
+  if(indexing < 20) {
+    thecolor = mycolor[indexing];
+  } else {
+    thecolor = mycolor[parseInt(indexing%20)];
+  }
+  return thecolor;
 }
 
   var data = getComisCurrentYear();
 
-  console.log("datadsg");
+  console.log("data");
   console.log(data);
-  
-  var width = 500;
-  var height = 300;
+
+  var width = 600;
+  var height = 380;
   var margin = 50;
   var duration = 250;
   
-  var lineOpacity = "0.25";
-  var lineOpacityHover = "0.85";
+  var lineOpacity = "0.5";
+  var lineOpacityHover = "1";
   var otherLinesOpacityHover = "0.1";
-  var lineStroke = "1.5px";
-  var lineStrokeHover = "2.5px";
+  var lineStroke = "2.5px";
+  var lineStrokeHover = "3.5px";
   
-  var circleOpacity = '0.85';
+  var circleOpacity = '1';
   var circleOpacityOnLineHover = "0.25"
-  var circleRadius = 3;
-  var circleRadiusHover = 6;
+  var circleRadius = 4;
+  var circleRadiusHover = 12;
+
+  function getMyMonth(numMonth){
+    return moment(numMonth, 'MM').format('MMM'); 
+  }
   
   
   /* Format Data */
   var parseDate = d3.timeParse("%M");
   data.forEach(function(d) { 
     d.values.forEach(function(d, i) {
-      d.date = i+1;
+      d.mes = i+1;
       d.price = +d.price;  
     });
   });
@@ -198,11 +271,11 @@ Template.comisionablesstats.onRendered(function () {
   
   /* Scale */
   var xScale = d3.scaleLinear()
-    .domain(1, 12)
+    .domain([0, 12])
     .range([0, width-margin]);
   
   var yScale = d3.scaleLinear()
-    .domain([0, 100])
+    .domain([0, maximumY])
     .range([height-margin, 0]);
   
   var color = d3.scaleOrdinal(d3.schemeCategory10);
@@ -217,8 +290,9 @@ Template.comisionablesstats.onRendered(function () {
   
   /* Add line into SVG */
   var line = d3.line()
-    .x(d => xScale(d.date))
-    .y(d => yScale(d.price));
+    .x(d => xScale(d.mes))
+    .y(d => yScale(d.price))
+    .curve(d3.curveMonotoneX);
   
   let lines = svg.append('g')
     .attr('class', 'lines');
@@ -226,11 +300,14 @@ Template.comisionablesstats.onRendered(function () {
   lines.selectAll('.line-group')
     .data(data).enter()
     .append('g')
-    .attr('class', 'line-group')  
+    .attr('class', 'line-group')
+    .attr('data-name', function(d){
+      return d.name
+    })  
     .on("mouseover", function(d, i) {
         svg.append("text")
           .attr("class", "title-text")
-          .style("fill", color(i))        
+          .style("fill", giveMeColor(i))        
           .text(d.name)
           .attr("text-anchor", "middle")
           .attr("x", (width-margin)/2)
@@ -241,8 +318,11 @@ Template.comisionablesstats.onRendered(function () {
       })
     .append('path')
     .attr('class', 'line')  
-    .attr('d', d => line(d.values))
-    .style('stroke', (d, i) => color(i))
+    .attr('d', function(d) {
+      return line(d.values)
+    })
+    .style('stroke', (d, i) => giveMeColor(i))
+    .style('fill', (d, i) => giveMeColor(i))
     .style('opacity', lineOpacity)
     .on("mouseover", function(d) {
         d3.selectAll('.line')
@@ -269,7 +349,11 @@ Template.comisionablesstats.onRendered(function () {
   lines.selectAll("circle-group")
     .data(data).enter()
     .append("g")
-    .style("fill", (d, i) => color(i))
+    .attr('class', 'thecircles')
+    .attr('data-name', function(d){
+      return d.name
+    })   
+    .style("fill", (d, i) => giveMeColor(i))
     .selectAll("circle")
     .data(d => d.values).enter()
     .append("g")
@@ -279,9 +363,9 @@ Template.comisionablesstats.onRendered(function () {
           .style("cursor", "pointer")
           .append("text")
           .attr("class", "text")
-          .text(`${d.price}`)
-          .attr("x", d => xScale(d.date) + 5)
-          .attr("y", d => yScale(d.price) - 10);
+          .text(`${d.price}€`)
+          .attr("x", d => xScale(d.mes) - 12)
+          .attr("y", d => yScale(d.price) - 20);
       })
     .on("mouseout", function(d) {
         d3.select(this)
@@ -291,7 +375,9 @@ Template.comisionablesstats.onRendered(function () {
           .selectAll(".text").remove();
       })
     .append("circle")
-    .attr("cx", d => xScale(d.date))
+    .attr("cx", function(d){
+      return xScale(parseInt(d.mes))
+    })
     .attr("cy", d => yScale(d.price))
     .attr("r", circleRadius)
     .style('opacity', circleOpacity)
@@ -325,5 +411,43 @@ Template.comisionablesstats.onRendered(function () {
     .attr("y", 15)
     .attr("transform", "rotate(-90)")
     .attr("fill", "#000")
-    .text("Total values");
+    .text("€ comisionado");
+
+  svg.select('.x.axis').selectAll("text").text(function(d){
+    if(d == 0){
+      return "0";
+    } else {
+      return getMyMonth(d);
+    }
+  });
+});
+
+
+Template.comisionablesstats.events({
+  'click .all': function(e) {
+    $(e.currentTarget).parent().find("input[type='checkbox']").each(function(i){
+      $(this).prop("checked", true);
+      $(".line-group[data-name='"+$(this).attr("data-name")+"']").css("visibility", "visible");
+      $(".thecircles[data-name='"+$(this).attr("data-name")+"']").css("visibility", "visible");
+    });
+  },
+
+  'click .none': function(e){ 
+    $(e.currentTarget).parent().find("input[type='checkbox']").each(function(i){
+      $(this).prop("checked", false);
+      $(".line-group[data-name='"+$(this).attr("data-name")+"']").css("visibility", "hidden");
+      $(".thecircles[data-name='"+$(this).attr("data-name")+"']").css("visibility", "hidden");
+    });
+  },
+
+  'change .comifilter': function(e){
+    if($(e.currentTarget).is(':checked')) {
+      $(".line-group[data-name='"+$(e.currentTarget).attr("data-name")+"']").css("visibility", "visible");
+      $(".thecircles[data-name='"+$(e.currentTarget).attr("data-name")+"']").css("visibility", "visible");
+    } else {
+      $(".line-group[data-name='"+$(e.currentTarget).attr("data-name")+"']").css("visibility", "hidden");
+      $(".thecircles[data-name='"+$(e.currentTarget).attr("data-name")+"']").css("visibility", "hidden");
+    }
+  }
+
 })
