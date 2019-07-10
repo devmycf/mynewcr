@@ -1,10 +1,12 @@
 <template name="comisionablesstats">
-    Comisionables stats
+    {{getTitle}}
     <div class="comistatscont">
         <div id="chart"></div>
         <div id="com-selector">
+            {{#if isAdmin}}
             <a class="all">Seleccionar todos</a>
             <a class="none">Quitar todos</a>
+            {{/if}}
             {{#each thecomis}}
                 <div>
                     <span style="background-color: {{getMyColor @index}}"></span>
@@ -15,4 +17,3 @@
         </div>
     </div>
 </template>
-

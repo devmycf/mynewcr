@@ -43,6 +43,16 @@ Template.dashboard.helpers({
     }
  },
 
+ todayBookingsCreated: function() {
+    var d = new Date();
+    //d.setDate(d.getDate() - 1);
+    d.setHours(3);
+    d.setMinutes(0);
+    console.log("the date");
+    console.log(d);
+    return Bookings.find({createdAt: {'$gt': d}}).count();
+ },
+
  isThisSelected: function(name, company){
     if (name == company){
         return "selected";
@@ -314,16 +324,26 @@ Template.dashboard.events({
         "click .status-pago": function(){
             // console.log(this);
             var newStatus;
+            var newCancel;
+            console.log("holadash");
             var userAct = Meteor.user().username;
-            if(this.pagada){
-                //set not
-                // console.log("ya pagada");
+            if(this.cancelada){
                 newStatus = false;
+                newCancel = false;
+
             } else {
-                // console.log("no pagada");
-                newStatus = true;
+                if(this.pagada) {
+                    newStatus = false;
+                    newCancel = true;
+                } else {
+                    newStatus = true;
+                    newCancel = false;
+                }
             }
+
+
             Meteor.call("setPago", this, newStatus, userAct);
+            Meteor.call("setCancelBooking", this, newCancel, userAct);
         },
 
         "click .bookingrow": function(){

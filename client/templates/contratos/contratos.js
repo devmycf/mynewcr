@@ -21,6 +21,7 @@ Template.contratos.onRendered(function(){
         $('#matricula').val(myCar.matricula);
         $('#marca').val(myCar.nombreCoche);
         $('#bastidor').val(myCar.bastidor);
+        $('#damages').val(myCar.damages);
     }
 
     if(Session.get("currentBooking")){
@@ -156,6 +157,7 @@ function createPDF(){
     var bastidor = $('#bastidor').val();
     var seguros = $('#cia-seguros').val();
     var poliza = $('#poliza').val();
+    var damages = $('#damages').val();
 
     //Coger información de contrato
     var salida = $('#salida').val();
@@ -572,6 +574,7 @@ function createPDF(){
                   body: [
                       [{ text: 'ESTADO DEL VEHICULO', style: 'tableHeader', colSpan: 3, alignment: 'left' }, {}, {}],
                       [{ image: entregadevo, width:450, colSpan:3, alignment:'center'}, {},{}],
+                      [{ text: 'Desperfectos: '+damages+' ', colSpan:3, alginment: 'left' }],
                       [{ text: 'Incluido en el vehículo: documentación, chaleco, triángulos, alfombrillas y antena', colSpan:3},{},{}]
                   ]
               },

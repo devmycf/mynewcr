@@ -1317,14 +1317,25 @@ button.createContract{
     text-decoration: none;
 }
 
+
 .pagada{
     color: #2ecc71;
     border-color: #2ecc71;
 }
 
+.cancelada{
+    color: #bea600;
+    border-color: #bea600;
+}
+
 .no-pagada{
     color: #e74c3c;
     border-color: #e74c3c;
+}
+
+.canceled td:not(.status) {
+    opacity: 0.5;
+    pointer-events: none;
 }
 
 #full-login {

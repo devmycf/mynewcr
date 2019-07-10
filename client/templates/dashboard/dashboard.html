@@ -126,7 +126,11 @@
             <p class="title">Ultima Reserva</p>
             <p class="num">{{lastBooking}}<br><small></small></p>
         </div>
-        {{#if isAdminOrFounder}}
+        {{#if isAdmin}}
+        <div class="col-md-3 db-panel">
+          <p class="title">Reservas Hoy</p>
+          <p class="num">{{todayBookingsCreated}}<br><small></small></p>
+        </div>
         <!-- 
             <div class="col-md-3">
                 {{>tideViz}}
@@ -168,7 +172,7 @@
         </thead>
         <tbody>
           {{#each bookingsFromNow}}
-              <tr class="bookingrow">
+              <tr class="bookingrow {{#if cancelada}} canceled {{/if}}" >
                 <td><p class="year">{{getYear fechareco}}</p><p class="day">{{getDay fechareco}}</p><p class="month {{#if isCompleted _id}}{{else}}nf{{/if}}">{{getMonth fechareco}}</p><p class="author">{{userName}}</p></td>
                                     <td>
                       {{#if currentUser}}
@@ -178,18 +182,21 @@
                         {{/if}}
                     {{/if}}
                       </td>
-                      <td>
+                      <td class="status">
                           {{numFactura}}
                           <br>
-                          {{#if pagada}}
-                          <a href="#" class="status-pago pagada">Pagada</a>
+                          {{#if cancelada}}
+                            <a href="#" class="status-pago cancelada">Cancelada</a>
                           {{else}}
-                          <a href="#" class="status-pago no-pagada">Pendiente</a>
-                          <div class="form-group" style="display: flex; flex-direction:row;">
-                              <input type="text" class="form-control qtypending"  placeholder="{{qtyPendiente}}">
-                              <label style="margin-top: 10px;">€</label>
-                          </div>
-
+                            {{#if pagada}}
+                              <a href="#" class="status-pago pagada">Pagada</a>
+                            {{else}}
+                              <a href="#" class="status-pago no-pagada">Pendiente</a>
+                              <div class="form-group" style="display: flex; flex-direction:row;">
+                                  <input type="text" class="form-control qtypending"  placeholder="{{qtyPendiente}}">
+                                  <label style="margin-top: 10px;">€</label>
+                              </div>
+                            {{/if}}
                           {{/if}}
                       </td>
                       <td>{{recogida}}

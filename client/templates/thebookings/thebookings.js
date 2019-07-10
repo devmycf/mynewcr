@@ -329,18 +329,28 @@ Template.thebookings.events({
   },
 
   "click .status-pago": function(){
-      // console.log(this);
-      var newStatus;
-      var userAct = Meteor.user().username;
-      if(this.pagada){
-          //set not
-          // console.log("ya pagada");
-          newStatus = false;
-      } else {
-          // console.log("no pagada");
-          newStatus = true;
-      }
-      Meteor.call("setPago", this, newStatus, userAct);
+            // console.log(this);
+            var newStatus;
+            var newCancel;
+            console.log("holadash");
+            var userAct = Meteor.user().username;
+            if(this.cancelada){
+                newStatus = false;
+                newCancel = false;
+
+            } else {
+                if(this.pagada) {
+                    newStatus = false;
+                    newCancel = true;
+                } else {
+                    newStatus = true;
+                    newCancel = false;
+                }
+            }
+
+
+            Meteor.call("setPago", this, newStatus, userAct);
+            Meteor.call("setCancelBooking", this, newCancel, userAct);
   },
 
   "change .bookingCar": function(e){

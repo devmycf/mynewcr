@@ -33,20 +33,30 @@
                 <tr class="bookingrow">
                   <td><p class="year">{{getYear fechareco}}</p><p class="day">{{getDay fechareco}}</p><p class="month {{#if isCompleted _id}}{{else}}nf{{/if}}">{{getMonth fechareco}}</p><p class="author">{{userName}}</p></td>
                   <td>
+                    {{#if currentUser}}
+                      <button type="button" class="btn btn-default sendConfirmationMail" onclick="location.href = '{{pathFor 'email'}}'" href=""><img src="img/send.svg"></button>
                       {{#if (isWithOurCars _id)}}
                           <button type="button" class="btn btn-default createContract"  href=""><img src="img/contract.svg" title="Crear Contrato" alt="Crear Contrato"></button>
                       {{/if}}
-                      {{#if pagada}}
-                      <a href="#" class="status-pago pagada">Pagada</a>
-                      {{else}}
-                      <a href="#" class="status-pago no-pagada">Pendiente</a>
-                      <div class="form-group" style="display: flex; flex-direction:row;">
-                          <input type="text" class="form-control qtypending"  placeholder="{{qtyPendiente}}">
-                          <label style="margin-top: 10px;">€</label>
-                      </div>
-
-                      {{/if}}
-                  </td>
+                  {{/if}}
+                    </td>
+                    <td class="status">
+                        {{numFactura}}
+                        <br>
+                        {{#if cancelada}}
+                          <a href="#" class="status-pago cancelada">Cancelada</a>
+                        {{else}}
+                          {{#if pagada}}
+                            <a href="#" class="status-pago pagada">Pagada</a>
+                          {{else}}
+                            <a href="#" class="status-pago no-pagada">Pendiente</a>
+                            <div class="form-group" style="display: flex; flex-direction:row;">
+                                <input type="text" class="form-control qtypending"  placeholder="{{qtyPendiente}}">
+                                <label style="margin-top: 10px;">€</label>
+                            </div>
+                          {{/if}}
+                        {{/if}}
+                    </td>
                   <td>{{recogida}} <br> {{formatDate fechareco}}                          {{#if transfer}}<br>
                                               <span class="transfer">Transfer</span>
                                             {{/if}}</td>

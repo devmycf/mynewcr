@@ -399,6 +399,14 @@ Template.flota.events({
     Meteor.call("updateOilChange", currentName, updatedKm);
   },
 
+  "change .hook-damages": function(e) {
+    var currentId = this._id;
+    var currentName = this.nombreCoche;
+    var updatedDamages = $(".card[name-coche='"+currentName+"']").find(".hook-damages").val();
+
+    Meteor.call("updateDamage", currentName, updatedDamages);
+  },
+
   "change .llave-selector": function(e) {
 
     var theCar = $(e.target).attr("data-car");
