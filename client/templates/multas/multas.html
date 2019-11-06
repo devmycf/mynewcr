@@ -24,11 +24,14 @@
                       </div>
                   </div>
                   <div class="row">
-                      <div class="col-md-6">
+                      <div class="col-md-4">
                         {{> afFormGroup name="fechaRes"}}
                       </div>
-                      <div class="col-md-6">
+                      <div class="col-md-4">
                         {{> afFormGroup name="fechaMulta"}}
+                      </div>
+                      <div class="col-md-4">
+                        {{> afFormGroup name="fechaRecepcion"}}
                       </div>
                   </div>
                   <div class="row">
@@ -86,12 +89,15 @@
                               </div>
                           </div>
                           <div class="row">
-                              <div class="col-md-6">
-                                {{> afFormGroup name="fechaRes" type="bootstrap-datetimepicker"}}
-                              </div>
-                              <div class="col-md-6">
-                                {{> afFormGroup name="fechaMulta" type="bootstrap-datetimepicker"}}
-                              </div>
+                            <div class="col-md-4">
+                              {{> afFormGroup name="fechaRes"}}
+                            </div>
+                            <div class="col-md-4">
+                              {{> afFormGroup name="fechaMulta"}}
+                            </div>
+                            <div class="col-md-4">
+                              {{> afFormGroup name="fechaRecepcion"}}
+                            </div>
                           </div>
                           <div class="row">
                             <div class="col-md-6">
@@ -132,6 +138,7 @@
       <table class="table table-responsive">
           <thead>
             <tr>
+                  <th>Fecha Recepcion</th>
                   <th>Fecha Multa</th>
                   <th>Referencia</th>
                   <th style="text-align: left">Nombre Cliente</th>
@@ -150,6 +157,7 @@
           <tbody>
               {{#each multas}}
                   <tr class="multarow">
+                      <td>{{formatDate fechaRecepcion}}</td>
                       <td>{{formatDate fechaMulta}}</td>
                       <td>{{referencia}}</td>
                       <td>
