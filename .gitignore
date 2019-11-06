@@ -1,7 +1,9 @@
 .deploy/
 .meteor/
 .vscode/
-server/
+server/cfsettings.js
+server/common.js
+server/smtp.js
 mup.js
 mup.json
 package-lock.json
