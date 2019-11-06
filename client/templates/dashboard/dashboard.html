@@ -100,7 +100,7 @@
 
 
 
-            <button type="submit" class="btn btn-primary">Enviar Reserva</button>
+            <button class="btn btn-primary">Enviar Reserva</button>
               <button type="button" class="btn btn-default" data-dismiss="modal">Descartar</button>
             {{/autoForm}}
           </div>
@@ -156,6 +156,7 @@
                 <th>Contacto</th>
                 <th>Compañía</th>
                 <th>Tipo</th>
+                <th>Matricula</th>
                 <th>Procedencia</th>
                 <th>Días</th>
                 <!-- <th>Suplemento</th>
@@ -174,7 +175,7 @@
           {{#each bookingsFromNow}}
               <tr class="bookingrow {{#if cancelada}} canceled {{/if}}" >
                 <td><p class="year">{{getYear fechareco}}</p><p class="day">{{getDay fechareco}}</p><p class="month {{#if isCompleted _id}}{{else}}nf{{/if}}">{{getMonth fechareco}}</p><p class="author">{{userName}}</p></td>
-                                    <td>
+                    <td>
                       {{#if currentUser}}
                         <button type="button" class="btn btn-default sendConfirmationMail" onclick="location.href = '{{pathFor 'email'}}'" href=""><img src="img/send.svg"></button>
                         {{#if (isWithOurCars _id)}}
@@ -252,6 +253,19 @@
                     {{/if}}
                 </td>
                 <td>{{tipo}} <br> {{tarifa}}</td>
+                <td>
+                  {{#if isWithOurCars _id}}
+                    {{#if getMyMatricula company != ""}}
+                    <div class="form-group" style="display: flex; flex-direction:row;">
+                      <input type="text" class="form-control bookingMatricula"  placeholder="{{getMyMatricula company}}" value="{{getMyMatricula company}}">
+                    </div>
+                    {{else}}
+                    <div class="form-group" style="display: flex; flex-direction:row;">
+                      <input type="text" class="form-control bookingMatricula"  placeholder="{{matribooking}}" value="{{matribooking}}">
+                    </div>
+                    {{/if}}
+                  {{/if}}
+                </td>
                 <td>{{procedencia}}</td>
                 <td>{{getNumberDays fechadevo fechareco}}</td>
                   <!-- <td class="suplementos">
@@ -270,7 +284,7 @@
                 </td>
                 <td>
                     <div class="form-group" style="display: flex; flex-direction:row;">
-                        <input type="text" class="form-control cteCoche"  placeholder="{{costeCoche}}">
+                        <input type="text" class="form-control cteCoche"  placeholder="{{costeCoche}}" value="{{costeCoche}}">
                         <label style="margin-top: 10px;">€</label>
                     </div>
                 </td>

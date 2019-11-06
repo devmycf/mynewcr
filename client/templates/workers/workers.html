@@ -1,4 +1,20 @@
 <template name="workers">
+      <!-- Update Modal -->
+      <div class="modal fade" id="updateTaskModal" tabindex="-1" role="dialog" aria-labelledby="myupdateTaskModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myupdateTaskModalLabel">Editar Tarea</h4>
+              </div>
+              <div class="modal-body modal-up">
+
+              
+              </div>
+    
+            </div>
+          </div>
+        </div>
   <div class="modal fade" id="confirmInactive" tabindex="-1" role="dialog" aria-labelledby="confirmInactive" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -162,7 +178,7 @@
         </thead>
         <tbody>
             {{#each tareasworkers}}
-                <tr worker-catcher="{{worker}}" worker-month="{{getMyMonth fecha}}" style="border-left: 7px solid {{getMyTaskColor type}}; border-right: 7px solid {{getMyTaskColor type}}">
+                <tr class="taskrow" worker-catcher="{{worker}}" worker-month="{{getMyMonth fecha}}" style="border-left: 7px solid {{getMyTaskColor type}}; border-right: 7px solid {{getMyTaskColor type}}">
                     <td style="text-align: left">{{tarea}}</td>
                     <td>{{worker}}</td>
                     <td>
@@ -175,7 +191,10 @@
                         <span>€</span>
                       </div>
                     </td>
-                    <td><button class="delete-booking">x</button></td>
+                    <td>
+                      <button class="btn btn-default editbooking hide" data-toggle="modal" data-target="#updateTaskModal"><img src="img/edit.png"></button>
+                      <button class="delete-booking">x</button>
+                    </td>
                 </tr>
             {{/each}}
         </tbody>

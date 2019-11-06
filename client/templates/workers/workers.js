@@ -74,6 +74,10 @@ Template.workers.helpers({
         return theDebt;
     },
 
+    selectedTaskDoc: function() {
+      return TareasWorkers.findOne(Session.get("selectedTaskId"));
+    },
+
     getMyTaskColor: function(tipo){
       switch (tipo) {
         case "Lavado": return "#3fb2b8";
@@ -192,6 +196,10 @@ Template.workers.events({
           link.href = fileUrl;
           link.click();
       });
+  },
+
+  "click .taskrow": function(){
+    Session.set("selectedTaskId", this._id);
   },
 
   'click #pastTasksExcel': function(){

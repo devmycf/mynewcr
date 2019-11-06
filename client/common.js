@@ -19,6 +19,7 @@ Meteor.subscribe("comisionables");
 Meteor.subscribe("ciudades");
 Meteor.subscribe("llaves");
 Meteor.subscribe("invoices");
+Meteor.subscribe("multas");
 
 
 Meteor.startup(function () {

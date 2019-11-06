@@ -105,6 +105,11 @@ Template.dashboard.helpers({
      return our;
  },
 
+ getMyMatricula: function(id) {
+    let mycar = Flota.findOne({'nombreCoche': id});
+    return mycar.matricula;
+ },
+
  isCompleted: function(id){
      var theBooking = Bookings.findOne({_id: id});
 
@@ -214,6 +219,14 @@ Template.dashboard.events({
             var newLocalizador = $(e.target).val();
             // console.log(newLocalizador);
             Meteor.call("pushLocalizador", currentId, newLocalizador);
+            // Meteor.call("test");
+        },
+
+        "blur .bookingMatricula": function(e){
+            var currentId = this._id;
+            var newMatricula = $(e.target).val();
+            // console.log(newLocalizador);
+            Meteor.call("pushMatricula", currentId, newMatricula);
             // Meteor.call("test");
         },
 

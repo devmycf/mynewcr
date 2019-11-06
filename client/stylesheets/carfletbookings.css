@@ -1306,6 +1306,10 @@ button.createContract{
     font-weight: bold;
 }
 
+.bookingMatricula {
+    min-width: 100px;
+}
+
 .status-pago{
     font-size: 10px;
     text-transform: uppercase;
@@ -1315,6 +1319,11 @@ button.createContract{
 
 .status-pago:hover{
     text-decoration: none;
+}
+
+.status-multa.pendiente {
+    color: #e74c3c;
+    border-color: #e74c3c;
 }
 
 

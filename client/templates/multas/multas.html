@@ -1,0 +1,206 @@
+<template name="multas">
+    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addMultaModal">
+        Alta de Multa
+      </button>
+      <!-- Modal Flota-->
+      <div class="modal fade" id="addMultaModal" tabindex="-1" role="dialog" aria-labelledby="myaddMultaModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="myaddMultaModalLabel">Alta de Multa</h4>
+            </div>
+            <div class="modal-body">
+              {{#autoForm collection="Multas" id="addMulta" type="insert"}}
+                  <div class="row">
+                      <div class="col-md-4">
+                        {{> afQuickField name="nombreCli"}}
+                      </div>
+                      <div class="col-md-4">
+                        {{> afQuickField name="importe"}}
+                      </div>
+                      <div class="col-md-4">
+                        {{> afQuickField name="referencia"}}
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div class="col-md-6">
+                        {{> afFormGroup name="fechaRes"}}
+                      </div>
+                      <div class="col-md-6">
+                        {{> afFormGroup name="fechaMulta"}}
+                      </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                        {{> afQuickField name="procedencia"}}
+                      </div>
+                      <div class="col-md-6">
+                        {{> afFormGroup name="company"}}
+                      </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                        {{> afQuickField name="matricula"}}
+                      </div>
+                      <div class="col-md-6">
+                        {{> afQuickField name="coche"}}
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div class="col-md-6">
+                        {{> afFormGroup name="perdidaPuntos" type="boolean-radios"}}
+                      </div>
+                      <div class="col-md-6">
+                        {{> afFormGroup name="status"}}
+                      </div>
+                  </div>
+    
+                  <button type="submit" class="btn btn-primary" id="newMulta">Crear</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Descartar</button>
+              {{/autoForm}}
+            </div>
+    
+          </div>
+        </div>
+      </div>
+            <!-- Modal Flota-->
+            <div class="modal fade" id="updateMultaModal" tabindex="-1" role="dialog" aria-labelledby="updateMultaModalLabel">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                      <h4 class="modal-title" id="updateMultaModalLabel">Edicion de multa</h4>
+                    </div>
+                    <div class="modal-body">
+                      {{#autoForm collection="Multas" id="editMulta" type="update" doc=selectedMultaDoc}}
+                          <div class="row">
+                              <div class="col-md-4">
+                                {{> afQuickField name="nombreCli"}}
+                              </div>
+                              <div class="col-md-4">
+                                {{> afQuickField name="importe"}}
+                              </div>
+                              <div class="col-md-4">
+                                {{> afQuickField name="referencia"}}
+                              </div>
+                          </div>
+                          <div class="row">
+                              <div class="col-md-6">
+                                {{> afFormGroup name="fechaRes" type="bootstrap-datetimepicker"}}
+                              </div>
+                              <div class="col-md-6">
+                                {{> afFormGroup name="fechaMulta" type="bootstrap-datetimepicker"}}
+                              </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-6">
+                                {{> afQuickField name="procedencia"}}
+                              </div>
+                              <div class="col-md-6">
+                                {{> afFormGroup name="company"}}
+                              </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-6">
+                                {{> afQuickField name="matricula"}}
+                              </div>
+                              <div class="col-md-6">
+                                {{> afQuickField name="coche"}}
+                              </div>
+                          </div>
+                          <div class="row">
+                              <div class="col-md-6">
+                                {{> afFormGroup name="perdidaPuntos" type="boolean-radios"}}
+                              </div>
+                              <div class="col-md-6">
+                                {{> afFormGroup name="status"}}
+                              </div>
+                          </div>
+            
+                          <button type="submit" class="btn btn-primary" id="newMulta">Editar</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Descartar</button>
+                      {{/autoForm}}
+                    </div>
+            
+                  </div>
+                </div>
+              </div>
+      <hr>
+      <hr>
+      <h2>Multas</h2>
+      <table class="table table-responsive">
+          <thead>
+            <tr>
+                  <th>Fecha Multa</th>
+                  <th>Referencia</th>
+                  <th style="text-align: left">Nombre Cliente</th>
+                  <th>Status</th>
+                  <th>Fecha Reserva</th>                  
+                  <th>Procedencia</th>
+                  <th>Compañía</th>
+                  <th>Matricula</th>
+                  <th>Coche</th>
+                  <th>Importe</th>
+                  <th>Perdida Puntos</th>
+                  <th>Notas</th>
+                  <th></th>
+            </tr>
+          </thead>
+          <tbody>
+              {{#each multas}}
+                  <tr class="multarow">
+                      <td>{{formatDate fechaMulta}}</td>
+                      <td>{{referencia}}</td>
+                      <td>
+                          {{nombreCli}}
+                      </td>
+                      <td>
+                          {{#if isPendiente status}}
+                          <a href="#" class="status-pago status-multa pendiente">Pendiente</a>
+                          {{else if isSent status}}
+                          <a href="#" class="status-pago status-multa enviada">Enviada</a>
+                          {{else}}
+                          <a href="#" class="status-pago status-multa pagada">Pagada</a>
+                          {{/if}}
+                      </td>
+                      <td>
+                          {{formatDate fechaRes}}
+                      </td>                      
+                      <td>
+                        {{procedencia}}
+                      </td>
+                      <td>
+                        {{company}}
+                      </td>
+                      <td>
+                        {{matricula}}
+                      </td>
+                      <td>
+                        {{coche}}
+                      </td>
+                      <td>
+                        <div class="form-group" style="display: flex; flex-direction:row;">
+                          <input type="number" class="form-control ctePresup"  placeholder="{{importe}}" value="{{importe}}">
+                          <label style="margin-top: 10px;">€</label>
+                        </div>
+                      </td>
+                      <td>
+                        {{#if perdidaPuntos}}
+                          Si
+                          {{else}}
+                          No
+                        {{/if}}
+                      </td>
+                      <td>
+                            {{observaciones}}
+                    </td>
+                      <td>
+                        <button class="delete-booking">x</button>
+                        <button class="btn btn-default editbooking" data-toggle="modal" data-target="#updateMultaModal"><img src="img/edit.png"></button>
+                      </td>
+                  </tr>
+              {{/each}}
+          </tbody>
+      </table>
+</template>

@@ -54,6 +54,10 @@ Template.returnBookings.helpers({
         // console.log(lastBooking[0].createdAt);
         // return moment(lastBooking[0].createdAt).format('MMMM Do YYYY, h:mm:ss a');
     },
+
+    selectedBookingDoc: function(){
+        return Bookings.findOne(Session.get("selectedBookingId"));
+    }
 });
 
 Template.returnBookings.rendered = function() {

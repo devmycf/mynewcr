@@ -1,4 +1,112 @@
 <template name="returnBookings">
+    <div class="modal fade" id="updatebookingModal" tabindex="-1" role="dialog" aria-labelledby="myupdateBookingModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="myupdateBookingModalLabel">Crear una Reserva</h4>
+            </div>
+            <div class="modal-body modal-up">
+              {{#autoForm collection="Bookings" id="updateBookingForm" type="update" doc=selectedBookingDoc}}
+                  <div class="row">
+                      <div class="col-md-6">
+                          {{> afFormGroup name="factura" type="select-radio-inline"}}
+                      </div>
+                      <div class="col-md-6">
+                          {{> afQuickField name="procedencia"}}
+                      </div>
+                  </div>
+  
+                  <div class="row">
+                      <div class="col-md-6">
+                          {{> afQuickField name="nombre"}}
+                      </div>
+                      <div class="col-md-6">
+                          {{> afFormGroup name="company" options=companyname}}
+                      </div>
+                      <div class="col-md-6">
+                          {{> afQuickField name="emailCliente"}}
+                      </div>
+                      <div class="col-md-6">
+                          {{> afQuickField name="telefonoCliente"}}
+                      </div>
+                </div>
+  
+                  <div class="row">
+                      <div class="col-md-6">
+                          {{> afFormGroup name="tipo" options=tipocoche}}
+                      </div>
+                      <div class="col-md-6">
+                          {{> afFormGroup name="tarifa" type="select-radio-inline" }}
+                      </div>
+                  </div>
+  
+  
+  
+                  <div class="row">
+                      <div class="col-md-6">
+                          {{> afQuickField name="recogida"}}
+                      </div>
+                      <div class="col-md-6 updateRecoTime">
+  
+                          {{> afFormGroup name="fechareco" type="bootstrap-datetimepicker" }}
+                          <span style="font-size:10px"><i>Cuidado! La fecha se muestra en formato MM/DD/AAAA</i></span>
+                      </div>
+                  </div>
+  
+                  <div class="row">
+                      <div class="col-md-6">
+                          {{> afQuickField name="devolucion"}}
+                      </div>
+                      <div class="col-md-6 updateDevoTime">
+  
+                          {{> afFormGroup name="fechadevo" type="bootstrap-datetimepicker" }}
+                          <span style="font-size:10px"><i>Cuidado! La fecha se muestra en formato MM/DD/AAAA</i></span>
+                      </div>
+                  </div>
+  
+                  <div class="row">
+                      <div class="col-md-4">
+                          {{> afFormGroup name="supdevolucion" type="select-radio-inline"}}
+                      </div>
+                      <div class="col-md-4">
+                          {{> afFormGroup name="supgps" type="select-radio-inline"}}
+                      </div>
+                      <div class="col-md-4">
+                          {{> afFormGroup name="suptransfer" type="select-radio-inline"}}
+                      </div>
+                  </div>
+  
+                  <div class="row">
+                      <div class="col-md-6">
+                          {{> afQuickField name="qtyPrepago"}}
+                      </div>
+                      <div class="col-md-6">
+                          {{> afQuickField name="euroscarflet"}}
+                      </div>
+  
+                </div>
+  
+                  <div class="row">
+                      <div class="col-md-12">
+                          {{> afQuickField name="notas" rows=4}}
+                      </div>
+                </div>
+  
+  
+  
+  
+  
+  
+  
+              <button type="submit" class="btn btn-primary">Enviar Reserva</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Descartar</button>
+              {{/autoForm}}
+            </div>
+  
+          </div>
+        </div>
+      </div>
     <h3>Dashboard | Próximas Devoluciones</h3>
     <a href="{{pathFor 'dashboard'}}">Ver próximas Recogidas</a>
       <div class="row">
@@ -41,7 +149,7 @@
           </thead>
           <tbody>
             {{#each devosFromNow}}
-                <tr class="bookingrow">
+                <tr class="bookingrow  {{#if cancelada}} canceled {{/if}}">
                   <th><p class="year">{{getYear fechadevo}}</p><p class="day">{{getDay fechadevo}}</p><p class="month" style="background:#2ecc71;">{{getMonth fechadevo}}</p><p class="author">{{userName}}</p></th>
                                       <td>
                         {{#if currentUser}}
@@ -51,16 +159,19 @@
                   <td>
                       {{numFactura}}
                       <br>
-                      {{#if pagada}}
-                      <a href="#" class="status-pago pagada">Pagada</a>
+                      {{#if cancelada}}
+                      <a href="#" class="status-pago cancelada">Cancelada</a>
                       {{else}}
-                      <a href="#" class="status-pago no-pagada">Pendiente</a>
-                      <div class="form-group" style="display: flex; flex-direction:row;">
-                          <input type="text" class="form-control qtypending"  placeholder="{{qtyPendiente}}">
-                          <label style="margin-top: 10px;">€</label>
-                      </div>
-
+                      {{#if pagada}}
+                        <a href="#" class="status-pago pagada">Pagada</a>
+                      {{else}}
+                        <a href="#" class="status-pago no-pagada">Pendiente</a>
+                        <div class="form-group" style="display: flex; flex-direction:row;">
+                            <input type="text" class="form-control qtypending"  placeholder="{{qtyPendiente}}">
+                            <label style="margin-top: 10px;">€</label>
+                        </div>
                       {{/if}}
+                    {{/if}}
                   </td>
                   <td>{{recogida}} <br> {{formatDate fechareco}}</td>
                   <td>{{devolucion}} <br> {{formatDate fechadevo}}</td>
