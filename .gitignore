@@ -2,7 +2,6 @@
 .meteor/
 .vscode/
 server/cfsettings.js
-server/common.js
 server/smtp.js
 mup.js
 mup.json
