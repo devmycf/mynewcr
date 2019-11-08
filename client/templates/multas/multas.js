@@ -15,19 +15,23 @@ AutoForm.hooks({
     addMulta: {
         onSuccess: function(formType, result) {
             $('#addMultaModal').modal('toggle');
+            FlashMessages.sendSuccess("Multa añadida", { autoHide: true, hideDelay: 3000 });
         },
         onError: function(formType, error) {
           console.log('Error!!!');
           console.log(error);
+          FlashMessages.sendError("Error en la creacion", { autoHide: true, hideDelay: 3000 });
         }
     },
     editMulta: {
         onSuccess: function(formType, result) {
             $('#updateMultaModal').modal('toggle');
+            FlashMessages.sendSuccess("Multa Actualizada", { autoHide: true, hideDelay: 3000 });
         },
         onError: function(formType, error) {
           console.log('Error!!!');
           console.log(error);
+          FlashMessages.sendError("Error en la creacion", { autoHide: true, hideDelay: 3000 });
         }
     },
 });

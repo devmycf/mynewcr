@@ -13,15 +13,20 @@
             <div class="modal-body">
               {{#autoForm collection="Multas" id="addMulta" type="insert"}}
                   <div class="row">
-                      <div class="col-md-4">
+                      <div class="col-md-6">
                         {{> afQuickField name="nombreCli"}}
                       </div>
-                      <div class="col-md-4">
-                        {{> afQuickField name="importe"}}
+                      <div class="col-md-6">
+                        {{> afQuickField name="emailCli"}}
                       </div>
-                      <div class="col-md-4">
-                        {{> afQuickField name="referencia"}}
-                      </div>
+                  </div>
+                  <div class="row">
+                      <div class="col-md-6">
+                          {{> afQuickField name="importe"}}
+                        </div>
+                        <div class="col-md-6">
+                          {{> afQuickField name="referencia"}}
+                        </div>
                   </div>
                   <div class="row">
                       <div class="col-md-4">
@@ -81,15 +86,20 @@
                     <div class="modal-body">
                       {{#autoForm collection="Multas" id="editMulta" type="update" doc=selectedMultaDoc}}
                           <div class="row">
-                              <div class="col-md-4">
+                              <div class="col-md-6">
                                 {{> afQuickField name="nombreCli"}}
                               </div>
-                              <div class="col-md-4">
-                                {{> afQuickField name="importe"}}
+                              <div class="col-md-6">
+                                {{> afQuickField name="emailCli"}}
                               </div>
-                              <div class="col-md-4">
-                                {{> afQuickField name="referencia"}}
-                              </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-6">
+                              {{> afQuickField name="importe"}}
+                            </div>
+                            <div class="col-md-6">
+                              {{> afQuickField name="referencia"}}
+                            </div>
                           </div>
                           <div class="row">
                             <div class="col-md-4">
@@ -147,7 +157,7 @@
                   <th>Fecha Recepcion</th>
                   <th>Fecha Multa</th>
                   <th>Referencia</th>
-                  <th style="text-align: left">Nombre Cliente</th>
+                  <th style="text-align: left">Nombre e email Cliente</th>
                   <th>Status</th>
                   <th>Fecha Reserva</th>                  
                   <th>Procedencia</th>
@@ -167,7 +177,7 @@
                       <td>{{formatDate fechaMulta}}</td>
                       <td>{{referencia}}</td>
                       <td>
-                          {{nombreCli}}
+                          {{nombreCli}} <br> {{emailCli}}
                       </td>
                       <td>
                           {{#if isPendiente status}}
@@ -210,8 +220,8 @@
                             {{observaciones}}
                     </td>
                       <td>
-                        <button class="delete-booking">x</button>
                         <button class="btn btn-default editbooking" data-toggle="modal" data-target="#updateMultaModal"><img src="img/edit.png"></button>
+                        <button class="delete-booking">x</button>
                       </td>
                   </tr>
               {{/each}}
