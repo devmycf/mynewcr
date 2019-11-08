@@ -111,6 +111,12 @@ Template.workers.helpers({
     tipotarea: function(){
         return [
           {
+            "name": "Recogida",
+          },
+          {
+            "name": "Entrega",
+          },
+          {
             "name": "Lavado",
           },
           {
@@ -127,7 +133,20 @@ Template.workers.helpers({
           },
           {
             "name": "Efectivo",
+          },
+          {
+            "name": "Aceite",
+          },
+          {
+            "name": "Peaje",
+          },
+          {
+            "name": "Taller",
+          },
+          {
+            "name": "Autobus",
           }
+          
         ];
     },
 
@@ -175,8 +194,18 @@ insertWorkerForm: {
       console.log('Error!!!');
       console.log(error);
     }
-}
+},
+updateTaskForm: {
+  onSuccess: function(formType, result) {
+    $('#updateTaskModal').modal('hide');
+    FlashMessages.sendSuccess("Tarea Actualizada", { autoHide: true, hideDelay: 3000 });
+  },
+  onError: function(formType, error) {
+    FlashMessages.sendError("Error en la actualizacion", { autoHide: true, hideDelay: 3000 });
+  }
+},
 });
+
 
 // Template.workers.rendered=function() {
 // 	$('.my-datepicker').datepicker({

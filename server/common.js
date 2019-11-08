@@ -502,7 +502,7 @@ Meteor.methods({
     let infoEmail = myCfConfig.myconf.emails.find((el) => el.key == 'cfinfo').value;
     let centralEmail = myCfConfig.myconf.emails.find((el) => el.key == 'cfcentral').value;
     Email.send({
-        to: centralEmail,
+        to: ownEmail,
         from: "Carflet Central de Reservas <"+centralEmail+">",
         subject: "[#Resumen Diario]: Actividad en Carflet",
         // html: SSR.render('recapemail', emailData)
