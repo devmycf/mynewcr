@@ -870,7 +870,7 @@ Meteor.methods({
             let currOpt = allOptions.find((ele) => { return ele.id == singleOption.id});
             let currOptName = currOpt.name;
             let currOptQty = singleOption.qty;
-            optionsInNotes = optionsInNotes + currOptName + " x"+singleOption.qty+ " ("+parseInt(currOpt.cost) * parseInt(singleOption.qty)+"€), ";  
+            optionsInNotes = optionsInNotes + currOptName + " x"+singleOption.qty+ " ("+parseInt(currOpt.cost) * parseInt(singleOption.qty)+"€/dia), ";  
           });
 
           optionsInNotes = optionsInNotes.slice(0, -1);
