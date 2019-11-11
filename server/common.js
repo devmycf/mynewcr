@@ -85,7 +85,7 @@ Meteor.publish("multas", function(){
 
 Meteor.startup(function () {
     var everyHour = new Cron(function() {
-        console.log("it is 30 minutes past the hour");
+        //console.log("it is 30 minutes past the hour");
         Meteor.call("catchNewBookings");
         // Meteor.call("sendDummyEmail");
     }, {
@@ -93,7 +93,7 @@ Meteor.startup(function () {
     });
 
     var everyDay = new Cron(function() {
-    console.log("it is 24 minutes past the hour");
+        //console.log("it is 24 minutes past the hour");
         Meteor.call("sendDailyMail");
         // Meteor.call("sendEmailTideRise", 0);
     }, {
@@ -116,9 +116,9 @@ Meteor.startup(function () {
     // }, {
     //     minute: 30
     // });
-    console.log("hey");
+    //console.log("hey");
     let myemauk = myCfConfig.myconf.emails.find((el) => el.key == 'dev').value;
-    console.log(myemauk);
+    //console.log(myemauk);
  });
 
 
@@ -322,7 +322,7 @@ Meteor.methods({
     let ownEmail = myCfConfig.myconf.emails.find((el) => el.key == 'dev').value;
     let infoEmail = myCfConfig.myconf.emails.find((el) => el.key == 'cfinfo').value;
     let centralEmail = myCfConfig.myconf.emails.find((el) => el.key == 'cfcentral').value;
-     console.log("nuevo nivel");
+     //console.log("nuevo nivel");
      // tideToShow = 0;
      // subtide = 3;
      switch (tideToShow) {
@@ -521,31 +521,31 @@ Meteor.methods({
       var dummyDateFin = moment("10-30-2017", "MM-DD-YYYY").toDate();
       var dummyDateIni = moment("10-30-2017", "MM-DD-YYYY").toDate();
       var dummyDateFin = moment("10-30-2015", "MM-DD-YYYY").toDate();
-      console.log(today);
-      console.log(yesterday);
+      //console.log(today);
+      //console.log(yesterday);
 
       //GET RESERVAS AYER
       // var yestBookings = Bookings.find({}, {limit: 10}).fetch();
       var yestBookings = Bookings.find({createdAt: {'$gte': yesterday}},{sort:{createdAt: 1}}).fetch();
 
       var numToday = yestBookings.length;
-      console.log(numToday);
+      //console.log(numToday);
       var earnedToday = 0;
       var maxEarning = 0;
       var indexMaxEarning = 0;
 
       if(yestBookings.length > 0){
-          console.log("entro por el if");
-          console.log(yestBookings);
+        //  console.log("entro por el if");
+          //console.log(yestBookings);
           for (var i = 0; i<yestBookings.length; i++){
               // var singleEarning = yestBookings[i].euroscarflet.replace(/[^\d.-]/g,'');
               var singleEarning = yestBookings[i].euroscarflet;
-              console.log("the earning");
+            //  console.log("the earning");
               // console.log(singleEarning);
 
               if(!isNaN(singleEarning)) {
                    //do some thing if it's a number
-                   console.log(singleEarning);
+              //     console.log(singleEarning);
                    singleEarning = parseFloat(singleEarning);
                    earnedToday = parseFloat(earnedToday + singleEarning);
 
@@ -737,20 +737,20 @@ Meteor.methods({
     }
 
     function getMomentoRecoDevo(reserva, resDB){
-      console.log('me han llamado para trastear con fechas');
+      // console.log('me han llamado para trastear con fechas');
       //var momentoReco = moment((resDB.ritiro)*1000).format("DD MMM YYYY hh:mm a");
       //var momentoReco = moment((resDB.ritiro)*1000, "DD MMM YYYY hh:mm a", true).format();
       var momentoReco = new Date(moment((resDB.ritiro)*1000));
       // var momentoReco = moment((resDB.ritiro)*1000).format("YYYY-mm-ddTHH:MM:ssZ");
-      console.log(momentoReco);
+      // console.log(momentoReco);
       reserva.fechareco = momentoReco;
 
       var momentoDevo = new Date(moment((resDB.consegna)*1000));
-      console.log(momentoDevo);
+      // console.log(momentoDevo);
       reserva.fechadevo = momentoDevo;
 
       var momentoHecha = new Date(moment((resDB.ts)*1000));
-      console.log(momentoHecha);
+      // console.log(momentoHecha);
       reserva.fechaReserva = momentoHecha;
       reserva.notas = resDB.coupon;
 
@@ -758,7 +758,7 @@ Meteor.methods({
     }
 
     function getLugaresInfo(reserva, resDB, con){
-      console.log('me han llamado para ver lugares');
+      // console.log('me han llamado para ver lugares');
 
       //Coger id de recogida
       var idLugarReco = resDB.idplace;
@@ -773,7 +773,7 @@ Meteor.methods({
         var idLugarDevo = resDB.idreturnplace;
 
         con.query('SELECT `name` FROM `carf_vikrentcar_places` WHERE id = ?', idLugarDevo, function(err, rows){
-          console.log(rows[0].name);
+          // console.log(rows[0].name);
           reserva.devolucion = rows[0].name;
           insertIntoDB(reserva);
         });
@@ -783,7 +783,7 @@ Meteor.methods({
     }
 
     function getTarifaInfo(reserva, resDB,con){
-      console.log('me han llamado para ver tarifas');
+      // console.log('me han llamado para ver tarifas');
 
 
       //Coger idtar de la reserva
@@ -793,7 +793,7 @@ Meteor.methods({
       //Coger clave de precio de la tabla DISPCOST
       con.query('SELECT `idprice` FROM `carf_vikrentcar_dispcost` WHERE id = ?', idTarifa, function(err, rows){
           idPrecio = rows[0].idprice;
-          //console.log(idPrecio);
+          //// console.log(idPrecio);
 
           con.query('SELECT `name` FROM `carf_vikrentcar_prices` WHERE id = ?', idPrecio, function(err, rows){
               var nombreTarifa = rows[0].name;
@@ -807,7 +807,7 @@ Meteor.methods({
     }
 
     function getCocheInfo(reserva, resDB, con){
-        console.log('me han llamado para dar la info del coche');
+        // console.log('me han llamado para dar la info del coche');
         // Check options 
         //Hay que coger la clave del coche de la reserva
 
@@ -816,19 +816,19 @@ Meteor.methods({
         if(idCoche == 18 || idCoche == 64){
           //Se ha hecho con el coche para cobrar
           if(idCoche == 18 || idCoche == 64){
-            console.log('vehiculo de alquiler');
+            // console.log('vehiculo de alquiler');
             reserva.tipo = "Vehiculo de alquiler";
           }else {
-            console.log('transfer');
+            // console.log('transfer');
             reserva.tipo = "Transfer Aeropuerto Madrid";
           }
           reserva.tarifa = "Personalizada";
           reserva.euroscarflet = 0;
           getLugaresInfo(reserva, resDB, con);
         } else {
-              console.log('coche normal');
+              // console.log('coche normal');
               var idCategoria = "";
-              console.log(idCoche);
+              // console.log(idCoche);
 
               //Coger clave de categoria de con el id del coche
               con.query('SELECT `idcat` FROM `carf_vikrentcar_cars` WHERE id = ?', idCoche, function(err, rows){
@@ -840,8 +840,8 @@ Meteor.methods({
                   con.query('SELECT `name` FROM `carf_vikrentcar_categories` WHERE id = ?', idCategoria, function(err, rows, nombreCategoria){
                     nombreCategoria = rows[0].name;
                     reserva.tipo = nombreCategoria;
-                    console.log(nombreCategoria);
-                    console.log(reserva);
+                    // console.log(nombreCategoria);
+                    // console.log(reserva);
                     getTarifaInfo(reserva, resDB, con);
                   });
 
@@ -943,8 +943,8 @@ Meteor.methods({
       database : hostInfo.db
     });
 
-    console.log("conectando");
-    console.log(connection.host);
+    // console.log("conectando");
+    // console.log(connection.host);
 
     connection.connect(function(err) {
       if (err) {
@@ -952,7 +952,7 @@ Meteor.methods({
         return;
       }
 
-      console.log('connected as id ' + connection.threadId);
+      // console.log('connected as id ' + connection.threadId);
       return connection;
     });
 
@@ -967,11 +967,11 @@ Meteor.methods({
         console.log(err);
       }
       if(rows.length == 0){
-        console.log("Vacío");
+        // console.log("Vacío");
       } else {
         for(i=0;i<rows.length;i++){
         //Para cada reserva
-            console.log(rows[i].id);
+            // console.log(rows[i].id);
 
             // Vamos creando el objeto de reserva
             var reserva = {
@@ -1006,7 +1006,6 @@ Meteor.methods({
             } else {
               getCocheInfo(reserva, rows[i], connection)
             }
-            //getCocheInfo(reserva, rows[i], connection);
         }
 
       }
@@ -1049,9 +1048,9 @@ Meteor.methods({
   },
 
   setPago: function(res, statusPago, username){
-      console.log("pagando");
-      console.log(statusPago);
-      console.log(res);
+      //console.log("pagando");
+      //console.log(statusPago);
+      //console.log(res);
       Bookings.update(res._id, {
          $set: {pagada: statusPago},
       });
@@ -1209,7 +1208,7 @@ Meteor.methods({
        futureResponse.throw(err);
      }
      else {
-       console.log("No error al crear el directorio temporal");
+       // console.log("No error al crear el directorio temporal");
        var uuid = UUID.v4();
        var filePath = './tmp/' + uuid;
        workbook.writeToFile(filePath);
@@ -1223,7 +1222,7 @@ Meteor.methods({
            futureResponse.throw(err);
          }
          else {
-             console.log('no error al importar');
+             // console.log('no error al importar');
            futureResponse.return('/gridfs/temporaryFiles/' + file._id);
          }
        });
@@ -1288,7 +1287,7 @@ Meteor.methods({
        futureResponse.throw(err);
      }
      else {
-       console.log("No error al crear el directorio temporal");
+       // console.log("No error al crear el directorio temporal");
        var uuid = UUID.v4();
        var filePath = './tmp/' + uuid;
        workbook.writeToFile(filePath);
@@ -1302,7 +1301,7 @@ Meteor.methods({
            futureResponse.throw(err);
          }
          else {
-             console.log('no error al importar');
+             // console.log('no error al importar');
            futureResponse.return('/gridfs/temporaryFiles/' + file._id);
          }
        });
@@ -1315,14 +1314,14 @@ Meteor.methods({
 
   updateNumFact: function(){
 
-        console.log("Entra a la llamada numfactura");
+        // console.log("Entra a la llamada numfactura");
         var numActual = 1;
 
         Bookings.find({},{sort:{fechareco: 1}}).forEach(function(booking) {
             if(booking.factura == "SI"){
-                console.log("Se necesita factura. Insertar numero e incrementar");
-                console.log(booking.numFactura);
-                console.log(booking._id);
+                // console.log("Se necesita factura. Insertar numero e incrementar");
+                // console.log(booking.numFactura);
+                // console.log(booking._id);
                 Bookings.update(booking._id, {
                     $set: {numFactura: numActual}
                 });
@@ -1331,7 +1330,7 @@ Meteor.methods({
             }
 
             else{
-                console.log("NO FACTURA");
+                // console.log("NO FACTURA");
                 Bookings.update(booking._id, {
                     $set: {numFactura: 0}
                 });
