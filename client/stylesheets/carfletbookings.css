@@ -1326,6 +1326,26 @@ button.createContract{
     border-color: #e74c3c;
 }
 
+.status-multa {
+    font-size: 10px;
+    text-transform: uppercase;
+    padding: 3px;
+    border: 1px solid;
+    color: darkgrey;
+    min-width: 100px;
+    display: block;
+    margin: 10px 0;
+}
+
+.status-multa.multa--enviada {
+    color: #2ecc71;
+    border-color: #2ecc71;
+}
+.status-multa.multa--pagada {
+    color: #2ecc71;
+    border-color: #2ecc71;
+}
+
 
 .pagada{
     color: #2ecc71;

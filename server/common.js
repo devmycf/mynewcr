@@ -1047,6 +1047,18 @@ Meteor.methods({
       });
   },
 
+  setPagadaMulta: function(res, status, username) {
+    Multas.update(res._id, {
+      $set: {isPagada: status},
+   });
+  },
+
+  setEnviadaMulta: function(res, status, username) {
+    Multas.update(res._id, {
+      $set: {isEnviada: status},
+   });
+  },
+
   setPago: function(res, statusPago, username){
       //console.log("pagando");
       //console.log(statusPago);

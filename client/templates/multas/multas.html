@@ -180,12 +180,16 @@
                           {{nombreCli}} <br> {{emailCli}}
                       </td>
                       <td>
-                          {{#if isPendiente status}}
-                          <a href="#" class="status-pago status-multa pendiente">Pendiente</a>
-                          {{else if isSent status}}
-                          <a href="#" class="status-pago status-multa enviada">Enviada</a>
+                          {{#if isEnviada}}
+                              <a href="#" class="status-envio status-multa multa--enviada">Enviada</a>
+                            {{else}}
+                              <a href="#" class="status-envio status-multa">No Enviada</a>
+                          {{/if}}
+
+                          {{#if isPagada}}
+                            <a href="#" class="status-pago status-multa multa--pagada">Pagada</a>
                           {{else}}
-                          <a href="#" class="status-pago status-multa pagada">Pagada</a>
+                            <a href="#" class="status-pago status-multa">No Pagada</a>
                           {{/if}}
                       </td>
                       <td>

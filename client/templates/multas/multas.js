@@ -45,11 +45,20 @@ Template.multas.events({
         // console.log(this);
         var newStatus;
         var userAct = Meteor.user().username;
-        var newestado = this.status + 1;
 
-        (newestado == 3)? newestado = 0: newestado = newestado;
+        var newpagada = !this.isPagada;
+        
+        Meteor.call("setPagadaMulta", this, newpagada, userAct)
+    },
 
-        Meteor.call("setEstadoMulta", this, newestado, userAct);
+    "click .status-envio": function(){
+        // console.log(this);
+        var newStatus;
+        var userAct = Meteor.user().username;
+
+        var newEnv = !this.isEnviada;
+        
+        Meteor.call("setEnviadaMulta", this, newEnv, userAct)
     },
   
     "blur .ctePresup": function(e){
