@@ -1418,8 +1418,8 @@ Meteor.methods({
             var end = moment((parseInt(period)+1)+"-01-"+currentYear+"", "MM-DD-YYYY").toDate();
         }
 
-        console.log(start);
-        console.log(end);
+        //console.log(start);
+        //console.log(end);
         Bookings.find({createdAt: {'$gte': start, '$lt': end}},{sort:{createdAt: 1}}).forEach(function(booking) {
             worksheet.writeToCell(row, 0, booking.createdAt);
             worksheet.writeToCell(row, 1, booking.fechareco);
@@ -1557,7 +1557,7 @@ Meteor.methods({
     }
 
     if(mode == 3){
-        console.log("anuales");
+        //console.log("anuales");
         var start = moment("01-01-"+period+"", "MM-DD-YYYY").toDate();
         var end = moment("12-31-"+period+"", "MM-DD-YYYY").toDate();
 
@@ -1627,7 +1627,7 @@ Meteor.methods({
         futureResponse.throw(err);
       }
       else {
-        console.log("No error al crear el directorio temporal");
+        //console.log("No error al crear el directorio temporal");
         var uuid = UUID.v4();
         var filePath = './tmp/' + uuid;
         workbook.writeToFile(filePath);
@@ -1654,7 +1654,7 @@ Meteor.methods({
   downloadExcelEmails: function(){
     var Future = Npm.require('fibers/future');
     var futureResponse = new Future();
-    console.log("Entra en la llamada del server");
+    //console.log("Entra en la llamada del server");
 
     var excel = new Excel('xlsx'); // Create an excel object  for the file you want (xlsx or xls)
     var workbook = excel.createWorkbook(); // Create a workbook (equivalent of an excel file)
