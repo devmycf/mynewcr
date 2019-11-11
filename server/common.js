@@ -806,12 +806,9 @@ Meteor.methods({
 
     }
 
-
-
     function getCocheInfo(reserva, resDB, con){
         console.log('me han llamado para dar la info del coche');
-
-
+        // Check options 
         //Hay que coger la clave del coche de la reserva
 
         //Coger clave del coche la reserva
@@ -850,6 +847,39 @@ Meteor.methods({
 
               });
         }
+
+    }
+
+    function getOptionsInfo(reserva, resDB, con) {
+        let allOptions = "";
+        let optionsInNotes = "";
+        con.query('SELECT * FROM `carf_vikrentcar_optionals`', function(err, rows){
+          allOptions = rows.map((opt) =>  ({
+            "name": opt.name,
+            "id": opt.id,
+            "cost": opt.cost
+          }));
+
+
+          let myOpts = resDB.optionals.slice(0, -1).split(";").map((element) => ({
+            "id": element.split(":")[0],
+            "qty": element.split(":")[1]
+          }));
+          myOpts.forEach((singleOption) => {
+            //get Optional
+            let currOpt = allOptions.find((ele) => { return ele.id == singleOption.id});
+            let currOptName = currOpt.name;
+            let currOptQty = singleOption.qty;
+            optionsInNotes = optionsInNotes + currOptName + " x"+singleOption.qty+ " ("+parseInt(currOpt.cost) * parseInt(singleOption.qty)+"€), ";  
+          });
+
+          optionsInNotes = optionsInNotes.slice(0, -1);
+          optionsInNotes = optionsInNotes.slice(0, -1);
+
+          reserva.notas = reserva.notas + optionsInNotes
+
+          getCocheInfo(reserva, resDB, con)
+        });
 
     }
 
@@ -971,8 +1001,12 @@ Meteor.methods({
             // Luego fecha y horas de recogida y devolucion
             getMomentoRecoDevo(reserva, rows[i]);
             //Despues la info del coche
-            getCocheInfo(reserva, rows[i], connection);
-
+            if(rows[i].optionals != " " || rows[i].optionals != null) {
+              getOptionsInfo(reserva, rows[i], connection);
+            } else {
+              getCocheInfo(reserva, rows[i], connection)
+            }
+            //getCocheInfo(reserva, rows[i], connection);
         }
 
       }
