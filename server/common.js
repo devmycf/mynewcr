@@ -7,6 +7,7 @@ import { Meteor } from 'meteor/meteor'
 import * as myCfConfig from './cfsettings'
 import './publishers';
 import './bookingsAPI';
+import './mailSender';
 
 Meteor.startup(function () {
     var everyHour = new Cron(function() {
@@ -72,23 +73,6 @@ Meteor.methods({
   //   Comisionables.update({_id: id}, {$set: {pendienteLiquidar: false, lastLiquidacion: new Date()}});
   // },
 
-  makeTheKeys: function(theId, theName) {
-    var numKeys = 3;
-    for(var i = 0; i<numKeys; i++){
-      Llaves.insert({
-        idFlota: theId,
-        nameFlota: theName,
-        ordinalInFlota: (i+1),
-        locationName: "-",
-        locationId: "-"
-      });
-    }
-  },
-
-  updateKeyLoc: function(theid, theLoc, theLocN){
-    Llaves.update({'_id': theid}, {$set: {'locationName': theLocN, 'locationId': theLoc}});
-  },
-
   sendPDFEmail: function(thepdf ,thename, themail){
     let ownEmail = myCfConfig.myconf.emails.find((el) => el.key == 'dev').value;
     let infoEmail = myCfConfig.myconf.emails.find((el) => el.key == 'cfinfo').value;
@@ -142,9 +126,7 @@ Meteor.methods({
     Comisionables.update({_id:myId}, {$set: {ciudad: myCity}});
   },
 
-  pushCompanyPresup: function(preId, the_company){
-    Presupuestos.update({_id: preId}, {$set: {company: the_company}});
-  },
+
 
   updateLastLiquidacionDate: function(comiId, laFecha){
     Comisionables.update({_id: comiId}, {$set: {lastLiquidacion: laFecha}});
@@ -162,66 +144,6 @@ Meteor.methods({
     Flota.update({nombreCoche: carName}, {$set: {damages: dam}});
   },
 
-  insertTask:function(taskjson){
-    TareasWorkers.insert({'type': taskjson.type, 'worker': taskjson.worker, 'tarea': taskjson.tarea, 'precio': taskjson.precio, 'coche': taskjson.coche, 'comments': taskjson.comments, 'ciudad': taskjson.ciudad, 'fecha': taskjson.fecha});
-  },
-
-  pushCosteTask: function(myid, newCoste){
-        TareasWorkers.update(myid, {
-           $set: {precio: newCoste},
-        });
-  },
-
-
-
-  setWorkerInactive: function(id){
-    Workers.update({_id: id}, {$set: {isActive: false}});
-  },
-
-  setWorkerActive: function(id){
-    Workers.update({_id: id}, {$set: {isActive: true}});
-  },
-
-  assignRecoWorker: function(idMyBooking, idWorker, nameWorker){
-    Bookings.update({_id: idMyBooking}, {$set: {recoworker: nameWorker, recoworkerId: idWorker}});
-  },
-
-  resetComisionPerson: function(theBookingId, comiDate){
-    Bookings.update({_id: theBookingId}, {$set: {isComissioned: false, comisionPerson: "", comisionEuros: 0, comisionId: "", comisionDate: comiDate}});
-  },
-
-  assignComisionPerson: function(idMyBooking, idComi, nameComi, dateComi){
-    Bookings.update({_id: idMyBooking}, {$set: {isComissioned: true, comisionPerson: nameComi, comisionId: idComi, comisionDate: dateComi}});
-    Comisionables.update({_id: idComi}, {$set: {pendienteLiquidar: true}});
-  },
-
-  resetRecoWorker: function(theBookingId){
-    Bookings.update({_id: theBookingId}, {$set: {recoworker: "", recoworkerId: ""}});
-    TareasWorkers.remove({idBooking: theBookingId, type: "Entrega"});
-  },
-
-  resetDevoWorker: function(theBookingId){
-    Bookings.update({_id: theBookingId}, {$set: {devoworker: "", devoworkerId: ""}});
-    TareasWorkers.remove({idBooking: theBookingId, type: "Recogida"});
-  },
-
-  updateRecoDevoWorker: function(idTarea, idWorker, nameWorker) {
-    TareasWorkers.update({_id: idTarea}, {$set: {worker: nameWorker}});
-  },
-
-  insertRecoWorker: function(mybooking, idWorker, nameWorker) {
-    var tarea = "Entrega del "+mybooking.company+" de "+mybooking.nombre+" en "+mybooking.recogida+"";
-    TareasWorkers.insert({'type': 'Entrega', 'worker': nameWorker, 'tarea': tarea, 'idBooking': mybooking._id, 'nameBooking': mybooking.nombre, 'precio': 7.5, 'coche': mybooking.company, 'fecha': mybooking.fechareco});
-  },
-
-  insertDevoWorker: function(mybooking, idWorker, nameWorker) {
-    var tarea = "Recogida del "+mybooking.company+" de "+mybooking.nombre+" en "+mybooking.recogida+"";
-    TareasWorkers.insert({'type': 'Recogida', 'worker': nameWorker, 'tarea': tarea, 'idBooking': mybooking._id, 'nameBooking': mybooking.nombre, 'precio': 7.5, 'coche': mybooking.company, 'fecha': mybooking.fechadevo});
-  },
-
-  assignDevoWorker: function(idBooking, idWorker, nameWorker){
-    Bookings.update({_id: idBooking}, {$set: {devoworker: nameWorker, devoworkerId: idWorker}});
-  },
 
   setTides: function(first, second, third, forth, fifth){
       Tides.update({level: 1},{$set: {threshold: first},});
@@ -546,74 +468,6 @@ Meteor.methods({
           subject: "dummy nuevo",
           html: "<p>hey bro otra vez</p>"
       });
-  },
-
-  pushCoste: function(myid, newCoste){
-        Bookings.update(myid, {
-           $set: {costeCoche: newCoste},
-        });
-  },
-
-  pushCostePresup: function(myid, newCoste){
-        Presupuestos.update(myid, {
-           $set: {costepre: newCoste},
-        });
-  },
-
-  pushObserv: function(myid, newCoste){
-        Presupuestos.update(myid, {
-           $set: {observaciones: newCoste},
-        });
-  },
-
-  pushprecioPresup: function(myid, newCoste){
-        Presupuestos.update(myid, {
-           $set: {cotizacion: newCoste},
-        });
-  },
-
-  pushImporteMulta: function(myid, newCoste){
-        Multas.update(myid, {
-           $set: {importe: newCoste},
-        });
-  },
-
-  pushLocalizador: function(myid, newLocalizador){
-        Bookings.update(myid, {
-           $set: {localizador: newLocalizador},
-        });
-  },
-
-  pushComision: function(myid, newComision){
-        Bookings.update(myid, {
-           $set: {comisionEuros: newComision},
-        });
-  },
-
-  pushPending: function(myid, newPending){
-      Bookings.update(myid, {
-         $set: {qtyPendiente: newPending},
-      });
-  },
-
-  pushCarBooking: function(myid, mycar, username){
-      Bookings.update(myid._id, {
-         $set: {company: mycar},
-      });
-
-      Activities.insert({
-          "time": new Date(),
-          "isPublic": true,
-          "author": username,
-          "type": 5,
-          "desc": username + " asignó "+mycar+" para la reserva de "+myid.nombre+" del "+moment(myid.createdAt).format("DD-MMM")+"",
-          "nombreBooking": myid.nombre,
-          "fechaBooking": myid.createdAt,
-          "recoBooking": myid.recogida,
-          "devoBooking": myid.devolucion
-      });
-
-
   },
 
   // FROM HERE TO BOTTOM IS OLDER THAN 1.4
@@ -955,69 +809,7 @@ Meteor.methods({
                 return diferencia;
   },
 
-  setPresuSent: function(res, statusPago, username){
-      Presupuestos.update(res._id, {
-         $set: {sent: statusPago},
-      });
-  },
 
-  setEstadoMulta: function(res, statusPago, username){
-      Multas.update(res._id, {
-         $set: {status: statusPago},
-      });
-  },
-
-  setPagadaMulta: function(res, status, username) {
-    Multas.update(res._id, {
-      $set: {isPagada: status},
-   });
-  },
-
-  setEnviadaMulta: function(res, status, username) {
-    Multas.update(res._id, {
-      $set: {isEnviada: status},
-   });
-  },
-
-  setPago: function(res, statusPago, username){
-      //console.log("pagando");
-      //console.log(statusPago);
-      //console.log(res);
-      Bookings.update(res._id, {
-         $set: {pagada: statusPago},
-      });
-
-      var textPagada = "pendiente";
-
-      if(statusPago == true){
-          Bookings.update(res._id, {
-             $set: {qtyPendiente: 0},
-          });
-
-          var textPagada = "pagada";
-      }
-      // console.log(Bookings.findOne(id));
-      /*Activities.insert({
-          "time": new Date(),
-          "isPublic": true,
-          "author": username,
-          "type": 3,
-          "desc": username + " marcó como "+textPagada+" la reserva de "+res.nombre+" del "+moment(res.createdAt).format("DD-MMM")+"",
-          "nombreBooking": res.nombre,
-          "fechaBooking": res.createdAt,
-          "recoBooking": res.recogida,
-          "devoBooking": res.devolucion
-      });*/
-
-  },
-
-  setCancelBooking: function(res, statusCancel, username) {
-    Bookings.update(res._id, {
-      $set: {
-        cancelada: statusCancel
-      }
-    })
-  },
 
   sendEmail: function (to, from, subject, text) {
       // check([to, from, subject, text], [String]);
