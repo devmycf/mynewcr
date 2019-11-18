@@ -122,29 +122,6 @@ Meteor.methods({
     });
   },
 
-  updateCityForComi: function(myId, myCity){
-    Comisionables.update({_id:myId}, {$set: {ciudad: myCity}});
-  },
-
-
-
-  updateLastLiquidacionDate: function(comiId, laFecha){
-    Comisionables.update({_id: comiId}, {$set: {lastLiquidacion: laFecha}});
-  },
-
-  updateLastITV: function(carName, laFecha){
-    Flota.update({nombreCoche: carName}, {$set: {lastITV: laFecha}});
-  },
-
-  updateOilChange: function(carName, km) {
-    Flota.update({nombreCoche: carName}, {$set: {oilChange: km}});
-  },
-
-  updateDamage: function(carName, dam) {
-    Flota.update({nombreCoche: carName}, {$set: {damages: dam}});
-  },
-
-
   setTides: function(first, second, third, forth, fifth){
       Tides.update({level: 1},{$set: {threshold: first},});
       Tides.update({level: 2},{$set: {threshold: second},});
@@ -878,9 +855,7 @@ Meteor.methods({
         return (sum1+sum2+sum3);
   },
 
-  addOficina: function(oficina){
-      Oficinas.insert(oficina);
-  },
+
 
   downloadTareasWorkersOtherYear: function(theYear){
     var Future = Npm.require('fibers/future');
@@ -1035,35 +1010,6 @@ Meteor.methods({
    return futureResponse.wait();
 
  },
-
-  updateNumFact: function(){
-
-        // console.log("Entra a la llamada numfactura");
-        var numActual = 1;
-
-        Bookings.find({},{sort:{fechareco: 1}}).forEach(function(booking) {
-            if(booking.factura == "SI"){
-                // console.log("Se necesita factura. Insertar numero e incrementar");
-                // console.log(booking.numFactura);
-                // console.log(booking._id);
-                Bookings.update(booking._id, {
-                    $set: {numFactura: numActual}
-                });
-
-                numActual++;
-            }
-
-            else{
-                // console.log("NO FACTURA");
-                Bookings.update(booking._id, {
-                    $set: {numFactura: 0}
-                });
-            }
-        });
-
-        return false;
-  },
-
 
 
   downloadExcelCustom: function(mode, period, finitial, ffin){
@@ -1424,35 +1370,7 @@ Meteor.methods({
 
   },
 
-  insertFactura: function(fecha, numero){
-      console.log("llego");
-      HelpersFactura.remove({});
-      HelpersFactura.insert({facFecha: fecha, facTodayNumber: numero});
-  },
 
-  insertFacturaManagement: function(fecha, numero, tipo, idcomi, nameComi, dirComi, dirComi2, cifComi, precio, fechaEntrega){
-      console.log("newInvoice");
-      console.log(fecha);
-      console.log(numero);
-      console.log(tipo);
-      console.log(idcomi);
-      console.log(nameComi);
-      console.log(precio);
-      console.log(fechaEntrega);
-
-      Invoices.insert({
-        'idComi': idcomi,
-        'nameComi': nameComi,
-        'dirComi': dirComi,
-        'dirComi2': dirComi2,
-        'cifComi': cifComi,
-        'numFactura': numero,
-        'isRecibidaFactura': tipo,
-        'precio': precio,
-        'fechaFactura': fecha,
-        'fechaEntrega': fechaEntrega
-      })
-  },
 
   downloadExcelFile : function() {
     var Future = Npm.require('fibers/future');

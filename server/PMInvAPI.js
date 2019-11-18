@@ -49,4 +49,50 @@ Meteor.methods({
             $set: {isEnviada: status},
         });
     },
+
+    updateNumFact: function(){
+        // DEPRECATED
+        var numActual = 1;
+
+        Bookings.find({},{sort:{fechareco: 1}}).forEach(function(booking) {
+            if(booking.factura == "SI"){
+                Bookings.update(booking._id, {
+                    $set: {numFactura: numActual}
+                });
+
+                numActual++;
+            }
+
+            else{
+                // console.log("NO FACTURA");
+                Bookings.update(booking._id, {
+                    $set: {numFactura: 0}
+                });
+            }
+        });
+
+        return false;
+    },
+
+    insertFactura: function(fecha, numero){
+        console.log("llego");
+        HelpersFactura.remove({});
+        HelpersFactura.insert({facFecha: fecha, facTodayNumber: numero});
+    },
+  
+    insertFacturaManagement: function(fecha, numero, tipo, idcomi, nameComi, dirComi, dirComi2, cifComi, precio, fechaEntrega){
+  
+        Invoices.insert({
+          'idComi': idcomi,
+          'nameComi': nameComi,
+          'dirComi': dirComi,
+          'dirComi2': dirComi2,
+          'cifComi': cifComi,
+          'numFactura': numero,
+          'isRecibidaFactura': tipo,
+          'precio': precio,
+          'fechaFactura': fecha,
+          'fechaEntrega': fechaEntrega
+        })
+    },
 })
