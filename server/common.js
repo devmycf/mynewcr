@@ -380,7 +380,7 @@ Meteor.methods({
             // Luego fecha y horas de recogida y devolucion
             getMomentoRecoDevo(reserva, rows[i]);
             //Despues la info del coche
-            if(rows[i].optionals != " " || rows[i].optionals != null) {
+            if(rows[i].optionals.length != 0 && rows[i].optionals != null) {
               getOptionsInfo(reserva, rows[i], connection);
             } else {
               getCocheInfo(reserva, rows[i], connection)
