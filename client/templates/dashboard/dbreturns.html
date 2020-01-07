@@ -134,6 +134,7 @@
                   <th>Contacto</th>
                   <th>Compañía</th>
                   <th>Tipo</th>
+                  <th>Matricula</th>
                   <th>Procedencia</th>
                   <th>Días</th>
                   <!-- <th>Suplemento</th>
@@ -190,6 +191,19 @@
                       </select>
                   </td>
                   <td>{{tipo}} <br> {{tarifa}}</td>
+                  <td>
+                    {{#if isWithOurCars _id}}
+                      {{#if getMyMatricula company != ""}}
+                      <div class="form-group" style="display: flex; flex-direction:row;">
+                        <input type="text" class="form-control bookingMatricula"  placeholder="{{getMyMatricula company}}" value="{{getMyMatricula company}}">
+                      </div>
+                      {{else}}
+                      <div class="form-group" style="display: flex; flex-direction:row;">
+                        <input type="text" class="form-control bookingMatricula"  placeholder="{{matribooking}}" value="{{matribooking}}">
+                      </div>
+                      {{/if}}
+                    {{/if}}
+                  </td>
                   <td>{{procedencia}}</td>
                   <td>{{getNumberDays fechadevo fechareco}}</td>
                     <!-- <td class="suplementos">
@@ -212,7 +226,13 @@
                           <label style="margin-top: 10px;">€</label>
                       </div>
                   </td>
-                  <td>{{notas}}</td>
+                  <td>
+                    {{notas}}<br>
+                    <div class="form-group" style="display: flex; flex-direction:row;">
+                            <label style="margin-top: 10px;">Localiz: </label>
+                            <input type="text" class="form-control localizador"  placeholder="{{localizador}}" value="{{localizador}}">
+                    </div>
+                  </td>
                   <td class="actions">
                       {{#if currentUser}}
                       <button class="btn btn-default editbooking" data-toggle="modal" data-target="#updatebookingModal"><img src="img/edit.png"></button>

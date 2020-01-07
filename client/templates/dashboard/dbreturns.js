@@ -30,6 +30,29 @@ Template.returnBookings.helpers({
      return myBooking.company;
  },
 
+ isWithOurCars: function(id){
+    // console.log(id);
+    var theBooking = Bookings.findOne({_id: id});
+    var theFleet = Flota.find({},{fields: {'nombreCoche': 1}}).fetch();
+    // console.log(theBooking);
+    // console.log(theFleet);
+    var currentCar = theBooking.company;
+    var our = false;
+
+    for(var i = 0; i<theFleet.length;i++){
+        if(currentCar == theFleet[i].nombreCoche){
+            our = true;
+        }
+    }
+
+    return our;
+},
+
+getMyMatricula: function(id) {
+   let mycar = Flota.findOne({'nombreCoche': id});
+   return mycar.matricula;
+},
+
  isThisSelected: function(name, company){
     if (name == company){
         return "selected";
@@ -84,6 +107,22 @@ Template.returnBookings.events({
             var newPending = $(e.target).val();
             console.log(newPending);
             Meteor.call("pushPending", currentId, newPending);
+            // Meteor.call("test");
+        },
+
+        "blur .bookingMatricula": function(e){
+            var currentId = this._id;
+            var newMatricula = $(e.target).val();
+            // console.log(newLocalizador);
+            Meteor.call("pushMatricula", currentId, newMatricula);
+            // Meteor.call("test");
+        },
+
+        "blur .localizador": function(e){
+            var currentId = this._id;
+            var newLocalizador = $(e.target).val();
+            // console.log(newLocalizador);
+            Meteor.call("pushLocalizador", currentId, newLocalizador);
             // Meteor.call("test");
         },
 
