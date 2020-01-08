@@ -344,7 +344,7 @@ Template.flota.rendered = function()
                 var flota = Flota.find({}).fetch();
                 for(i=0;i<flota.length;i++){
                   var companyfix = flota[i].nombreCoche;
-                  var reservasCoche = Bookings.find({'company': companyfix});
+                  var reservasCoche = Bookings.find({'company': companyfix, 'cancelada': false});
                   reservasCoche.forEach(function (reserva_Event) {
                       // console.log(reserva_Event);
                       events.push({
