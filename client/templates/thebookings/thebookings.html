@@ -36,9 +36,13 @@
                   <td><p class="year">{{getYear fechareco}}</p><p class="day">{{getDay fechareco}}</p><p class="month {{#if isCompleted _id}}{{else}}nf{{/if}}">{{getMonth fechareco}}</p><p class="author">{{userName}}</p></td>
                   <td>
                     {{#if currentUser}}
-                      <button type="button" class="btn btn-default sendConfirmationMail" onclick="location.href = '{{pathFor 'email'}}'" href=""><img src="img/send.svg"></button>
+                      <button type="button" class="btn btn-default sendConfirmationMail" onclick="location.href = '{{pathFor 'email'}}'" href="">
+                        <svg enable-background="new 0 0 32 32" height="32px" id="Layer_1" version="1.1" viewBox="0 0 32 32" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g><g><path d="M1.911,16.179c-1.084,0.568-1.039,1.4,0.098,1.852l3.364,1.331c1.137,0.449,2.856,0.204,3.821-0.55    L23.806,7.289c0.961-0.757,1.064-0.645,0.229,0.249L12.483,19.902c-0.837,0.892-0.59,1.984,0.55,2.425l0.394,0.154    c1.14,0.44,3,1.182,4.132,1.642l3.732,1.521c1.133,0.46,2.06,0.842,2.062,0.849c0.001,0.007,0.006,0.028,0.012,0.03    s0.273-0.962,0.594-2.141l5.688-20.908c0.321-1.18-0.302-1.681-1.385-1.113L1.911,16.179z" fill="#30a9db"/></g><g><path d="M11.146,29.864c-0.067,0.199,2.301-3.429,2.301-3.429c0.669-1.022,0.29-2.241-0.842-2.703l-2.582-1.058    c-1.132-0.463-1.674,0.08-1.205,1.212C8.818,23.887,11.214,29.66,11.146,29.864z" fill="#30a9db"/></g></g></svg>
+                      </button>
                       {{#if (isWithOurCars _id)}}
-                          <button type="button" class="btn btn-default createContract"  href=""><img src="img/contract.svg" title="Crear Contrato" alt="Crear Contrato"></button>
+                          <button type="button" class="btn btn-default createContract"  href="">
+                            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="32px" height="32px" viewBox="0 0 300 300" enable-background="new 0 0 300 300" xml:space="preserve"><g><g><circle fill="#259DC1" cx="150" cy="150" r="150"/><path fill="#30A9DB" d="M150,275c-68.924,0-125-56.076-125-125S81.076,25,150,25c68.927,0,125,56.075,125,125S218.927,275,150,275z"/></g><g><polygon opacity="0.3" enable-background="new    " points="180.092,86.014 180.092,120.083 214.135,120.083 		"/><path opacity="0.3" enable-background="new    " d="M174.467,125.708V84.375H93.6V225h122.175v-99.292H174.467z M178.155,201.702l-3.977-3.977l18.979-18.979h-57.343v-5.625h57.343l-18.979-18.977l3.977-3.977l25.769,25.767L178.155,201.702z"/></g><g><polygon fill="#FFFFFF" points="175.404,81.327 175.404,115.396 209.447,115.396 		"/><path fill="#FFFFFF" d="M169.779,121.021V79.688H88.912v140.625h122.175v-99.292H169.779z M173.468,197.015l-3.977-3.977l18.979-18.979h-57.343v-5.625h57.343l-18.979-18.977l3.977-3.977l25.769,25.767L173.468,197.015z"/></g></g></svg>
+                          </button>
                       {{/if}}
                   {{/if}}
                     </td>
@@ -161,10 +165,12 @@
                   </td>
                   <td class="actions">
                       {{#if currentUser}}
-                      <button class="btn btn-default editbooking" data-toggle="modal" data-target="#updatebookingModal"><img src="img/edit.png"></button>
+                      <button class="btn btn-default editbooking" data-toggle="modal" data-target="#updatebookingModal"><i class="fa fa-edit"></i></button>
                       <button class="delete-booking">&times;</button>
-                      <button type="button" class="btn btn-default downloadPdf"><img src="img/pdf-icon.png"></button>
-                      <button type="button" class="btn btn-default sendConfirmationMail" onclick="location.href = '{{pathFor 'email'}}';" href=""><img src="img/send.svg"></button>
+                      <button type="button" class="btn btn-default downloadPdf"><i class="fa fa-arrow-down"></i></button>
+                      <button type="button" class="btn btn-default sendConfirmationMail" onclick="location.href = '{{pathFor 'email'}}';" href="">
+                        <svg enable-background="new 0 0 32 32" height="32px" id="Layer_1" version="1.1" viewBox="0 0 32 32" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g><g><path d="M1.911,16.179c-1.084,0.568-1.039,1.4,0.098,1.852l3.364,1.331c1.137,0.449,2.856,0.204,3.821-0.55    L23.806,7.289c0.961-0.757,1.064-0.645,0.229,0.249L12.483,19.902c-0.837,0.892-0.59,1.984,0.55,2.425l0.394,0.154    c1.14,0.44,3,1.182,4.132,1.642l3.732,1.521c1.133,0.46,2.06,0.842,2.062,0.849c0.001,0.007,0.006,0.028,0.012,0.03    s0.273-0.962,0.594-2.141l5.688-20.908c0.321-1.18-0.302-1.681-1.385-1.113L1.911,16.179z" fill="#30a9db"/></g><g><path d="M11.146,29.864c-0.067,0.199,2.301-3.429,2.301-3.429c0.669-1.022,0.29-2.241-0.842-2.703l-2.582-1.058    c-1.132-0.463-1.674,0.08-1.205,1.212C8.818,23.887,11.214,29.66,11.146,29.864z" fill="#30a9db"/></g></g></svg>
+                      </button>
 
                       <!-- Modal -->
     <!--                      <a href="{{pathFor 'getPDF' this._id}}">Ver</a>-->

@@ -917,6 +917,11 @@ tbody th{
     height: 175px;
 }
 
+.actions i {
+    font-size: 28px;
+    margin-top: 10px;
+}
+
 p.day {
     font-size: 16px;
     background-color: #e5e5e5;
