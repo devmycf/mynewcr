@@ -1351,6 +1351,10 @@ button.createContract{
     border-color: #2ecc71;
 }
 
+.multarow i, .taskrow i {
+    font-size: 24px;
+}
+
 
 .pagada{
     color: #2ecc71;
